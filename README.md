@@ -73,5 +73,5 @@ s: simulation, r: robot
 
 To use casadi, 
 
-- sudo apt-get install gfortran liblapack-dev
-- sudo apt-get install coinor-libipopt-dev
+- `sudo apt-get install gfortran liblapack-dev`
+- `sudo apt-get install coinor-libipopt-dev`
