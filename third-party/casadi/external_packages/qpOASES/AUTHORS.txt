@@ -1,0 +1,92 @@
+##
+##	This file is part of qpOASES.
+##
+##	qpOASES -- An Implementation of the Online Active Set Strategy.
+##	Copyright (C) 2007-2015 by Hans Joachim Ferreau, Andreas Potschka,
+##	Christian Kirches et al. All rights reserved.
+##
+##	qpOASES is free software; you can redistribute it and/or
+##	modify it under the terms of the GNU Lesser General Public
+##	License as published by the Free Software Foundation; either
+##	version 2.1 of the License, or (at your option) any later version.
+##
+##	qpOASES is distributed in the hope that it will be useful,
+##	but WITHOUT ANY WARRANTY; without even the implied warranty of
+##	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+##	See the GNU Lesser General Public License for more details.
+##
+##	You should have received a copy of the GNU Lesser General Public
+##	License along with qpOASES; if not, write to the Free Software
+##	Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+##
+
+
+
+MAIN AUTHORS
+============
+
+qpOASES's core functionality and software design have been developed by the
+following main developers (in alphabetical order):
+
+    Hans Joachim Ferreau
+    Christian Kirches
+    Andreas Potschka
+
+
+
+FURTHER AUTHORS
+===============
+
+Moreover, the following developers have contributed code to qpOASES's
+third-party interfaces or provided additional functionality 
+(in alphabetical order):
+
+    Alexander Buchner
+    Holger Diedam
+    Dennis Janka
+    Manuel Kudruss
+    Andreas Waechter
+    Sebastian F. Walter
+
+
+
+CONTRIBUTORS
+============
+
+Finally, the following people have not contributed to the source code,
+but have helped making qpOASES even more useful by testing, reporting
+bugs or proposing algorithmic improvements (in alphabetical order):
+
+    Eckhard Arnold
+    Boris Houska
+    D. Kwame Minde Kufoalor
+    Aude Perrin
+    Milan Vukov
+    Thomas Wiese
+    Leonard Wirsching
+
+
+
+SCIENTIFIC MENTORS
+==================
+
+We also would like to thank two persons who had a major share in making
+qpOASES a success. Not by writing even a single line of code, but by
+establishing the idea of using a homotopy-based approach for high-speed
+QP solutions and by excellent scientific guidance during the development
+process:
+
+    Hans Georg Bock
+    Moritz Diehl
+
+
+
+All users are invited to further improve qpOASES by providing comments,
+code enhancements, bug reports, additional documentation or whatever you
+feel is missing.
+
+
+
+##
+##	end of file
+##

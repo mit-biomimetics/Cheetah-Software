@@ -1,0 +1,4 @@
+This folder contains external software, such as numerical libraries that are
+needed by other packages. Avoid copying large packages into this folder - if
+a package is available by subversion or ftp, the best alternative is to write
+a get-script and a CMakeList.txt file.

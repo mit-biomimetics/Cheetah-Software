@@ -1,0 +1,10 @@
+package simulatorlcm;
+
+struct sim_graphics_t
+{
+    double   xfb[13];
+    double   q[12];
+    double   f_foot[3][4];
+    double   p_foot[3][4];
+    double   sim_time;
+}

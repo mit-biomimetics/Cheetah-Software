@@ -1,0 +1,6 @@
+struct cheetah_visualization_lcmt {
+   float q[12];
+   float x[3];
+   float quat[4];
+   float rgba[4];
+}

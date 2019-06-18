@@ -1,0 +1,47 @@
+# Initialization
+
+# Mini
+body_height: 0.45
+CTRL_move_to_target_height:
+    max_rf_z: 500
+    min_rf_z: 25
+
+CTRL_backflip_pre:
+    motion_type: "move_to_target"
+    move_time: 2.0
+
+CTRL_backflip:
+
+
+CTRL_backflip_end:
+    motion_type: "stay"
+    move_time: 10000.
+
+# Timing Parameters (sec)
+body_lifting_time: 2.0
+
+CTRL_stance:
+
+Kp: [ 1000, 1000, 1000, 
+      1000, 1000, 1000, 
+      1000, 1000, 1000, 
+      1000, 1000, 1000 ]
+
+Kd: [ 5., 5., 5., 
+      5., 5., 5., 
+      5., 5., 5., 
+      5., 5., 5. ]
+
+# Joint Feedback gain
+Kp_joint: [100., 100., 100.]
+Kd_joint: [10, 10, 10]
+
+# temp
+target_jpos: [ 
+    -0.1, -1.0, 1.8, 
+    0.1, -1.0, 1.8, 
+    -0.1, -1.0, 1.8, 
+    0.1, -1.0, 1.8 ]
+
+save_file: false
+#save_file: true

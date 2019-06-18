@@ -1,0 +1,79 @@
+##
+##	This file is part of qpOASES.
+##
+##	qpOASES -- An Implementation of the Online Active Set Strategy.
+##	Copyright (C) 2007-2017 by Hans Joachim Ferreau, Andreas Potschka,
+##	Christian Kirches et al. All rights reserved.
+##
+##	qpOASES is free software; you can redistribute it and/or
+##	modify it under the terms of the GNU Lesser General Public
+##	License as published by the Free Software Foundation; either
+##	version 2.1 of the License, or (at your option) any later version.
+##
+##	qpOASES is distributed in the hope that it will be useful,
+##	but WITHOUT ANY WARRANTY; without even the implied warranty of
+##	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+##	See the GNU Lesser General Public License for more details.
+##
+##	You should have received a copy of the GNU Lesser General Public
+##	License along with qpOASES; if not, write to the Free Software
+##	Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+##
+
+
+
+INSTALLATION UNDER LINUX
+========================
+
+0. Obtain qpOASES from COIN-OR:
+
+Download a zipped archive containg the latest stable release and unpack it 
+into <install-dir>. Alternatively, you check out the latest stable branch, 
+e.g. by running
+
+svn co https://projects.coin-or.org/svn/qpOASES/stable/3.2 <install-dir>
+
+from your shell. 
+
+
+1. Compilation of the qpOASES library libqpOASES.a (or .so) and test examples:
+
+cd <install-dir>
+make
+
+The library  libqpOASES.a (or .so)  provides the complete functionality of the 
+qpOASES software package. It can be used by, e.g., linking it against a main 
+function from the examples folder. The make also compiles a couple of test 
+examples; executables are stored within the directory <install-dir>/bin.
+
+
+2. Running a simple test example:
+
+Among others, an executable called  example1  should have been created; run 
+it in order to test your installation:
+
+cd <install-dir>/bin
+./example1
+
+If it terminates after successfully solving two QP problems, qpOASES has been 
+successfully installed!
+
+
+3. Optional, create source code documentation (using doxygen):
+
+cd <install-dir>/doc
+doxygen doxygen.config
+
+Afterwards, you can open the file <install-dir>/doc/html/index.html with
+your favorite browser in order to view qpOASES's source code documentation.
+
+
+NOTE: More detailed installation instructions, including information on how
+      to run unit tests can be found in the qpOASES User's Manual located 
+      at <install-dir>/doc/manual.pdf!
+
+
+
+##
+##	end of file
+##

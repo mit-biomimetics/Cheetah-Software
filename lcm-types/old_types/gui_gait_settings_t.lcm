@@ -1,0 +1,13 @@
+package interfacelcm;
+
+
+struct gui_gait_settings_t
+{
+	double gait_override;
+	double gait;
+
+    double cycle_period;
+    double stance_percent;
+
+    double transition_time;
+}

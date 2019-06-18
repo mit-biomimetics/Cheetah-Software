@@ -1,0 +1,19 @@
+# Generated on Fri Feb  8 19:30:57 2019
+__collection-name__: simulator-parameters
+
+dynamics_dt                      : 0.001
+floor_kd                         : 5000
+floor_kp                         : 500000
+game_controller_deadband         : 0.01
+high_level_dt                    : 0.001
+kvh_imu_accelerometer_noise      : 0.005
+kvh_imu_gyro_noise               : 0.002
+low_level_dt                     : 0.0002
+simulation_paused                : 0
+simulation_speed                 : 1.
+sim_lcm_ttl                      : 0
+sim_state_lcm                    : 1
+use_spring_damper                : 0
+vectornav_imu_accelerometer_noise: 0.005
+vectornav_imu_gyro_noise         : 0.005
+vectornav_imu_quat_noise         : 0.003

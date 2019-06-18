@@ -1,0 +1,12 @@
+package cheetahlcm;
+
+struct cheetah_graphics_t
+{
+    int64_t  timestamp;
+    double   xfb[13];
+    double   rpy[3];
+    double   q[12];
+    double   f_foot[3][4];
+    double   p_foot[3][4];
+    double   sim_time;
+}

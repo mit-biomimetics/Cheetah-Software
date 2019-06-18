@@ -1,0 +1,391 @@
+# Inspiration: https://github.com/edx/configuration/blob/master/.travis.yml
+env: 
+  global: 
+    - IPOPT_DEFAULT_LINEAR_SOLVER=ma57
+    - MOSEKLM_LICENSE_FILE=/home/travis/build/testbot/restricted/mosek.lic
+    - secure: KvMG4VORV7Ja09shvmsMpiaRMoWqupR76dKxOd7W28I//F4YDIn5ZZefM4aoXsmRgs4G9YqloU8JjVpHutZARmKn2drUwHVMA+96iKb9eDODwZaKXgFYsrQIX5c/OgO8ZpsXynD2daqH3bMK8Mjz1+4fjbFToPFXHggxqQuHm1U=
+    - MATLABPATH=/home/travis/build/matlab-install/matlab
+    - MATLAB_ROOT=/home/travis/build/matlab
+    - MATLABRELEASE=R2014a
+    - SLURP_OS=trusty
+    - PYTHONPATH=/usr/local/python
+    - TRAVIS_PYTHON_VERSION=2.7
+    - NUMPYVERSION=1.11
+    - casadi_build_flags="-DWITH_EXTRA_WARNINGS=ON -DWITH_EXTRA_CHECKS=ON"
+   
+notifications:
+  email: false
+
+notifications:
+  email: false
+
+before_script:
+  - |
+    if [ -n "$KEEP_GOING" ];
+    then
+      set -e
+      set -o pipefail  # otherwise, piping with grep discards exit statuses
+    fi
+
+notifications:
+  email: false
+
+language: generic
+
+matrix:
+  include:
+    - compiler: gcc
+      os: linux
+      dist: trusty
+      env: TESTMODE=valgrind
+      script:
+        - sudo apt-get install valgrind libgomp1 -y
+        - mkdir build
+        - pushd build
+        - bash -c "cmake -DWITH_OPENMP=ON $casadi_build_flags -DWITH_PROFILING=ON -DWITH_DOC=ON -DWITH_EXAMPLES=ON -DWITH_COVERAGE=ON -DWITH_EXTRA_WARNINGS=ON -DWITH_PYTHON=ON -DWITH_JSON=ON -DWITH_BLASFEO=ON -DWITH_BUILD_BLASFEO=ON -DWITH_HPMPC=ON -DWITH_BUILD_HPMPC=ON .."
+        - make -j2
+        - sudo make -j2 install
+        - popd
+        - python -c "from casadi.tools import *;loadAllCompiledPlugins()"
+        - pushd test && make unittests_py_valgrind && popd
+      after_success:
+        - cd build
+        - git clone https://github.com/jgillis/cpp-coveralls.git
+        - pushd cpp-coveralls && sudo python setup.py install && popd
+        - coveralls --root .. --exclude swig -E '.*cxx' -E '.*CMakeFiles.*' -E '.*casadiPYTHON_wrap.*' -E '.*lib.*' -E '.*_export.*'  --exclude experimental --exclude _temp.cc --exclude docs --exclude codegen --exclude external_packages --exclude cmake --exclude test --gcov-options '\-lp' >/dev/null
+    - compiler: clang
+      os: linux
+      dist: trusty
+      language: generic
+      env: TESTMODE=valgrind
+      script:
+        - sudo apt-get install valgrind libgomp1 -y
+        - mkdir build
+        - pushd build
+        - bash -c "cmake -DWITH_OPENMP=ON $casadi_build_flags -DWITH_PROFILING=ON -DWITH_DOC=ON -DWITH_EXAMPLES=ON -DWITH_COVERAGE=ON -DWITH_EXTRA_WARNINGS=ON -DWITH_PYTHON=ON -DWITH_JSON=ON -DWITH_BLASFEO=ON -DWITH_BUILD_BLASFEO=ON -DWITH_HPMPC=ON -DWITH_BUILD_HPMPC=ON .."
+        - make -j2
+        - sudo make -j2 install
+        - popd
+        - python -c "from casadi.tools import *;loadAllCompiledPlugins()"
+        - pushd test && make unittests_py_valgrind && popd
+      after_success:
+        - cd build
+        - git clone https://github.com/jgillis/cpp-coveralls.git
+        - pushd cpp-coveralls && sudo python setup.py install && popd
+        - coveralls --root .. --exclude swig -E '.*cxx' -E '.*CMakeFiles.*' -E '.*casadiPYTHON_wrap.*' -E '.*lib.*' -E '.*_export.*'  --exclude experimental --exclude _temp.cc --exclude docs --exclude codegen --exclude external_packages --exclude cmake --exclude test --gcov-options '\-lp' >/dev/null
+    - compiler: gcc
+      os: linux
+      dist: trusty
+      env: TESTMODE=full
+      script:
+        - sudo apt-get install valgrind libgomp1 -y
+        - mkdir build
+        - pushd build
+        - bash -c "cmake -DWITH_OPENMP=ON $casadi_build_flags -DWITH_SLICOT=OFF -DWITH_PROFILING=ON -DWITH_DOC=ON -DWITH_EXAMPLES=ON -DWITH_COVERAGE=ON -DWITH_EXTRA_WARNINGS=ON -DWITH_PYTHON=ON -DWITH_JSON=ON -DWITH_BLASFEO=ON -DWITH_BUILD_BLASFEO=ON -DWITH_HPMPC=ON -DWITH_BUILD_HPMPC=ON .."
+
+        - make -j2
+        - sudo make -j2 install
+        - popd
+        - sudo apt-get install python-ipdb graphviz texlive-science texlive-latex-base texlive-latex-recommended texlive-latex-extra -y
+        - pip install pydot2 lxml
+        # travis-wait seems to stop at 20 mins, regardless if output is being generated
+        - (while true ; do sleep 60 ; echo "ping" ; done ) &
+        - pushd test && make trunktesterbot_no_unittests_py && popd
+        - pushd test && make unittests_py_slow && popd
+        - pushd build && make json && popd
+      after_success:
+        - cd build
+        - git clone https://github.com/jgillis/cpp-coveralls.git
+        - pushd cpp-coveralls && sudo python setup.py install && popd
+        - coveralls --verbose --root .. --exclude swig -E '.*cxx' -E '.*CMakeFiles.*' -E '.*casadiPYTHON_wrap.*' -E '.*lib.*' -E '.*_export.*'  --exclude experimental --exclude _temp.cc --exclude docs --exclude codegen --exclude external_packages --exclude cmake --exclude test --gcov-options '\-lp' >/dev/null
+    - compiler: gcc
+      os: linux
+      dist: trusty
+      env:
+        - TESTMODE=full-py3
+        - WITH_PYTHON3=ON
+        - TRAVIS_PYTHON_VERSION=3.5
+      script:
+        - sudo apt-get install cmake valgrind libgomp1 -y
+        - mkdir build
+        - pushd build
+        - bash -c "cmake -DWITH_OPENMP=OFF $casadi_build_flags -DWITH_SLICOT=OFF -DCMAKE_BUILD_TYPE=Debug -DWITH_PROFILING=ON -DWITH_DOC=ON -DWITH_EXAMPLES=ON -DWITH_EXTRA_WARNINGS=ON -DWITH_PYTHON=ON -DWITH_PYTHON3=ON -DWITH_JSON=ON .."
+
+        - make -j2
+        - sudo make -j2 install
+        - popd
+        - python -c "from casadi.tools import *;loadAllCompiledPlugins()"
+        
+        #- (while true ; do sleep 60 ; echo "ping" ; done ) &
+        #- source /home/travis/build/testbot/restricted/env.sh
+        #- ssh-keyscan $GATE_SERVER >> ~/.ssh/known_hosts
+        #- whoami
+        #- echo "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA3mEl1i8wiojyJdJnwrmC3RTWCIGgUM4lmtWNWu4p4QyiBry2iB7y2qno48pZqkV/EFRsyWWeEDvbdA4etYlceKZaGJFAdqJig/247qPbamU5W5++d7zkGwA5nQDH147/+JMYk4na9RoGl2iOHMyxi7Wq0WkN11u0Slp2awluvV9UXpBl/XD74eYmUfOFop6y+Hkg/K2hyytg8vAkp33x/vy8JxSK93vbnLGsrVOVjp6Epf7Jo2C8ZHX9eVL2sfi7icjNbt6s9AnU076tBURBIEQbg+Sa8nK7v6zzJNZbn9G85t0M64BKMvcRH1BXf0VvIeBQs/yv9uZLaC9SFvj+4Q== u0052373@xen-vm03.mech.kuleuven.be" >> ~/.ssh/authorized_keys
+        #- ssh -i /home/travis/build/testbot/id_rsa_travis $USER_GATE@$GATE_SERVER -R 19922:localhost:22 -N
+        #- pushd test && make unittests_py_valgrind && popd
+        - sudo apt-get install graphviz texlive-science texlive-latex-base texlive-latex-recommended texlive-latex-extra -y
+        - pip install pydot3 lxml
+        # travis-wait seems to stop at 20 mins, regardless if output is being generated
+        - (while true ; do sleep 60 ; echo "ping" ; done ) &
+
+        #- pushd test && make trunktesterbot_no_unittests_py && popd
+        #- pushd test && make unittests_py_slow && popd
+        #- pushd build && make json && popd
+        - rm docs/api/examples/solvers/callback.py
+        - pushd test && make unittests_py && popd
+        - pushd test && make unittests_py_slow && popd
+        - pushd test && make examples_code_py && popd
+        - pushd test && make user_guide_snippets_py && popd
+        - pushd test && make examples_indoc_py && popd
+        
+    - compiler: gcc
+      os: linux
+      dist: trusty
+      env: TESTMODE=docs
+      script:
+        - set -e
+        - mkdir build
+        - pushd build
+        - bash -c "cmake $casadi_build_flags -DWITH_SLICOT=OFF -DWITH_JSON=ON -DCMAKE_BUILD_TYPE=Debug -DWITH_PROFILING=ON -DWITH_DOC=ON -DWITH_EXAMPLES=ON -DWITH_COVERAGE=ON -DWITH_EXTRA_WARNINGS=ON -DWITH_PYTHON=ON .."
+        - make -j2
+        - sudo make -j2 install
+        - popd
+        - pip install texttable pydot2 lxml ipdb docutils
+        - sudo apt-get install graphviz doxygen -y
+        - pushd docs/api && make doxexport_old | grep -v "file loc from" && popd
+        
+        # Let's verify that we can still compile
+        - pushd build && make && sudo make -j2 install && make json && popd
+        - python -c "import doctest;import casadi;assert doctest.testmod(casadi.casadi,verbose=True).failed==0"
+        - |
+          if [[ $TRAVIS_BRANCH == *develop* || $TRAVIS_BRANCH == *release* ]]
+          then
+            git stash && git checkout $TRAVIS_BRANCH && git pull origin $TRAVIS_BRANCH && git stash pop || allowfail 1 && test $(git status --porcelain | grep UU | wc -c) -eq 0 && sh /home/travis/build/testbot/helpers/acommit.sh "automatic documentation update" && git push git@github.com:casadi/casadi.git $TRAVIS_BRANCH
+          fi
+    - compiler: clang
+      os: linux
+      dist: trusty
+      env: TESTMODE=minimal
+      script:
+        - mkdir build
+        - pushd build
+        - bash -c "cmake $casadi_build_flags -DWITH_WERROR=ON -DWITH_SLICOT=OFF -DWITH_PYTHON=ON -DWITH_JSON=ON .."
+        - make
+        - sudo make install
+        - popd
+        - python -c "from casadi.tools import *;loadAllCompiledPlugins()"
+        - pushd test
+        - make unittests_py examples_code_py || remote_access
+        - popd
+    - compiler: gcc
+      os: linux
+      dist: trusty
+      env: TESTMODE=minimal
+      script:
+        - mkdir build
+        - pushd build
+        - bash -c "cmake $casadi_build_flags -DWITH_WERROR=ON -DWITH_SLICOT=OFF -DWITH_DEPRECATED_FEATURES=OFF -DWITH_PYTHON=ON -DWITH_JSON=ON .."
+        - make
+        - sudo make install
+        - popd
+        - python -c "from casadi.tools import *;loadAllCompiledPlugins()"
+        - pushd test && make unittests_py examples_code_py && popd
+    - compiler: gcc
+      os: linux
+      dist: trusty
+      env: TESTMODE=minimal
+      script:
+        - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+        - sudo apt-get update -qq
+        - sudo apt-get install gcc-6 g++-6
+        - export CC=gcc-6
+        - export CXX=g++-6
+        - mkdir build
+        - pushd build
+        - bash -c "cmake  $casadi_build_flags -DWITH_WERROR=ON -DWITH_SLICOT=OFF -DWITH_DEPRECATED_FEATURES=OFF -DWITH_PYTHON=ON -DWITH_JSON=ON .."
+        - make
+        - sudo make install
+        - popd
+        - #python -c "from casadi.tools import *;loadAllCompiledPlugins()"
+        - #pushd test && make unittests_py examples_code_py && popd
+    - compiler: gcc
+      os: linux
+      dist: trusty
+      env: TESTMODE=minimal
+      script:
+        - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+        - sudo apt-get update -qq
+        - sudo apt-get install gcc-7 g++-7
+        - export CC=gcc-7
+        - export CXX=g++-7
+        - mkdir build
+        - pushd build
+        - bash -c "cmake  $casadi_build_flags -DWITH_WERROR=ON -DWITH_SLICOT=OFF -DWITH_DEPRECATED_FEATURES=OFF -DWITH_PYTHON=ON -DWITH_JSON=ON .."
+        - make
+        - sudo make install
+        - popd
+        - #python -c "from casadi.tools import *;loadAllCompiledPlugins()"
+        - #pushd test && make unittests_py examples_code_py && popd
+    - compiler: gcc
+      os: linux
+      dist: trusty
+      env: TESTMODE=quick
+      script:
+        - sudo add-apt-repository ppa:webupd8team/java -y
+        - sudo apt-get update -qq
+        #- sudo echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
+        - sudo apt-get install python-pyparsing libhunspell-dev default-jdk -y
+        - wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add -
+        - sudo add-apt-repository "deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-5.0 main"
+        - sudo apt-get update
+        - sudo apt-get install clang-tidy-5.0 clang-5.0 -y
+        - sudo ln -s /usr/bin/clang-tidy-5.0 /usr/bin/clang-tidy
+        - sudo pip install hunspell
+        - wget https://www.languagetool.org/download/LanguageTool-2.7.zip
+        - unzip LanguageTool-2.7.zip
+        - mypwd=`pwd`
+        - export languagetool="$mypwd/LanguageTool-2.7"
+        - mkdir build
+        - pushd build
+        - bash -c "cmake $casadi_build_flags -DWITH_SLICOT=OFF -DWITH_SPELL=ON -DWITH_LINT=ON -DWITH_CLANG_TIDY=ON .."
+        - make lint
+        - make clang-tidy
+        - export languagetool="$mypwd/LanguageTool-2.7" make spell
+        - popd && pushd misc && python autogencode.py && popd
+        - sh /home/travis/build/testbot/helpers/acommit.sh "automatic code generation"
+        - git pull
+        - git config --global push.default simple
+        - git remote set-url origin git@github.com:casadi/casadi.git
+        - ssh-agent bash -c 'ssh-add /home/travis/build/testbot/id_rsa_travis; git push origin HEAD:$TRAVIS_BRANCH'
+      after_success:
+        - cd /home/travis/build/
+        - git clone git@github.com:casadi/binaries.git
+        - pushd binaries && git checkout run && git submodule init && git submodule update || allowfail 1 && popd
+        - pushd binaries/casadi && git checkout $TRAVIS_COMMIT && popd
+        - |
+          if ! [[ $TRAVIS_BRANCH == *test* ]]
+          then
+          #if ! [[ $TRAVIS_BRANCH == develop ]]
+          #then
+          pushd binaries && git commit -a -m "automatic runner commit $TRAVIS_COMMIT" && git push origin run && popd
+          #fi
+          fi
+    - os: osx
+      osx_image: xcode7.3
+      env: TESTMODE=minimal SLURP_OS=osx
+      compiler: clang
+      script:
+        - mkdir build
+        - pushd build
+        - echo $casadi_build_flags
+        - bash -c "cmake $casadi_build_flags -DWITH_WERROR=ON -DWITH_PYTHON=ON -DWITH_JSON=ON -DWITH_EXTRA_CHECKS=OFF .."
+
+        - #cmake $casadi_build_flags -DPYTHON_LIBRARY=$CMAKE_PYTHON_LIBRARY -DPYTHON_INCLUDE_DIR=$CMAKE_PYTHON_INCLUDE_DIR -DWITH_PYTHON=ON -DCMAKE_INSTALL_PREFIX=../python_install -DPYTHON_PREFIX=../python_install ..
+        - osx_rpath
+        - make VERBOSE=1
+        - sudo make install
+        - sudo cp $GCC_FULL $QUADMATH_FULL $FORTRAN_FULL $CXX_FULL /usr/local/lib/
+        - popd
+        - #export PYTHONPATH=$PYTHONPATH:`pwd`/python_install
+        - otool -l /Users/travis/miniconda2/envs/condaenv_build/lib/python2.7/site-packages/casadi/_casadi.so
+        - echo $DYLD_LIBRARY_PATH
+        - python -c "from casadi.tools import *;loadAllCompiledPlugins()"
+        - pushd test && make unittests_py && popd
+
+    - compiler: gcc
+      os: linux
+      dist: trusty
+      env: NEEDMATLAB=1
+      script:
+        - sudo apt-get install -y gcc-4.7 g++-4.7 gfortran-4.7 locate
+        - sudo updatedb
+        - locate libstdc++.so
+        - export CC=gcc-4.7
+        - export CXX=g++-4.7
+        - export FC=gfortran-4.7
+
+
+        # travis-wait seems to stop at 20 mins, regardless if output is being generated
+        - (while true ; do sleep 60 ; echo "ping" ; done ) &
+
+        - swig -version
+        - pushd /home/travis/build/
+        - testbot/recipes/fetch.sh matlab$MATLABRELEASE.tar.gz
+        - mkdir matlab && tar -xf matlab$MATLABRELEASE.tar.gz -C matlab
+        - popd
+        - mkdir build
+        - pushd build
+        - bash -c "cmake $casadi_build_flags -DWITH_EXTRA_CHECKS=OFF -DWITH_SLICOT=OFF -DCMAKE_INSTALL_PREFIX=/home/travis/build/matlab-install -DWITH_DEEPBIND=ON -DWITH_MATLAB=ON -DWITH_PROFILING=ON -DWITH_DOC=ON -DWITH_EXAMPLES=ON -DWITH_COVERAGE=ON -DWITH_EXTRA_WARNINGS=ON -DWITH_JSON=ON .."
+        - make -j2 VERBOSE=1
+        - sudo make -j2 install
+        - popd
+        - matlabtunnel
+        
+        # needed for worhp
+        - matlabgcc
+        - pushd test && PATH=/home/travis/build/matlab/bin/:$PATH make matlab && popd
+    - compiler: gcc
+      os: linux
+      dist: trusty
+      env: NEEDMATLAB=1
+      script:
+        - sudo apt-add-repository ppa:octave/stable -y
+        - sudo apt-get update -qq
+        - sudo apt-get install octave liboctave-dev -y
+        - sudo apt-get install -y xvfb
+        - sudo apt-get install -y libgl1-mesa-dri
+        
+        # travis-wait seems to stop at 20 mins, regardless if output is being generated
+        - (while true ; do sleep 60 ; echo "ping" ; done ) &
+
+        - mkdir build
+        - pushd build
+        - bash -c "cmake $casadi_build_flags -DWITH_SLICOT=OFF -DCMAKE_INSTALL_PREFIX=/home/travis/build/octave-install -DWITH_DEEPBIND=ON -DWITH_OCTAVE=ON -DWITH_OCTAVE_IMPORT=ON -DWITH_PROFILING=ON -DWITH_DOC=ON -DWITH_EXAMPLES=ON -DWITH_COVERAGE=ON -DWITH_EXTRA_WARNINGS=ON -DWITH_JSON=ON .."
+        - make -j2
+        - sudo make -j2 install
+        - popd
+        - Xvfb :1 &
+        - export DISPLAY=:1
+        - octave --no-gui --no-window-system --eval "addpath('/home/travis/build/octave-install/matlab');savepath;"
+        - matlabgcc
+        - pushd test && make octave && popd
+branches:
+  except:
+    - /.*appveyor.*/
+
+before_install:
+  - shell_session_update() { :; } # Workaround for travis-ci/travis-ci#6522
+  - pushd ../../ && git clone https://github.com/casadi/testbot.git
+  - pushd testbot && source recipes/setup.sh && popd
+  - |
+    if [ "$TRAVIS_OS_NAME" == "osx" ]; then
+      osx_gcc49_setup
+      export SLURP_OS=osx
+      export SLURP_GCC=4.9
+      slurp swig_matlab
+    else
+      sudo apt-get install p7zip-full -y
+      sudo apt-get update -qq
+      sudo apt-get install -q -y binutils gcc g++ gfortran git cmake liblapack-dev liblapack3 libblas3 coinor-libipopt-dev libmumps-seq-dev libxml2-dev
+      if [ $NEEDMATLAB ]
+      then
+        export SLURP_GCC=4.7
+      fi
+      slurp swig_matlab
+    fi
+  - python_setup
+  - slurp_common
+  - bake_my_library_path
+  - ls -al /usr/local/lib
+  - |
+    if [ "$TRAVIS_OS_NAME" == "linux" ]; then
+      slurp cplex
+    fi
+  - popd
+
+  - pip install github3.py
+ 
+after_failure:
+  - pushd /home/travis/build/testbot/ && python -c "from github3 import login;from testbotcredentials import TestBotCredentials;tbc = TestBotCredentials();login(*tbc.github).repository('casadi','casadi').create_comment(sha='$TRAVIS_COMMIT',body='Failure reported by [travis](https://travis-ci.org/casadi/casadi/jobs/$TRAVIS_JOB_ID) in $TRAVIS_COMMIT_RANGE -- $TRAVIS_TEST_RESULT')" && popd
+
+

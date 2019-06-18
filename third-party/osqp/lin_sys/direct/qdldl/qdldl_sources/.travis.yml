@@ -1,0 +1,48 @@
+language: C
+
+matrix:
+  include:
+    - os: linux
+    - os: osx
+      # Specify version to avoid bug (https://github.com/travis-ci/travis-ci/issues/6522)
+      osx_image: xcode9.3
+
+sudo: required
+
+install:
+- |
+  # Install lcov only on linux
+  if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      sudo apt-get install -y lcov
+      # Install coveralls uploader
+      gem install coveralls-lcov
+  fi
+
+
+# Build main and tests
+script:
+- |
+  cd ${TRAVIS_BUILD_DIR}
+  mkdir -p build
+  cd build
+  cmake -DUNITTESTS=ON -DCOVERAGE=ON ..
+  make
+  out/qdldl_tester
+
+
+# Pefrorm code coverage (only in Linux case)
+after_success:
+- |
+  cd ${TRAVIS_BUILD_DIR}
+  if [[ $TRAVIS_OS_NAME == "linux" ]]; then
+      cd ${TRAVIS_BUILD_DIR}/build
+      lcov --directory . --capture -o coverage.info # capture coverage info
+      lcov --remove coverage.info \
+          "${TRAVIS_BUILD_DIR}/tests/*" \
+          "${TRAVIS_BUILD_DIR}/examples/*" \
+          "/usr/include/x86_64-linux-gnu/bits/*" \
+          -o coverage.info # filter out tests and unnecessary files
+      lcov --list coverage.info # debug before upload
+      coveralls-lcov coverage.info # uploads to coveralls
+  fi
+

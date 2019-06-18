@@ -1,0 +1,11 @@
+package simulatorlcm;
+
+struct sim_torque_t
+{
+    float tau_abad[4];
+    float tau_hip[4];
+    float tau_knee[4];
+    float v_abad[4];
+    float v_hip[4];
+    float v_knee[4];
+}

@@ -1,0 +1,7 @@
+package cheetahlcm;
+
+struct xbee_command_t
+{
+    float xbee_float[10];
+    int32_t xbee_int[10];
+}

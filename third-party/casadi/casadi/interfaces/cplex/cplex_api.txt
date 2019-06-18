@@ -1,0 +1,122 @@
+The description of the CPLEX function CPXcopylp and CPXcopyquad has been taken from the CPLEX documentation (version 12.2)
+
+status = CPXcopylp(CPXCENVptr env, CPXLPptr lp, int numcols, int numrows, int objsense, const double * objective, const double * rhs, const char * sense,
+                   const int * matbeg, const int * matcnt, const int * matind, const double * matval, const double * lb, const double * ub, const double * rngval)
+  The routine CPXcopylp copies data that define an LP problem to a CPLEX problem object. The arguments to CPXcopylp define an objective function,
+  the constraint matrix, the righthand side, and the bounds on the variables. Calling CPXcopylp destroys any existing data associated with the problem object.
+  The routine CPXcopylp does not copy names. The more comprehensive routine CPXcopylpwnames can be used in place of CPXcopylp to copy linear programs with
+  associated names.
+  The arguments passed to CPXcopylp define a linear program. Since these arguments are copied into local arrays maintained by CPLEX, the LP problem data
+  passed via CPXcopylp may be modified or freed after the call to CPXcopylp without affecting the state of the CPLEX problem object.
+
+  Arguments:
+    env: A pointer to the CPLEX environment as returned by CPXopenCPLEX.
+    lp: A pointer to a CPLEX problem object as returned by CPXcreateprob.
+    numcols: An integer that specifies the number of columns in the constraint matrix, or equivalently, the number of variables in the problem object.
+    numrows: An integer that specifies the number of rows in the constraint matrix, not including the objective function or bounds on the variables.
+    objsen: An integer that specifies whether the problem is a minimization or maximization problem.
+      objsen  = 1 : (CPX_MIN) minimize
+      objsen = -1 : (CPX_MAX) maximize
+    objective: An array of length at least numcols containing the objective function coefficients.
+    rhs: An array of length at least numrows containing the righthand side value for each constraint in the constraint matrix.
+    sense: An array of length at least numrows containing the sense of each constraint in the constraint matrix.
+      sense[i] = 'L' : <= constraint
+      sense[i] = 'E' : = constraint
+      sense[i] = 'G' : >= constraint
+      sense[i] = 'R' : ranged constrain
+    matbeg: An array that with matval, matcnt, and matind defines the constraint matrix.
+    matcnt: An array that with matbeg, matval, and matind defines the constraint matrix.
+    matind: An array that with matbeg, matcnt, and matval defines the constraint matrix.
+    matval: An array that with matbeg, matcnt, and matind defines the constraint matrix. CPLEX needs to know only the nonzero coefficients.
+            These are grouped by column in the array matval. The nonzero elements of every column must be stored in sequential locations in
+            this array with matbeg[j] containing the index of the beginning of column j and matcnt[j] containing the number of entries in column j.
+            The components of matbeg must be in ascending order. For each k, matind[k] specifies the row number of the corresponding coefficient, matval[k].
+    lb: An array of length at least numcols containing the lower bound on each of the variables. Any lower bound that is set to a value less than
+        or equal to that of the constant -CPX_INFBOUND is treated as negative infinity. CPX_INFBOUND is defined in the header file cplex.h.
+    ub: An array of length at least numcols containing the upper bound on each of the variables. Any upper bound that is set to a value greater than
+        or equal to that of the constant CPX_INFBOUND is treated as infinity. CPX_INFBOUND is defined in the header file cplex.h.
+    rngval: An array of length at least numrows containing the range value of each ranged constraint. Ranged rows are those designated by 'R' in the sense array.
+            If the row is not ranged, the rngval array entry is ignored. If rngval[i] > 0, then row i activity is in [rhs[i],rhs[i]+rngval[i]], and if
+            rngval[i] <= 0,then row i activity is in [rhs[i]+rngval[i],rhs[i]]. This argument may be NULL.
+
+status = CPXcopyquad(CPXCENVptr env, CPXLPptr lp, const int * qmatbeg, const int * qmatcnt, const int * qmatind, const double * qmatval)
+  The routine CPXcopyquad is used to copy a quadratic objective matrix Q when Q is not diagonal. The arguments qmatbeg, qmatcnt, qmatind, and qmatval
+  are used to specify the nonzero coefficients of the matrix Q. The meaning of these vectors is identical to the meaning of the corresponding vectors
+  matbeg, matcnt, matind and matval, which are used to specify the structure of A in a call to CPXcopylp.
+  Q must be symmetric when copied by this function. Therefore, if the quadratic coefficient in algebraic form is 2x1x2, then x2 should be in the list
+  for x1, and x1 should be in the list for x2, and the coefficient would be 1.0 in each of those entries. See the corresponding example C program to
+  review how the symmetry requirement is implemented.
+
+  Arguments:
+    env: A pointer to the CPLEX environment as returned by CPXopenCPLEX.
+    lp: A pointer to a CPLEX problem object as returned by CPXcreateprob.
+    qmatbeg: An array that with qmatcnt, qmatind, and qmatval defines the quadratic coefficient matrix.
+    qmatcnt: An array that with qmatbeg, qmatind, and qmatval defines the quadratic coefficient matrix.
+    qmatind: An array that with qmatbeg, qmatcnt, and qmatval defines the quadratic coefficient matrix.
+    qmatval: An array that with qmatbeg, qmatcnt, and qmatind defines the quadratic coefficient matrix. The arrays qmatbeg and qmatcnt should be of length
+            at least CPXgetnumcols(env,lp). The arrays qmatind and qmatval should be of length at least qmatbeg[numcols-1]+qmatcnt[numcols-1]. CPLEX requires
+            only the nonzero coefficients grouped by column in the array qmatval. The nonzero elements of every column must be stored in sequential locations
+            in this array with qmatbeg[j] containing the index of the beginning of column j and qmatcnt[j] containing the number of entries in column j. Note
+            that the components of qmatbeg must be in ascending order. For each k, qmatind[k] indicates the column number of the corresponding coefficient,
+            qmatval[k]. These arrays are accessed as explained above.
+
+status = CPXaddqconstr(CPXCENVptr env, CPXLPptr lp, int linnzcnt, int quadnzcnt, double rhs, int sense, const int * linind, const double * linval, const int * quadrow,
+                        const int * quadcol, const double * quadval, const char * lname_str)
+  The routine CPXaddqconstr adds a quadratic constraint to a specified CPLEX problem object. This routine may be called any time after a call to CPXcreateprob.
+
+  Arguments:
+    env: A pointer to the CPLEX environment as returned by CPXopenCPLEX.
+    lp: A pointer to a CPLEX problem object as returned by CPXcreateprob.
+    linnzcnt: An integer that indicates the number of nonzero constraint coefficients in the linear part of the constraint.
+              This specifies the length of the arrays linind and linval.
+    quadnzcnt: An integer that indicates the number of nonzero constraint coefficients in the quadratic part of the constraint. This specifies the length of
+              the arrays quadrow, quadcol and quadval.
+    rhs: The righthand side term for the constraint to be added.
+    sense: The sense of the constraint to be added. Note that quadratic constraints may only be less-than-or-equal-to or greater-than-or-equal-to constraints.
+          See the discussion of QCP in the CPLEX User's Manual.
+    linind: An array that with linval defines the linear part of the quadratic constraint to be added.
+    linval: An array that with linind defines the linear part of the constraint to be added. The nonzero coefficients of the linear terms must be stored in sequential
+          locations in the arrays linind and linval from positions 0 to linnzcnt-1. Each entry, linind[i], indicates the variable index of the corresponding coefficient,
+          linval[i]. May be NULL; then the constraint will have no linear terms.
+    quadrow: An array that with quadcol and quadval defines the quadratic part of the quadratic constraint to be added.
+    quadcol: An array that with quadrow and quadval defines the quadratic part of the quadratic constraint to be added.
+    quadval: An array that with quadrow and quadcol define the quadratic part of the constraint to be added. The nonzero coefficients of the quadratic terms
+          must be stored in sequential locations in the arrays quadrow, quadcol and quadval from positions 0 to quadnzcnt-1. Each pair, quadrow[i], quadcol[i], indicates
+          the variable indices of the quadratic term, and quadval[i] the corresponding coefficient.
+    lname_str: The name of the constraint to be added. May be NULL, in which case the new constraint is assigned a default name if the quadratic constraints already
+          resident in the CPLEX problem object have names; otherwise, no name is associated with the constraint.
+
+status = CPXsolution(CPXCENVptr env, CPXCLPptr lp, int * lpstat_p, double * objval_p, double * x, double * pi, double * slack, double * dj)
+  The routine CPXsolution accesses the solution values produced by all the optimization routines except the routine CPXNETprimopt.
+  The solution is maintained until the CPLEX problem object is freed via a call to CPXfreeprob or the solution is rendered invalid
+  because of a call to one of the problem modification routines.
+  The arguments to CPXsolution are pointers to locations where data are to be written. Such data can include the status of the optimization,
+  the value of the objective function, the values of the primal variables, the dual variables, the slacks and the reduced costs. All of that
+  data exists after a successful call to one of the LP or QP optimizers. However, dual variables and reduced costs are not available after a
+  successful call of the QCP or MIP optimizers. If any part of the solution represented by an argument to CPXsolution is not required, that
+  argument can be passed with the value NULL in a call to CPXsolution. If only one part is required, it may be more convenient to use the
+  CPLEX routine that accesses that part of the solution individually: CPXgetstat, CPXgetobjval, CPXgetx, CPXgetpi, CPXgetslack, or CPXgetdj.
+  For barrier, the solution values for x, pi, slack, and dj correspond to the last iterate of the primal-dual algorithm, independent of solution
+  status.
+  If optimization stopped with an infeasible solution, take care to interpret the meaning of the values in the returned arrays as described in
+  the Parameters section.
+
+  Arguments:
+    env: A pointer to the CPLEX environment as returned by CPXopenCPLEX.
+    lp: A pointer to a CPLEX problem object as returned by CPXcreateprob.
+    lpstat_p: A pointer to an integer specifying the result of the optimization. The specific values which *lpstat_p can take and their
+      meanings are the same as the return values documented for CPXgetstat and are found in the group optim.cplex.statuscodes of this reference
+      manual.
+    objval_p: A pointer to a double precision variable where the objective function value is to be stored.
+    x: An array to receive the values of the variables for the problem. The length of the array must be at least as great as the number of
+      columns in the problem object. If the solution was computed using the dual simplex optimizer, and the solution is not feasible, x values
+      are calculated relative to the phase I RHS used by CPXdualopt.
+    pi: An array to receive the values of the dual variables for each of the constraints. The length of the array must be at least as great
+      as the number of rows in the problem object. If the solution was computed using the primal simplex optimizer, and the solution is not
+      feasible, pi values are calculated relative to the phase I objective (the infeasibility function).
+    slack: An array to receive the values of the slack or surplus variables for each of the constraints. The length of the array must be at
+      least as great as the number of rows in the problem object. If the solution was computed by the dual simplex optimizer, and the solution is
+      not feasible, slack values are calculated relative to the phase I RHS used by CPXdualopt.
+    dj: An array to receive the values of the reduced costs for each of the variables. The length of the array must be at least as great as
+      the number of columns in the problem object. If the solution was computed by the primal simplex optimizer, and the solution is not
+      feasible, dj values are calculated relative to the phase I objective (the infeasibility function).

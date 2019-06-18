@@ -1,0 +1,6 @@
+package cheetahlcm;
+
+struct user_debug_t
+{
+	double value[100];
+}

@@ -1,0 +1,22 @@
+package wincontrollerlcm;
+
+struct windows_controller_data_t
+{
+	double enable;
+	double emergency_damp;
+
+	double p_des[3];
+	double v_des[3];
+
+	double rpy_des[3];
+	double omega_des[3];
+
+	double p_des_slew_min[3];
+	double p_des_slew_max[3];
+	double rpy_des_slew_max[3];
+	double v_des_slew_min[3];
+	double v_des_slew_max[3];
+	double omegab_des_slew_max[3];
+
+	double bonus_knee_torque;
+}

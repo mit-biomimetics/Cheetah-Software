@@ -1,0 +1,24 @@
+%   The matlab subdirectory contains examples and help files.
+    
+%   To compile DSDP:
+
+1.  Edit 'make.include' to define the DSDPROOT variable.  Set it
+    equal to the location of the DSDP5.x directory (usually here).
+    Additional variables, such as compiler flags and the location
+    of a BLAS and LAPACK libraries, may also have to be modified.
+
+2.  Compile the solver and examples.  Test them.
+    > make all;
+
+3.  (Optional) Test Matlab function if it compiled from within Matlab.
+    Go the matlab directory and type:
+    > check;
+    Compare the output to the file check.out
+
+Further HTML (Doxygen) documentation of the C language API for DSDP 
+can be found by unzipping the file docs/DSDP5-api-html.zip.
+
+Please notify the authors of DSDP of your experiences with it.  Your
+feedback helps us promote our research and futher improve 
+the package.
+

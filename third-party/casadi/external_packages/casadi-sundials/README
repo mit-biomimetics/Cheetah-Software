@@ -1,0 +1,57 @@
+                            SUNDIALS 
+    SUite of Nonlinear and DIfferential/ALgebraic equation Solvers
+                   Release 2.5.0, March 2012
+            Alan Hindmarsh, Radu Serban, Carol Woodward
+           Center for Applied Scientific Computing, LLNL
+
+
+The family of solvers referred to as SUNDIALS consists of the following solvers:
+ CVODE  - for integration of ordinary differential equation systems (ODEs)
+          CVODE treats stiff and nonstiff ODE systems of the form
+          y' = f(t,y), y(t0) = y0
+ CVODES - for integration and sensitivity analysis of ODEs
+          CVODES treats stiff and nonstiff ODE systems of the form
+          y' = f(t,y,p), y(t0) = y0(p)
+ IDA    - for integration of differential-algebraic equation systems (DAEs)
+          IDA treats DAE systems of the form
+          F(t,y,y') = 0, y(t0) = y0, y'(t0) = y0'
+ IDAS   - for integration and sensitivity analysis of DAEs
+          IDAS treats DAE systems of the form
+          F(t,y,y',p) = 0, y(t0) = y0(p), y'(t0) = y0'(p)
+ KINSOL - for solution of nonlinear algebraic systems
+          KINSOL treats nonlinear systems of the form
+          F(u) = 0
+
+The various solvers of this family share many subordinate modules.
+For this reason, it is organized as a family, with a directory structure 
+that exploits that sharing. Each individual solver includes documentation 
+on installation, along with full usage documentation.
+
+Warning to users who receive more than one of these individual solvers
+at different times: The mixing of old and new versions SUNDIALS may fail.  
+To avoid such failures, obtain all desired solvers at the same time.
+
+For installation directions see the file INSTALL_NOTES.
+
+For additional information on a particular solver, see the README file
+in the solver directory (e.g. src/cvode/README).
+
+
+Release history
+
++----------+-----------------------------------------------------------------+
+|          | SUNDIALS |                        Solver version                |
+|   Date   |          +----------+----------+----------+---------------------+
+|          | release  |   CVODE  | CVODES   |   IDA    |   IDAS   |  KINSOL  |
++----------+----------+----------+----------+----------+---------------------+
+| Jul 2002 |   1.0    |    2.0   |    1.0   |    2.0   |          |    2.0   |
+| Dec 2004 |   2.0    |  2.2.0   |  2.1.0   |  2.2.0   |          |  2.2.0   |
+| Jan 2005 |   2.0.1  |  2.2.1   |  2.1.1   |  2.2.1   |          |  2.2.1   |
+| Mar 2005 |   2.0.2  |  2.2.2   |  2.1.2   |  2.2.2   |          |  2.2.2   |
+| Apr 2005 |   2.1.0  |  2.3.0   |  2.2.0   |  2.3.0   |          |  2.3.0   |
+| May 2005 |   2.1.1  |  2.3.0   |  2.3.0   |  2.3.0   |          |  2.3.0   |
+| Mar 2006 |   2.2.0  |  2.4.0   |  2.4.0   |  2.4.0   |          |  2.4.0   |
+| Nov 2006 |   2.3.0  |  2.5.0   |  2.5.0   |  2.5.0   |          |  2.5.0   |
+| May 2009 |   2.4.0  |  2.6.0   |  2.6.0   |  2.6.0   |  1.0.0   |  2.6.0   |
+| Mar 2012 |   2.5.0  |  2.7.0   |  2.7.0   |  2.7.0   |  1.1.0   |  2.7.0   |
++----------+----------+----------+----------+----------+---------------------+

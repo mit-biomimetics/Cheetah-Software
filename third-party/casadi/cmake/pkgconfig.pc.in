@@ -1,0 +1,12 @@
+prefix=@CMAKE_INSTALL_PREFIX@
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: @PC_NAME@
+Description: @PACKAGE_DESCRIPTION@ ( module @PC_NAME@ )
+URL: @PACKAGE_URL@
+Version: @PACKAGE_VERSION_PKGCONFIG@
+Requires: @PC_REQUIRES@
+Libs: -L${libdir} @PC_LIBRARIES_LIST@
+Cflags: -I${includedir}

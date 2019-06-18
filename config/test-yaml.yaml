@@ -1,0 +1,8 @@
+category-1:
+  parameter-1: 12.
+  parameter-2: [1.,2.,3.]
+
+category-2:
+  parameter-1: 23.
+  parameter-2: [2., 3.]
+

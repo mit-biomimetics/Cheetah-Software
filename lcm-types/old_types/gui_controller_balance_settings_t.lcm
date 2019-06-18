@@ -1,0 +1,41 @@
+package interfacelcm;
+
+struct gui_controller_balance_settings_t
+{
+	// Settings
+	double balance_scale;
+	double mass;           		// 42
+	double bonus_damping;		// 30
+	double min_force;		// 25
+	double max_force; 		// 500
+	double mu;			// 0.5
+	double force_ramp_percent;	// 0.1
+	double com_recenter_flag;	// 0
+	double trot_stance_time;	// 1.0
+
+	// STANCE params
+	double KpBase_stance[3];	// 100
+	double KdBase_stance[3];	// 10
+	double KpCOM_stance[3];		// 100
+	double KdCOM_stance[3];		// 10
+	double Base_weights_stance[3];	// 1
+	double COM_weights_stance[3];	// 1
+
+	double Force_regularization_stance;	// 0.1
+	
+	// SWING params
+	double KpBase_swing[3];		// 100
+	double KdBase_swing[3];		// 10
+	double KpCOM_swing[3];		// 100
+	double KdCOM_swing[3];		// 10
+	
+	double Base_weights_swing[3];	// 1
+	double COM_weights_swing[3];	// 1
+	
+	double Force_regularization_swing;	// 0.1
+
+	// Extensions
+	double control_value[30];
+	double com_recenter_gain; 		// 0.3
+	double com_recenter_cutoff_speed; 	// 1.0
+}

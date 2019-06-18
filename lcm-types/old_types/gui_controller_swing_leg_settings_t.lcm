@@ -1,0 +1,15 @@
+package interfacelcm;
+
+struct gui_controller_swing_leg_settings_t
+{
+      double kpSwingLeg[3];		// 1000
+      double kdSwingLeg[3];		// 2*sqrt(1000)
+      double xDesSwing;			// 0.0
+      double yDesSwing;			// 0.05
+      double zDesSwing;			// 0.2
+      double legUnloadState;		// 14
+      double swingTime;			// 0.25
+      double capture_pt_gain;		// 1
+      double kpSwingLeg_ff[3];		// 100
+      double kdSwingLeg_ff[3];		// 20
+}

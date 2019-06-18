@@ -1,0 +1,7 @@
+package cheetahlcm;
+
+struct error_t
+{
+    int64_t ecat_dropped_packet;
+    int64_t bad_imu_packet;
+}

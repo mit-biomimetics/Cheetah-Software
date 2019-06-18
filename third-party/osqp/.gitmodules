@@ -1,0 +1,3 @@
+[submodule "lin_sys/direct/qdldl/qdldl_sources"]
+	path = lin_sys/direct/qdldl/qdldl_sources
+	url = https://github.com/oxfordcontrol/qdldl.git

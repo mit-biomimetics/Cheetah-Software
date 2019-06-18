@@ -1,0 +1,455 @@
+                             KINSOL
+                   Release 2.8.1, arch 30, 2015
+     Aaron Collier, Alan C. Hindmarsh, Radu Serban, and Carol S. Woodward
+             Center for Applied Scientific Computing, LLNL
+
+KINSOL is a solver for nonlinear algebraic systems which can be
+described as F(u) = 0.  It is written in the C language and based
+on the previous Fortran package NKSOL [4], written by Peter Brown and
+Youcef Saad.  Nonlinear solver methods available include Newton-Krylov,
+Picard, and fixed point.  Both Picard and fixed point can be accelerated
+with Anderson acceleration.
+
+KINSOL can be used both on serial and parallel computers.
+The difference is only in the NVECTOR module of vector functions.
+The desired version is obtained when compiling the example files
+by linking with the appropriate library of NVECTOR functions.  In the
+parallel versions, communication between processes is done  
+with MPI, with OpenMP, or with Pthreads.
+
+When used with the serial NVECTOR module, KINSOL provides both direct (dense 
+and band) and preconditioned Krylov (iterative) linear solvers. Four different
+iterative solvers are available: scaled preconditioned GMRES (SPGMR), scaled 
+preconditioned BiCGStab (SPBCG), scaled preconditioned TFQMR (SPTFQMR), and
+scaled preconditioned Flexible GMRES (SPFGMR). 
+When used with the parallel NVECTOR module, KINSOL provides a
+preconditioner module called KINBBDPRE, which provides a
+band-block-diagonal preconditioner for use with the Krylov linear
+solvers. However, within KINSOL any NVECTOR module may be combined
+with an appropriate user-supplied preconditioning module for
+acceleration of the Krylov solvers.
+
+KINSOL is part of a software family called SUNDIALS: SUite of Nonlinear
+and DIfferential/ALgebraic equation Solvers.  This suite consists of
+CVODE, CVODES, ARKode, KINSOL, IDA, and IDAS.  The directory
+structure of the package supplied reflects this family relationship.
+
+For use with Fortran applications, a set of Fortran/C interface routines,
+called FKINSOL, is also supplied.  These are written in C, but assume that
+the user calling program and all user-supplied routines are in Fortran.
+
+The notes below provide the location of documentation, directions for the 
+installation of the KINSOL package, and relevant references. Following that 
+is a brief history of revisions to the package.
+
+
+A. Documentation
+----------------
+
+/sundials/doc/kinsol/ contains PDF files for the KINSOL User Guide [1] (kin_guide.pdf)
+and the KINSOL Examples [2] (kin_examples.pdf) documents.
+
+
+B. Installation
+---------------
+
+For basic installation instructions see the file /sundials/INSTALL_GUIDE.pdf. 
+For complete installation instructions see the "Installation Procedure"
+chapter in the KINSOL User Guide [1].
+
+
+C. References
+-------------
+
+[1] A. M. Collier, A. C. Hindmarsh, R. Serban, and C. S. Woodward,
+    "User Documentation for KINSOL v2.8.1," LLNL technical report
+    UCRL-SM-208116, March 2015.
+
+[2] A. M. Collier and R. Serban, "Example Programs for KINSOL v2.8.1,"
+    LLNL technical report UCRL-SM-208114, March 2015.
+
+[3] A. C. Hindmarsh, P. N. Brown, K. E. Grant, S. L. Lee, R. Serban, 
+    D. E. Shumaker, and C. S. Woodward, "SUNDIALS, Suite of Nonlinear and 
+    Differential/Algebraic Equation Solvers," ACM Trans. Math. Softw., 
+    31(3), pp. 363-396, 2005.
+
+[4] Peter N. Brown and Youcef Saad, "Hybrid Krylov Methods for
+    Nonlinear Systems of Equations," SIAM J. Sci. Stat. Comput., 
+    Vol 11, no 3, pp. 450-481, May 1990.  
+
+[5] A. G. Taylor and A. C. Hindmarsh, "User Documentation for KINSOL,
+    A Nonlinear Solver for Sequential and Parallel Computers," LLNL
+    technical report UCRL-ID-131185, July 1998.
+
+
+D. Releases
+-----------
+
+v. 2.8.1   - Mar. 2015
+v. 2.8.0   - Mar. 2015
+v. 2.7.0   - Mar. 2012
+v. 2.6.0   - May  2009
+v. 2.5.0   - Nov. 2006
+v. 2.4.0   - Mar. 2006
+v. 2.3.0   - Apr. 2005
+v. 2.2.2   - Mar. 2005
+v. 2.2.1   - Jan. 2005
+v. 2.2.0   - Dec. 2004
+v. 2.0     - Jul. 2002 (first SUNDIALS release)
+v. 1.0     - Aug. 1998 (date written)
+
+
+E. Revision History
+-------------------
+
+v. 2.8.0 (Mar. 2015) ---> v. 2.8.1 (Mar. 2015)
+---------------------------------------------
+
+- Bug fixes
+  - Fixed loop limit bug in SlsAddMat function.
+  - In interfaces to KLU and SuperLUMT, added #include lines, 
+    and removed redundant KLU structure allocations.
+  - Minor documentation updates
+ 
+v. 2.7.0 (Mar. 2012) ---> v. 2.8.0 (Mar. 2015)
+---------------------------------------------
+
+- New features
+   - Two major additions were made to the globalization strategy options
+     (KINSol argument strategy).  One is fixed-point iteration,
+     and the other is Picard iteration.  Both can be accelerated by use
+     of the Anderson acceleration method.
+   - Three major additions were made to the linear system solvers that are
+     availble for use with the KINSOL solver.  If using the supplied serial
+     NVECTOR module, interfaces to the KLU sparse direct solver and to the
+     SuperLU_MT solver (the multi-threaded version of SuperLU) were added.
+     As part of these additions, a sparse matrix (CSC format) structure 
+     was added to KINSOL.  Finally, a variation of GMRES called Flexible GMRES
+     was added.
+   - Two new NVECTOR modules have been added for parallel computing
+     environments --- one for openMP, denoted NVECTOR_OPENMP,
+     and one for Pthreads, denoted NVECTOR_PTHREADS.
+
+- Bug fixes
+   - In function KINStop, two return values were corrected to make the values
+     of uu and fval consistent.
+   - A bug involving initialization of mxnewtstep was fixed.  
+     The error affects the case of repeated user calls to KINSol with no
+     intervening call to KINSetMaxNewtonStep.
+   - A bug in the increments for difference quotient Jacobian approximations
+     was fixed in function kinDlsBandDQJac.
+   - In KINLapackBand, the line smu = MIN(N-1,mu+ml) was changed to
+     smu = mu + ml to correct an illegal input error for DGBTRF/DGBTRS.
+   - In the FKINSOL module, an incorrect return value ier in FKINfunc
+     was fixed.
+
+- Changes to user interface
+   - In the FKINSOL optional input routines FKINSETIIN, FKINSETRIN, and
+     FKINSETVIN, the optional fourth argument key_length was removed,
+     with hardcoded key string lengths passed to all strncmp tests.
+
+- Other
+   - In order to avoid possible name conflicts, the mathematical macro and
+     function names MIN, MAX, SQR, RAbs, RSqrt, RExp, RPowerI, and RPowerR
+     were changed to SUNMIN, SUNMAX, SUNSQR, SUNRabs, SUNRsqrt, SUNRexp,
+     SRpowerI, and SUNRpowerR, respectively.  These names occur in both the
+     solver and in various example programs.
+
+v. 2.6.0 (May 2009) ---> v. 2.7.0 (Mar. 2012)
+---------------------------------------------
+
+- Bug fixes
+   - Three major logic bugs were fixed -- involving updating the solution
+     vector, updating the linesearch parameter, and a missing error return.
+   - Three minor errors were fixed -- involving setting etachoice in the
+     Matlab/KINSOL interface, a missing error case in KINPrintInfo,
+     and avoiding an exponential overflow in the evaluation of omega.
+   - In each linear solver interface function, the linear solver memory is
+     freed on an error return, and the **Free function now includes a
+     line setting to NULL the main memory pointer to the linear solver memory.
+
+- Changes to user interface
+   - One significant design change was made with this release: The problem
+     size and its relatives, bandwidth parameters, related internal indices,
+     pivot arrays, and the optional output lsflag, have all been
+     changed from type int to type long int, except for the
+     problem size and bandwidths in user calls to routines specifying
+     BLAS/LAPACK routines for the dense/band linear solvers.  The function
+     NewIntArray is replaced by a pair NewIntArray/NewLintArray,
+     for int and long int arrays, respectively.
+   - in the installation files, we modified the treatment of the macro
+     SUNDIALS_USE_GENERIC_MATH, so that the parameter GENERIC_MATH_LIB
+     is either defined (with no value) or not defined.
+
+
+v. 2.5.0 (Nov. 2006) ---> v. 2.6.0 (May 2009)
+---------------------------------------------
+
+- New features
+   - added a new linear solver module based on Blas + Lapack for
+     both dense and banded matrices.
+
+- Bug fixes
+   - added logic to ensure omega is updated every iteration.
+   - fixed difference-quotient Jacobian memory reset bug.
+
+- Changes to user interface
+   - renamed all **Malloc functions to **Init
+   - all user-supplied functions now receive the same pointer to user data
+     (instead of having different ones for the system evaluation, Jacobian
+     information functions, etc.
+   - common functionality for all direct linear solvers (dense, band, and
+     the new Lapack solver) has been collected into the DLS (Direct Linear
+     Solver) module, similar to the SPILS module for the iterative linear 
+     solvers. All optional input and output functions for these linear 
+     solver now have the prefix 'KINDls'. In addition, in order to include
+     the new Lapack-based linear solver, all dimensions for these linear
+     solvers (problem sizes, bandwidths, etc) are now of type 'int' 
+     (instead of 'long int').
+   - the initialization function for the preconditioner module KINBBDPRE
+     was renamed KINBBDInit (from KINBBDAlloc) and it does not return
+     a pointer to preconditioner memory anymore. Instead, all preconditioner
+     module-related functions are now called with the main solver memory 
+     pointer as their first argument. When using the KINBBDPRE module,
+     there is no need to use special functions to attach one of the SPILS
+     linear solvers (instead use one of KINSpgmr, KINSpbcg, or KINSptfqmr).
+     Moreover, there is no need to call a memory deallocation function for
+     the preconditioner module.
+   - changes corresponding to the above were made to the FCMIX interface.
+
+v. 2.4.0 (Mar. 2006) ---> v. 2.5.0 (Oct. 2006)
+----------------------------------------------
+
+- Changes related to the build system
+   - reorganized source tree: header files in ${srcdir}/include/kinsol,
+     source files in ${srcdir}/src/kinsol, fcmix source files in
+     ${srcdir}/src/kinsol/fcmix, examples in ${srcdir}/examples/kinsol
+   - exported header files are installed unde ${includedir}/kinsol
+
+- Changes to user interface
+   - all included header files use relative paths from ${includedir}
+
+v. 2.3.0 (Apr. 2005) ---> v. 2.4.0 (Mar. 2006)
+----------------------------------------------
+
+- New features
+   - added direct linear solvers (dense and band, provided
+     through the KINDENSE and KINBAND modules, respectively) thus adding
+     modified (and exact) Newton methods to KINSOL.
+   - added KINSPBCG interface module to allow KINSOL to interface with the
+     shared SPBCG (scaled preconditioned Bi-CGSTAB) linear solver module.
+   - added KINSPTFQMR interface module to allow KINSOL to interface with
+     the shared SPTFQMR (scaled preconditioned TFQMR) linear solver module
+   - added support for SPBCG and SPTFQMR to the KINBBDPRE preconditioner module.
+   - added option to KINBBDPRE preconditioner module to allow specification
+     of different half-bandwidths for difference quotient approximation and
+     retained matrix.
+   - added support for interpreting failures in user-supplied functions.
+
+- Bug fixes
+   - corrected a bug in the preconditioner logic that caused the initial call
+     to the preconditioner setup routine (controlled by KINSetNoInitSetup) to
+     be skipped during subsequent calls to KINSol
+
+- Changes to underlying algorithms
+   - modified the KINBBDPRE preconditioner module to allow the use of
+     different half-bandwidths for the difference quotient approximation
+     and the retained matrix.
+   - added nonlinear residual monitoring scheme to control Jacobian updating
+     when a direct linear solver is used (modified Newton iteration)
+
+- Changes to user interface
+   - changed argument of KINFree and KINBBDPrecFree to be the address of 
+     the respective memory block pointer, so that its NULL value is 
+     propagated back to the calling function.
+   - modified the argument list of KINBBDPrecAlloc to allow specification
+     of the upper and lower half-bandwidths to be used in the computation
+     of the local Jacobian blocks (mudq, mldq), and the half-bandwidths
+     of the retained banded approximation to the local Jacobian block
+     (mukeep, mlkeep).
+   - added KINSPBCG module which defines appropriate KINSpbcg* functions to
+     allow KINSOL to interface with the shared SPBCG linear solver module.
+   - added KINBBDSpbcg function to KINBBDPRE module to support SPBCG linear
+     solver module.
+   - changed function type names (not the actual definitions) to accomodate
+     all the Scaled Preconditioned Iterative Linear Solvers now available:
+       KINSpgmrJactimesVecFn -> KINSpilsJacTimesVecFn
+       KINSpgmrPrecSetupFn   -> KINSpilsPrecSetupFn
+       KINSpgmrPrecSolveFn   -> KINSpilsPrecSolveFn 
+   - changed function types so that all user-supplied functions return
+     an integer flag (not all of them currently used).
+   - changed some names for KINBBDPRE function outputs
+   - added option for user-supplied error handler function.
+   - added option for user-supplied info handler function.
+   - renamed all exported header files (except for kinsol.h, all header files
+     have the prefix 'kinsol_')
+   - changed naming scheme for KINSOL examples
+
+- Changes to the FKINSOL module
+   - modified argument list of FKINBBDINIT to accomadate changes made
+     to KINBBDPRE module, so now user must specify the upper and lower
+     half-bandwidths for the difference quotient approximation (mudq, mldq)
+     and the retained matrix (mukeep, mlkeep).
+   - added support for KINSPBCG/SPBCG (added FKIN*SPBCG* functions).
+   - added support for KINSPTFQMR/SPTFQMR (added FKIN*SPTFQMR* functions).
+   - added support for KINDENSE/DENSE (added FKIN*DENSE* functions).
+   - added support for KINBAND/BAND (added FKIN*DENSE* functions).
+   - Optional inputs are now set using routines FKINSETIIN (integer inputs),
+     FKINSETRIN (real inputs), and FKINSETVIN (vector inputs) through pairs 
+     key-value. Optional outputs are still obtained from two arrays (IOUT and 
+     ROUT), owned by the user and passed as arguments to FKINMALLOC.
+
+- Changes related to the build system
+   - updated configure script and Makefiles for Fortran examples to avoid C++
+     compiler errors (now use CC and MPICC to link only if necessary)
+   - the main KINSOL header file (kinsol.h) is still exported to the install include
+     directory. However, all other KINSOL header files are exported into an 'kinsol'
+     subdirectory of the install include directory.
+   - the KINSOL library now contains all shared object files (there is no separate
+     libsundials_shared library anymore)
+
+v. 2.2.2 (Mar. 2005) ---> v. 2.3.0 (Apr. 2005)
+----------------------------------------------
+
+- Changes to user interface
+   - KINSOL now stores an actual copy of the constraints vector rather than
+     just a pointer in order to resolve potential scoping issues
+   - several optional input functions were combined into a single function:
+       - KINSpgmrSetPrecSetupFn, KINSpgmrSetPrecSolveFn and KINSpgmrSetPrecData
+         were combined into KINSpgmrSetPreconditioner
+       - KINSpgmrSetJacTimesVecFn and KINSpgmrSetJacData were combined into
+         KINSpgmrSetJacTimesVecFn
+
+- Changes to FKINSOL module:
+   - FKINSPGMRSETPSET and FKINSPGMRSETPSOL were combined into FKINSPGMRSETPREC
+   - due to changes to the main solver, if FKPSOL is provided, then FKPSET
+     must also be defined, even if it is empty
+
+v. 2.2.1 (Jan. 2005) ---> v. 2.2.2 (Mar. 2005)
+----------------------------------------------
+
+- Bug fixes
+   - fixed bug in computation of the scaled step length
+   - fixed bug in logic for disabling the call to the preconditioner setup function 
+     at the first iteration
+   - modified FCMIX files to avoid C++ compiler errors
+   - changed implicit type conversion to explicit in check_flag() routine in
+     examples to avoid C++ compiler errors
+
+- Changes to documentation
+   - added section with numerical values of all input and output solver constants
+   - added description of --with-mpi-flags option
+
+- Changes related to the build system
+   - fixed autoconf-related bug to allow configuration with the PGI Fortran compiler
+   - modified to use customized detection of the Fortran name mangling scheme 
+     (autoconf's AC_F77_WRAPPERS routine is problematic on some platforms)
+   - added --with-mpi-flags as a configure option to allow user to specify
+     MPI-specific flags
+   - updated Makefiles for Fortran examples to avoid C++ compiler errors (now use
+     CC and MPICC to link)
+
+v. 2.2.0 (Dec. 2004) ---> v. 2.2.1 (Jan. 2005)
+----------------------------------------------
+
+- Changes related to the build system
+   - changed order of compiler directives in header files to avoid compilation
+     errors when using a C++ compiler.
+
+v. 2.0 (Jul. 2002) ---> v. 2.2.0 (Dec. 2004)
+--------------------------------------------
+
+- New feature
+   - added option to disable all error messages.
+
+- Bug fixes
+   - fixed constraints-related bug.
+   - fixed bug in implementation of line-search method related to
+     beta-condition.
+   - corrected value of ealpha variable (related to forcing term).
+
+- Changes related to NVECTOR module
+  (see also the file sundials/shared/README)
+   - removed machEnv, redefined table of vector operations (now contained
+     in the N_Vector structure itself).
+   - all KINSOL functions create new N_Vector variables through cloning,
+     using an N_Vector passed by the user as a template.
+
+- Changes to type names and KINSOL constants
+   - removed type 'integertype'; instead use 'int' or 'long int', as
+     appropriate.
+   - restructured the list of return values from the various KINSOL
+     functions.
+   - changed all KINSOL constants (inputs and return values) to have
+     the prefix 'KIN_' (e.g. KIN_SUCCESS).
+   - renamed function type 'SysFn' to 'KINSysFn'.
+
+- Changes to underlying algorithms
+   - modified line-search backtracking scheme to use cubic interpolation
+     after the first backtrack, if possible.
+   - changed implementation of constraints:
+       if constraints[i] =
+         0  u[i] NOT constrained
+        +1  u[i] >= 0
+        -1  u[i] <= 0
+        +2  u[i] >  0
+        -2  u[i] <  0
+       where u is the solution vector (see the KINSOL User Guide [1] for
+       additional details).
+
+- Changes to optional input/output
+   - added KINSet* and KINGet* functions for optional inputs/outputs,
+     replacing the arrays iopt and ropt.
+   - added new optional inputs (e.g. maximum number of nonlinear iterations
+     between calls to preconditioner setup routine, etc.).
+   - the value of the last return flag from any function within the SPGMR
+     linear solver module can be obtained as an optional output using
+     KINSpgmrGetLastFlag.
+
+- Changes to user-callable functions
+   - added new function KINCreate which initializes the KINSOL solver object
+     and returns a pointer to the KINSOL memory block.
+   - removed N (problem size) from all functions.
+   - shortened argument lists of most KINSOL functions (the arguments that
+     were dropped can now be specified through KINSet* functions).
+   - removed reinitialization functions for SPGMR linear solver (same
+     functionality can be obtained using KINSpgmrSet* functions).
+
+- Changes to user-supplied functions
+   - removed N (problem dimension) from argument lists.
+   - in KINSPGMR, shortened argument lists for user preconditioner functions.
+
+- Changes to the FKINSOL module
+   - revised to use underscore and precision flags at compile time (from
+     configure); example sources are preprocessed accordingly.
+   - use KIN*Set* and KIN*Get* functions from KINSOL (although the optional
+     I/O is still communicated to the user of FKINSOL through arrays IOPT
+     and ROPT).
+   - added new optional inputs and outputs (e.g. last return flag from the
+     linear solver, etc.).
+
+v. 1.0 (Aug. 1998) ---> v. 2.0 (Jul. 2002)
+------------------------------------------
+
+YYYYMMDD
+
+19980802   DATE WRITTEN - KINSOL released.
+19981203   Implemented serial Fortran/C interface (fkinsols.c).
+19990301   Fixed bug in nbktrk.
+19990325   Removed machEnv as an argument to KINSol.
+19991229   Fixed preconditioner evaluation logic;
+           revised SPGMR module to treat scalings correctly.
+20000324   Upgraded serial and parallel versions of NVECTOR module.
+20000706   Fixed bug in use of vtemp1 in KINSpgmrSolve call to KINAtimes etc.
+20000808   Fixed bug in N_VMin routine.
+20010118   Minor corrections, notably:
+           In fkinsol.h, KINUAtimes prototype fixed.  In fkinsols.c and
+           fkinsolp.c, N_Vector's disposed with N_VDISPOSE after KINSol call. 
+           In all fkin*.c, #include lines for header files corrected.
+20011212   Corrected 4 N_VDISPOSE arguments in FKINSOL.
+20011212   Added missing error flag print in KINSol, and changed 5 return
+           values in KINStop to enum-defined expressions.
+20011220   Default type 'integer' changed to 'long int' in llnltyps.h.
+20011221   In FKINSOL, corrected type (integer) for Neq in KINPreco, KINPSol.
+20020313   Modified to work with new NVECTOR abstraction.
+20020627   Modified to reflect type name changes.

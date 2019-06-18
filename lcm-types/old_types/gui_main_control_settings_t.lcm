@@ -1,0 +1,33 @@
+package interfacelcm;
+
+struct gui_main_control_settings_t
+{
+	double mode;
+	double impedance_scale;
+	
+	double enable;
+	double emergency_damp; 
+	
+	double zero_leg[4];
+	
+	double p_des[3];
+	double v_des[3];
+
+	double rpy_des[3];
+	double omega_des[3];
+	
+	double p_des_slew_min[3];
+	double p_des_slew_max[3];
+	double rpy_des_slew_max[3];
+	double v_des_slew_min[3];
+	double v_des_slew_max[3];
+	double omegab_des_slew_max[3];
+
+	double emergency_damp_kd; 
+	double alexa_mode;
+	double rc_configured;
+	double bonus_knee_torque;
+  double variable[3];
+
+	double want_cheater_mode;
+}

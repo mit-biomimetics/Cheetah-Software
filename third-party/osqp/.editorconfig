@@ -1,0 +1,19 @@
+# https://editorconfig.org
+
+root = true
+
+[*.{c, h, cpp, hpp}]
+charset = utf-8
+indent_style = space
+indent_size = 2
+end_of_line = lf
+trim_trailing_whitespace = true
+
+
+# Python
+[*.py]
+indent_size = 4
+
+# Python
+[*.yml]
+indent_size = 2

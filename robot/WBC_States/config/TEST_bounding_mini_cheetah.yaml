@@ -1,0 +1,99 @@
+# Initialization
+
+# Mini
+body_height: 0.25
+
+# Timing Parameters (sec)
+
+bounding_time: 10000.
+#swing_time: 0.22
+#default_stance_time: 0.13
+
+swing_time: 0.18
+default_stance_time: 0.15
+
+leg_height: 0.28
+
+CTRL_move_to_target_height:
+  max_rf_z: 100
+  min_rf_z: 3
+  body_lifting_time: 0.8
+
+CTRL_bounding_initiate:
+CTRL_keep_posture:
+  Kp_joint: [20., 20., 20.]
+  Kd_joint: [2., 2., 2.]
+  target_jpos: [ 
+    -0.1, -0.79, 1.65, 
+    0.1, -0.79, 1.65, 
+    -0.1, -0.79, 1.65,
+    0.1, -0.79, 1.65 ]
+  Kp: [
+    160., 160., 160., 
+    160., 160., 160., 
+    160., 160., 160., 
+    160., 160., 160.]
+  Kd: [3., 3., 3., 
+    3., 3., 3., 
+    3., 3., 3., 
+    3., 3., 3.]
+
+
+
+CTRL_bounding:
+  K_time: 0.6
+  K_pitch: 0.9
+  impact_amp: 1.0
+  front_foot_offset: 0.014
+  hind_foot_offset: -0.04
+  step_width: 0.07
+  swing_height: 0.1
+  front_jump_amp: 3.0
+  hind_jump_amp: 8.5
+  contact_vel_threshold: 2.5
+  total_mass: 9.0
+  step_length_limit: 0.3
+
+
+# WBIC Feedback gain
+Kp_ryrz: [5., 35.]
+Kd_ryrz: [0.5, 0.5]
+
+Kp_roll: 10
+Kd_roll: 0.5
+  
+# Joint Feedback gain
+Kp_joint: [8., 8., 8.]
+Kd_joint: [0.8, 0.8, 0.8]
+
+# Local Head Pos Feedback gain
+Kp_head: [10., 10., 10.]
+Kd_head: [1.0, 1.0, 1.0]
+
+# Local Tail Pos Feedback gain
+Kp_tail: [10., 10., 10.]
+Kd_tail: [1.0, 1.0, 1.0]
+   
+#Kp: [200., 200., 200., 
+  #200., 200., 200., 
+  #200., 200., 200., 
+  #200., 200., 200.]
+
+#Kd: [10., 10., 10., 
+  #10., 10., 10., 
+  #10., 10., 10., 
+  #10., 10., 10.]
+
+Kp: [
+  100., 100., 100., 
+  100., 100., 100., 
+  100., 100., 100., 
+  100., 100., 100.]
+
+Kd: [2., 2., 2., 
+  2., 2., 2., 
+  2., 2., 2., 
+  2., 2., 2.]
+
+save_file: false
+#save_file: true

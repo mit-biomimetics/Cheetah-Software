@@ -1,0 +1,21 @@
+struct simulator_lcmt {
+   double vb[3];
+   double rpy[3];
+
+   int64_t timesteps;
+   double  time;
+   double quat[4];
+   double R[3][3];
+   double omegab[3];
+   double omega[3];
+   double p[3];
+   double v[3];
+   double vbd[3];
+   double q[4][3];
+   double qd[4][3];
+   double qdd[4][3];
+   double tau[4][3];
+   double f_foot[4][3];
+   double p_foot[4][3];
+
+}

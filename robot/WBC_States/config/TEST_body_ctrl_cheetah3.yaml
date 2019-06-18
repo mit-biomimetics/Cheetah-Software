@@ -1,0 +1,33 @@
+# Initialization
+
+# Cheetah 3
+body_height: 0.4
+CTRL_move_to_target_height:
+    max_rf_z: 250
+    min_rf_z: 3
+    body_lifting_time: 1.0
+
+
+
+# Timing Parameters (sec)
+
+stance_time: 10000.
+
+CTRL_stance:
+
+Kp: [ 100, 100, 100, 
+      100, 100, 100, 
+      100, 100, 100, 
+      100, 100, 100 ]
+
+Kd: [ 5., 5., 5., 
+      5., 5., 5., 
+      5., 5., 5., 
+      5., 5., 5. ]
+
+Kp_joint: [5.0, 5.0, 5.0]
+Kd_joint: [0.5, 0.5, 0.5]
+
+
+save_file: false
+#save_file: true

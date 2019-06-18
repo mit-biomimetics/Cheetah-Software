@@ -1,0 +1,5 @@
+Checks: "*,modernize-use-nullptr,misc-unused-parameters,readability-inconsistent-declaration-parameter-name,google-readability-casting,-readability-else-after-return,-modernize-pass-by-value,-modernize-use-default,-readability-implicit-bool-cast,-cert-err60-cpp,-cppcoreguidelines-pro-bounds-array-to-pointer-decay,-cppcoreguidelines-pro-bounds-pointer-arithmetic,-cppcoreguidelines-pro-type-vararg,-cert-dcl50-cpp,-cppcoreguidelines-pro-type-vararg,-llvm-include-order,-google-build-using-namespace,-cert-err58-cpp"
+
+CheckOptions:
+  - key:             readability-braces-around-statements.ShortStatementLines
+    value:           '2'
