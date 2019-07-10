@@ -10,9 +10,12 @@ set(CMAKE_AUTOMOC ON)
 # Create code from a list of Qt designer ui files
 set(CMAKE_AUTOUIC ON)
 
-set(Qt5Core_DIR /Qt/5.10.0/gcc_64/lib/cmake/Qt5Core)
-find_package(Qt5Widgets CONFIG REQUIRED)
+set(Qt5Core_DIR ~/Qt/5.10.0/gcc_64/lib/cmake/Qt5Core)
+set(Qt5Widgets_DIR ~/Qt/5.10.0/gcc_64/lib/cmake/Qt5Widgets)
+set(Qt5Gamepad_DIR ~/Qt/5.10.0/gcc_64/lib/cmake/Qt5Gamepad)
+
 find_package(Qt5Core CONFIG REQUIRED)
+find_package(Qt5Widgets CONFIG REQUIRED)
 get_target_property(QtCore_location Qt5::Core LOCATION)
 message(STATUS ${QtCore_location})
 find_package(Qt5Gui CONFIG REQUIRED)

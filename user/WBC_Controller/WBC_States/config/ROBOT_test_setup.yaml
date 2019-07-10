@@ -1,0 +1,4 @@
+test_name: "wbic_trot" # Cheater mode must be off
+#test_name: "back_flip"
+#test_name: "bounding" 
+#test_name: "body_ctrl"

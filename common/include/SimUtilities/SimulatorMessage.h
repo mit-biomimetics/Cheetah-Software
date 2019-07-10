@@ -1,40 +1,41 @@
 /*! @file SimulatorMessage.h
  *  @brief Messages sent to/from the development simulator
  *
- *  These messsages contain all data that is exchanged between the robot program and the simulator
- *  using shared memory.   This is basically everything except for debugging logs, which are handled by LCM instead
+ *  These messsages contain all data that is exchanged between the robot program
+ * and the simulator using shared memory.   This is basically everything except
+ * for debugging logs, which are handled by LCM instead
  */
 
 #ifndef PROJECT_SIMULATORTOROBOTMESSAGE_H
 #define PROJECT_SIMULATORTOROBOTMESSAGE_H
 
-#include "Utilities/SharedMemory.h"
+#include "ControlParameters/ControlParameterInterface.h"
 #include "SimUtilities/GamepadCommand.h"
-#include "SimUtilities/VisualizationData.h"
 #include "SimUtilities/IMUTypes.h"
 #include "SimUtilities/SpineBoard.h"
+#include "SimUtilities/VisualizationData.h"
 #include "SimUtilities/ti_boardcontrol.h"
-#include "ControlParameters/ControlParameterInterface.h"
+#include "Utilities/SharedMemory.h"
 
 /*!
  * The mode for the simulator
  */
 enum class SimulatorMode {
-  RUN_CONTROL_PARAMETERS,      // don't run the robot controller, just process Control Parameters
-  RUN_CONTROLLER,  // run the robot controller
-  DO_NOTHING,      // just to check connection
-  EXIT             // quit!
+  RUN_CONTROL_PARAMETERS,  // don't run the robot controller, just process
+                           // Control Parameters
+  RUN_CONTROLLER,          // run the robot controller
+  DO_NOTHING,              // just to check connection
+  EXIT                     // quit!
 };
 
 /*!
  * A plain message from the simulator to the robot
  */
 struct SimulatorToRobotMessage {
-  GamepadCommand gamepadCommand;   // joystick
-  RobotType robotType;           // which robot the simulator thinks we are simulating
+  GamepadCommand gamepadCommand;  // joystick
+  RobotType robotType;  // which robot the simulator thinks we are simulating
 
   // imu data
-  KvhImuData kvh;
   VectorNavData vectorNav;
   CheaterState<double> cheaterState;
 
@@ -55,7 +56,6 @@ struct RobotToSimulatorMessage {
   SpiCommand spiCommand;
   TiBoardCommand tiBoardCommand[4];
 
-
   VisualizationData visualizationData;
   CheetahVisualization mainCheetahVisualization;
   ControlParameterResponse controlParameterResponse;
@@ -70,20 +70,21 @@ struct SimulatorMessage {
 };
 
 /*!
- * A SimulatorSyncronizedMessage is stored in shared memory and is accessed by both the simulator and the robot
- * The simulator and robot take turns have exclusive access to the entire message.
- * The intended sequence is:
+ * A SimulatorSyncronizedMessage is stored in shared memory and is accessed by
+ * both the simulator and the robot The simulator and robot take turns have
+ * exclusive access to the entire message. The intended sequence is:
  *  - robot: waitForSimulator()
- *  - simulator: *simulates robot* (simulator can read/write, robot cannot do anything)
+ *  - simulator: *simulates robot* (simulator can read/write, robot cannot do
+ * anything)
  *  - simulator: simDone()
  *  - simulator: waitForRobot()
- *  - robot: *runs controller*    (robot can read/write, simulator cannot do anything)
+ *  - robot: *runs controller*    (robot can read/write, simulator cannot do
+ * anything)
  *  - robot: robotDone();
  *  - robot: waitForSimulator()
  *  ...
  */
 struct SimulatorSyncronizedMessage : public SimulatorMessage {
-
   /*!
    * The init() method should only be called *after* shared memory is connected!
    */
@@ -92,32 +93,22 @@ struct SimulatorSyncronizedMessage : public SimulatorMessage {
     simToRobotSemaphore.init(0);
   }
 
-  void waitForSimulator() {
-    simToRobotSemaphore.decrement();
-  }
+  void waitForSimulator() { simToRobotSemaphore.decrement(); }
 
-  void simulatorIsDone() {
-    simToRobotSemaphore.increment();
-  }
+  void simulatorIsDone() { simToRobotSemaphore.increment(); }
 
-  void waitForRobot() {
-    robotToSimSemaphore.decrement();
-  }
+  void waitForRobot() { robotToSimSemaphore.decrement(); }
 
-  bool tryWaitForRobot() {
-    return robotToSimSemaphore.tryDecrement();
-  }
+  bool tryWaitForRobot() { return robotToSimSemaphore.tryDecrement(); }
 
   bool waitForRobotWithTimeout() {
-    return robotToSimSemaphore.decrementTimeout(1,0);
+    return robotToSimSemaphore.decrementTimeout(1, 0);
   }
 
-  void robotIsDone() {
-    robotToSimSemaphore.increment();
-  }
+  void robotIsDone() { robotToSimSemaphore.increment(); }
 
-private:
+ private:
   SharedMemorySemaphore robotToSimSemaphore, simToRobotSemaphore;
 };
 
-#endif //PROJECT_SIMULATORTOROBOTMESSAGE_H
+#endif  // PROJECT_SIMULATORTOROBOTMESSAGE_H

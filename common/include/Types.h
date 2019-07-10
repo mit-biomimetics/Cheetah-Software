@@ -8,5 +8,4 @@ struct MasterConfig {
   bool simulated = false;
 };
 
-
-#endif //PROJECT_TYPES_H
+#endif  // PROJECT_TYPES_H

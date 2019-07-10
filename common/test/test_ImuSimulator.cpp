@@ -4,23 +4,20 @@
  * Test the various utilities
  */
 
-#include "cppTypes.h"
 #include "SimUtilities/ImuSimulator.h"
+#include "cppTypes.h"
 
-#include "gtest/gtest.h"
 #include "gmock/gmock.h"
-
+#include "gtest/gtest.h"
 
 // check the imu data when stationary and at the origin
 TEST(ImuSimulator, passThrough) {
-
   // no noise
   SimulatorControlParameters simParams;
   simParams.vectornav_imu_quat_noise = 0.f;
   simParams.vectornav_imu_accelerometer_noise = 0.f;
   simParams.vectornav_imu_gyro_noise = 0.f;
-  simParams.kvh_imu_gyro_noise = 0.f;
-  simParams.kvh_imu_accelerometer_noise = 0.f;
+
 
   ImuSimulator<double> imuSim(simParams, 0);
 
@@ -31,7 +28,7 @@ TEST(ImuSimulator, passThrough) {
   eye << 1, 0, 0, 0;
 
   SVec<double> v0;
-  v0 << 0,0,0,0,0,0;
+  v0 << 0, 0, 0, 0, 0, 0;
 
   // stationary, upright
   xfb.bodyOrientation = eye;
@@ -39,35 +36,31 @@ TEST(ImuSimulator, passThrough) {
   xfbd.dBodyVelocity = v0;
 
   VectorNavData vn;
-  KvhImuData kvh;
 
   // update data
   imuSim.updateVectornav(xfb, xfbd, &vn);
-  imuSim.updateKVH(xfb, xfbd, &kvh);
 
-  Vec3<float> imuZero(0,0,0);
-  Vec3<float> imuGravity(0,0,9.81);
+  Vec3<float> imuZero(0, 0, 0);
+  Vec3<float> imuGravity(0, 0, 9.81);
   Quat<float> imuLevel;
-  //imuLevel << 1,0,0,0;
-  imuLevel << 0,0,0,1; //vectornave quaternion description sequence is (x, y, z, w)
+  // imuLevel << 1,0,0,0;
+  imuLevel << 0, 0, 0,
+      1;  // vectornave quaternion description sequence is (x, y, z, w)
 
   EXPECT_TRUE(almostEqual(imuZero, vn.gyro, .00001f));
-  EXPECT_TRUE(almostEqual(imuZero, kvh.gyro, .000001f));
   EXPECT_TRUE(almostEqual(imuLevel, vn.quat, .00001f));
   EXPECT_TRUE(almostEqual(imuGravity, vn.accelerometer, .00001f));
-  EXPECT_TRUE(almostEqual(imuGravity, kvh.accelerometer, .00001f));
 }
 
 // test with
-// no omega or body acceleration, but linear, velocity, orientation, and position
+// no omega or body acceleration, but linear, velocity, orientation, and
+// position
 TEST(ImuSimulator, orientation) {
   // no noise
   SimulatorControlParameters simParams;
   simParams.vectornav_imu_quat_noise = 0.f;
   simParams.vectornav_imu_accelerometer_noise = 0.f;
   simParams.vectornav_imu_gyro_noise = 0.f;
-  simParams.kvh_imu_gyro_noise = 0.f;
-  simParams.kvh_imu_accelerometer_noise = 0.f;
 
   ImuSimulator<double> imuSim(simParams, 0);
 
@@ -75,8 +68,9 @@ TEST(ImuSimulator, orientation) {
   FBModelStateDerivative<double> xfbd;
 
   // pitch the robot down:
-  Quat<double> quat = rotationMatrixToQuaternion(coordinateRotation(CoordinateAxis::Y, .2));
-  Vec3<double> position(2,4,3);
+  Quat<double> quat =
+      rotationMatrixToQuaternion(coordinateRotation(CoordinateAxis::Y, .2));
+  Vec3<double> position(2, 4, 3);
   SVec<double> velocity;
   velocity << 0, 0, 0, 2, 3, 6;
   SVec<double> acceleration = SVec<double>::Zero();
@@ -88,24 +82,20 @@ TEST(ImuSimulator, orientation) {
   xfbd.dBodyVelocity = acceleration;
 
   VectorNavData vn;
-  KvhImuData kvh;
 
   // update data
   imuSim.updateVectornav(xfb, xfbd, &vn);
-  imuSim.updateKVH(xfb, xfbd, &kvh);
 
-  Vec3<float> imuZero(0,0,0);
-  Vec3<float> imuGravity(0,0,9.81);
-  //Quat<float> imuLevel = quat.cast<float>();
+  Vec3<float> imuZero(0, 0, 0);
+  Vec3<float> imuGravity(0, 0, 9.81);
+  // Quat<float> imuLevel = quat.cast<float>();
   Quat<float> imuLevel;
   Quat<float> sim_quat = quat.cast<float>();
-  //vectornave quaternion description sequence is (x, y, z, w)
-  imuLevel << sim_quat[1], sim_quat[2], sim_quat[3], sim_quat[0]; 
+  // vectornave quaternion description sequence is (x, y, z, w)
+  imuLevel << sim_quat[1], sim_quat[2], sim_quat[3], sim_quat[0];
 
   EXPECT_TRUE(almostEqual(imuZero, vn.gyro, .00001f));
-  EXPECT_TRUE(almostEqual(imuZero, kvh.gyro, .000001f));
   EXPECT_TRUE(almostEqual(imuLevel, vn.quat, .00001f));
-  EXPECT_TRUE(almostEqual(kvh.accelerometer, vn.accelerometer, .00001f));
   EXPECT_TRUE(vn.accelerometer[0] < .0001f);
 }
 
@@ -116,8 +106,6 @@ TEST(ImuSimulator, omega) {
   simParams.vectornav_imu_quat_noise = 0.f;
   simParams.vectornav_imu_accelerometer_noise = 0.f;
   simParams.vectornav_imu_gyro_noise = 0.f;
-  simParams.kvh_imu_gyro_noise = 0.f;
-  simParams.kvh_imu_accelerometer_noise = 0.f;
 
   ImuSimulator<double> imuSim(simParams, 0);
 
@@ -125,8 +113,9 @@ TEST(ImuSimulator, omega) {
   FBModelStateDerivative<double> xfbd;
 
   // pitch the robot down:
-  Quat<double> quat = rotationMatrixToQuaternion(coordinateRotation(CoordinateAxis::Y, .2));
-  Vec3<double> position(2,4,3);
+  Quat<double> quat =
+      rotationMatrixToQuaternion(coordinateRotation(CoordinateAxis::Y, .2));
+  Vec3<double> position(2, 4, 3);
   SVec<double> velocity;
   velocity << 1, 2, 3, 0, 0, 0;
   SVec<double> acceleration = SVec<double>::Zero();
@@ -138,23 +127,19 @@ TEST(ImuSimulator, omega) {
   xfbd.dBodyVelocity = acceleration;
 
   VectorNavData vn;
-  KvhImuData kvh;
 
   // update data
   imuSim.updateVectornav(xfb, xfbd, &vn);
-  imuSim.updateKVH(xfb, xfbd, &kvh);
 
-  Vec3<float> imuZero(0,0,0);
-  Vec3<float> imuGravity(0,0,9.81);
+  Vec3<float> imuZero(0, 0, 0);
+  Vec3<float> imuGravity(0, 0, 9.81);
   Quat<float> imuLevel;
   Quat<float> sim_quat = quat.cast<float>();
-  imuLevel<< sim_quat[1], sim_quat[2], sim_quat[3], sim_quat[0];
+  imuLevel << sim_quat[1], sim_quat[2], sim_quat[3], sim_quat[0];
   Vec3<float> omegaB = xfb.bodyVelocity.head<3>().cast<float>();
 
   EXPECT_TRUE(almostEqual(omegaB, vn.gyro, .00001f));
-  EXPECT_TRUE(almostEqual(omegaB, kvh.gyro, .000001f));
   EXPECT_TRUE(almostEqual(imuLevel, vn.quat, .00001f));
-  EXPECT_TRUE(almostEqual(kvh.accelerometer, vn.accelerometer, .00001f));
 }
 
 // test running in a circle omega cross v terms
@@ -164,20 +149,20 @@ TEST(ImuSimulator, omegaCrossV) {
   simParams.vectornav_imu_quat_noise = 0.f;
   simParams.vectornav_imu_accelerometer_noise = 0.f;
   simParams.vectornav_imu_gyro_noise = 0.f;
-  simParams.kvh_imu_gyro_noise = 0.f;
-  simParams.kvh_imu_accelerometer_noise = 0.f;
 
   ImuSimulator<double> imuSim(simParams, 0);
 
   FBModelState<double> xfb;
   FBModelStateDerivative<double> xfbd;
 
-  // robot is upright, running in clockwise circle when viewed from above, at 12 o'clock:
+  // robot is upright, running in clockwise circle when viewed from above, at 12
+  // o'clock:
   Quat<double> quat = rotationMatrixToQuaternion(Mat3<double>::Identity());
-  Vec3<double> position(2,4,3);
+  Vec3<double> position(2, 4, 3);
   SVec<double> velocity;
-  velocity << 0, 0, -2, 3, 0, 0; // clockwise
-  SVec<double> acceleration = SVec<double>::Zero(); // zero spatial acceleration
+  velocity << 0, 0, -2, 3, 0, 0;  // clockwise
+  SVec<double> acceleration =
+      SVec<double>::Zero();  // zero spatial acceleration
 
   xfb.bodyVelocity = velocity;
   xfb.bodyPosition = position;
@@ -186,27 +171,24 @@ TEST(ImuSimulator, omegaCrossV) {
   xfbd.dBodyVelocity = acceleration;
 
   VectorNavData vn;
-  KvhImuData kvh;
 
   // update data
   imuSim.updateVectornav(xfb, xfbd, &vn);
-  imuSim.updateKVH(xfb, xfbd, &kvh);
 
-  Vec3<float> imuZero(0,0,0);
-  Vec3<float> imuGravity(0,0,9.81);
+  Vec3<float> imuZero(0, 0, 0);
+  Vec3<float> imuGravity(0, 0, 9.81);
   Quat<float> imuLevel;
   Quat<float> sim_quat = quat.cast<float>();
-  imuLevel<< sim_quat[1], sim_quat[2], sim_quat[3], sim_quat[0];
+  imuLevel << sim_quat[1], sim_quat[2], sim_quat[3], sim_quat[0];
   Vec3<float> omegaB = xfb.bodyVelocity.head<3>().cast<float>();
 
-  // we should see -y acceleration (man sitting inside robot will feel pulled toward the outside)
+  // we should see -y acceleration (man sitting inside robot will feel pulled
+  // toward the outside)
   Vec3<float> acc_ref(0, -6, 9.81);
 
   EXPECT_TRUE(almostEqual(omegaB, vn.gyro, .00001f));
-  EXPECT_TRUE(almostEqual(omegaB, kvh.gyro, .000001f));
   EXPECT_TRUE(almostEqual(imuLevel, vn.quat, .00001f));
-  EXPECT_TRUE(almostEqual(kvh.accelerometer, vn.accelerometer, .00001f));
-  EXPECT_TRUE(almostEqual(kvh.accelerometer, acc_ref, .0001f));
+  EXPECT_TRUE(almostEqual(vn.accelerometer, acc_ref, .0001f));
 }
 
 // test noise:
@@ -215,29 +197,28 @@ TEST(ImuSimulator, noise) {
   simParamsNoise.vectornav_imu_quat_noise = 0.005f;
   simParamsNoise.vectornav_imu_accelerometer_noise = 0.002f;
   simParamsNoise.vectornav_imu_gyro_noise = 0.005f;
-  simParamsNoise.kvh_imu_gyro_noise = 0.005f;
-  simParamsNoise.kvh_imu_accelerometer_noise = 0.005f;
 
   SimulatorControlParameters simParams;
   simParams.vectornav_imu_quat_noise = 0.f;
   simParams.vectornav_imu_accelerometer_noise = 0.f;
   simParams.vectornav_imu_gyro_noise = 0.f;
-  simParams.kvh_imu_gyro_noise = 0.f;
-  simParams.kvh_imu_accelerometer_noise = 0.f;
+
 
   ImuSimulator<double> imuSimNoise(simParamsNoise, 0);
 
   FBModelState<double> xfb;
   FBModelStateDerivative<double> xfbd;
 
-  Quat<double> quat = rotationMatrixToQuaternion(ori::coordinateRotation(CoordinateAxis::X, 2.34) *
-          ori::coordinateRotation(CoordinateAxis::Y, -5.3) *
-          ori::coordinateRotation(CoordinateAxis::Z, -.3));
+  Quat<double> quat = rotationMatrixToQuaternion(
+      ori::coordinateRotation(CoordinateAxis::X, 2.34) *
+      ori::coordinateRotation(CoordinateAxis::Y, -5.3) *
+      ori::coordinateRotation(CoordinateAxis::Z, -.3));
 
-  Vec3<double> position(2,4,3);
+  Vec3<double> position(2, 4, 3);
   SVec<double> velocity;
-  velocity << 2, 1, -2, 3, 3,2; // clockwise
-  SVec<double> acceleration = SVec<double>::Zero(); // zero spatial acceleration
+  velocity << 2, 1, -2, 3, 3, 2;  // clockwise
+  SVec<double> acceleration =
+      SVec<double>::Zero();  // zero spatial acceleration
 
   xfb.bodyVelocity = velocity;
   xfb.bodyPosition = position;
@@ -246,22 +227,18 @@ TEST(ImuSimulator, noise) {
   xfbd.dBodyVelocity = acceleration;
 
   VectorNavData vn;
-  KvhImuData kvh;
 
   Vec3<float> rpy_ref = ori::quatToRPY(quat.cast<float>());
-  Vec3<float> rpy_avg(0,0,0);
-
+  Vec3<float> rpy_avg(0, 0, 0);
 
   constexpr size_t nIterations = 1000;
-  for(size_t i = 0; i < nIterations; i++) {
+  for (size_t i = 0; i < nIterations; i++) {
     imuSimNoise.updateVectornav(xfb, xfbd, &vn);
-    imuSimNoise.updateKVH(xfb, xfbd, &kvh);
     Quat<float> sim_quat;
-    sim_quat<<vn.quat[3], vn.quat[0], vn.quat[1], vn.quat[2];
+    sim_quat << vn.quat[3], vn.quat[0], vn.quat[1], vn.quat[2];
     Vec3<float> rpy = ori::quatToRPY(sim_quat);
-    rpy_avg += rpy  / float(nIterations);
+    rpy_avg += rpy / float(nIterations);
   }
-
 
   EXPECT_TRUE(almostEqual(rpy_avg, rpy_ref, .01));
 }

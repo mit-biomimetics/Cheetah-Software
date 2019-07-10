@@ -13,9 +13,10 @@ To build code which can run on the mini cheetah:
 - `cmake -DMINI_CHEETAH_BUILD=TRUE ..`
 - `make -j`
 
-Then, to copy the code to the robot, run `../scripts/send_to_mini_cheetah.sh`.  You will be prompted for the mini cheetah's password.
+Then, to copy the code to the robot, run `../scripts/send_to_mini_cheetah.sh user/yourController/your_controller`.  You will be prompted for the mini cheetah's password.
 
 If you would like to open LCM spy, you can do this by running `../script/launch_lcm_spy.sh`.  If you receive an error about Java, try running `../scripts/launch_lcm_spy_jdk_fix.sh`, which has modified launch arguments to support newer versions of the JVM.
+
 
 On the mini cheetah, you will find a folder in the home directory name `robot-software` and the date.  Inside this folder is a copy of the configure lcm script.  Run `./configure_network_lcm.sh mc-top` if you are connected with the ethernet cable on top of the robot.
 

@@ -261,12 +261,12 @@
        <item>
         <widget class="QLabel" name="label_3">
          <property name="text">
-          <string>Favorites</string>
+          <string>User Control Parameters</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QTableWidget" name="favoritesTable">
+        <widget class="QTableWidget" name="userControlTable">
          <property name="rowCount">
           <number>2</number>
          </property>
@@ -286,10 +286,17 @@
           <enum>QFrame::Raised</enum>
          </property>
          <layout class="QGridLayout" name="gridLayout_4">
-          <item row="0" column="0">
-           <widget class="QPushButton" name="loadFavoriteButton">
+          <item row="0" column="1">
+           <widget class="QPushButton" name="loadUserButton">
             <property name="text">
-             <string>Load Favorites</string>
+             <string>Load</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QPushButton" name="saveUserButton">
+            <property name="text">
+             <string>Save</string>
             </property>
            </widget>
           </item>
@@ -441,7 +448,7 @@
      <x>0</x>
      <y>0</y>
      <width>1312</width>
-     <height>19</height>
+     <height>34</height>
     </rect>
    </property>
   </widget>

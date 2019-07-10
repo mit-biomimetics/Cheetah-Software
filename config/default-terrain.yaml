@@ -2,7 +2,8 @@ ground-plane:
     type: "infinite-plane"
     mu: 0.5
     restitution: 0.0
-    height: -0.5
+    #height: -0.5
+    height: 0.0
     graphicsSize: [20,20] # how large the plane appears
     checkers: [40,40]     # how many checkers are on the plane
 
@@ -53,16 +54,17 @@ ground-plane:
 
     
 #stairs-1:
-    #type: "stairs"
-    #steps: 5
-    #rise: 0.1778 # 7 inches
-    #run: 0.2794 # 11 inches
-    #width: 1.2
-    #mu: .7
-    #restitution: 0
-    #position: [1,2,-0.5]
-    #orientation: [0, .2, 1.5]
-    #transparent: 0
+    type: "stairs"
+    steps: 5
+    rise: 0.1 #0.1778 # 7 inches
+    run: 0.17 #0.2794 # 11 inches
+    width: 1.2
+    mu: .7
+    restitution: 0
+    #position: [0.5, 0, -0.52]
+    position: [0.5, 0, 0.0]
+    orientation: [0, 0, 0]
+    transparent: 0
 
 #stairs-2:
     #type: "stairs"

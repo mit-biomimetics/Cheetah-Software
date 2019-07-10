@@ -1,10 +1,10 @@
-#include "gtest/gtest.h"
 #include "gmock/gmock.h"
+#include "gtest/gtest.h"
 
 #include "Utilities/PeriodicTask.h"
 
 class TestPeriodicTask : public PeriodicTask {
-public:
+ public:
   using PeriodicTask::PeriodicTask;
   int _counter = 0;
   bool _cleanedUp = false;
@@ -13,24 +13,17 @@ public:
 
   void run() override {
     _counter++;
-    if(_slow)
-      usleep(15000);
+    if (_slow) usleep(15000);
   }
 
-  void init() override {
-    _init = true;
-  }
+  void init() override { _init = true; }
 
-  void cleanup() override {
-    _cleanedUp = true;
-  }
+  void cleanup() override { _cleanedUp = true; }
 };
 
 static int scount = 0;
 
-void inc_scount() {
-  scount++;
-}
+void inc_scount() { scount++; }
 
 TEST(PeriodicTask, test1) {
   PeriodicTaskManager taskManager;
@@ -40,8 +33,8 @@ TEST(PeriodicTask, test1) {
   task1.start();
   task2.start();
 
-  for(int i = 0; i < 10; i++) {
-    //taskManager.printStatus();
+  for (int i = 0; i < 10; i++) {
+    // taskManager.printStatus();
     usleep(50000);
   }
 
@@ -62,8 +55,8 @@ TEST(PeriodicTask, test1) {
   task3._slow = true;
   task3.start();
 
-  for(int i = 0; i < 10; i++) {
-    //taskManager.printStatus();
+  for (int i = 0; i < 10; i++) {
+    // taskManager.printStatus();
     usleep(50000);
   }
 
@@ -77,5 +70,5 @@ TEST(PeriodicTask, test1) {
   EXPECT_TRUE(scount > 0);
   printf("scount = %d\n", scount);
 
-  //taskManager.stopAll(); test destructors cleaning things up instead
+  // taskManager.stopAll(); test destructors cleaning things up instead
 }

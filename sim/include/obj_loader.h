@@ -5,9 +5,10 @@
 #ifndef OBJLOADER_H
 #define OBJLOADER_H
 
-#include <vector>
 #include <string>
+#include <vector>
 
-void load_obj_file(std::string fileName, std::vector<float>& positions, std::vector<float>& normals);
+void load_obj_file(std::string fileName, std::vector<float>& positions,
+                   std::vector<float>& normals);
 
-#endif // OBJLOADER_H
+#endif  // OBJLOADER_H

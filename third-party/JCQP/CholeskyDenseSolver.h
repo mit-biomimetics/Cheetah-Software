@@ -1,8 +1,13 @@
+/*!
+ * @file: CholeskyDenseSolver.h
+ *
+ * Dense Cholesky Solver.
+ */
+
 #ifndef QPSOLVER_CHOLESKYDENSESOLVER_H
 #define QPSOLVER_CHOLESKYDENSESOLVER_H
 
 #include "types.h"
-//#include "ThreadGroup.h"
 
 template<typename T>
 class CholeskyDenseSolver

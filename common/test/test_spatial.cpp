@@ -5,28 +5,25 @@
  * Doesn't test the algorithms.
  */
 
-
-#include "Math/orientation_tools.h"
 #include "Dynamics/SpatialInertia.h"
 #include "Dynamics/spatial.h"
-#include "gtest/gtest.h"
+#include "Math/orientation_tools.h"
 #include "gmock/gmock.h"
+#include "gtest/gtest.h"
 
 using namespace ori;
 using namespace spatial;
 
 /*!
- * Check the spatialRotation function, which generates spatial transforms for coordinate axis rotations
+ * Check the spatialRotation function, which generates spatial transforms for
+ * coordinate axis rotations
  */
 TEST(Spatial, axisRotation) {
   // test X which rotates around an axis
   SXform<double> X1, X2;
-  X1 << 0.8384, 0.4580, -0.2955, 0, 0, 0,
-          -0.4183, 0.8882, 0.1898, 0, 0, 0,
-          0.3494, -0.0355, 0.9363, 0, 0, 0,
-          0, 0, 0, 0.8384, 0.4580, -0.2955,
-          0, 0, 0, -0.4183, 0.8882, 0.1898,
-          0, 0, 0, 0.3494, -0.0355, 0.9363;
+  X1 << 0.8384, 0.4580, -0.2955, 0, 0, 0, -0.4183, 0.8882, 0.1898, 0, 0, 0,
+      0.3494, -0.0355, 0.9363, 0, 0, 0, 0, 0, 0, 0.8384, 0.4580, -0.2955, 0, 0,
+      0, -0.4183, 0.8882, 0.1898, 0, 0, 0, 0.3494, -0.0355, 0.9363;
   X2 = spatialRotation(CoordinateAxis::X, .2) *
        spatialRotation(CoordinateAxis::Y, .3) *
        spatialRotation(CoordinateAxis::Z, .5);
@@ -66,7 +63,8 @@ TEST(Spatial, crf) {
 }
 
 /*!
- * Test motionCrossProduct, a function to compute crm(v1)*v2 with fewer multiplies
+ * Test motionCrossProduct, a function to compute crm(v1)*v2 with fewer
+ * multiplies
  */
 TEST(Spatial, crm_prod) {
   // test motion cross product
@@ -79,7 +77,8 @@ TEST(Spatial, crm_prod) {
 }
 
 /*!
- * Test forceCrossProduct, a function to compute crf(v1)*v2 with fewer multiplies
+ * Test forceCrossProduct, a function to compute crf(v1)*v2 with fewer
+ * multiplies
  */
 TEST(Spatial, crf_prod) {
   // test force cross product
@@ -93,8 +92,8 @@ TEST(Spatial, crf_prod) {
 
 /*!
  * Test spatial inertia
- * Checks that it is built correctly from mass, CoM and rotational inertia (like mcI)
- * Also checks the 4x4 Pseudo Inertia
+ * Checks that it is built correctly from mass, CoM and rotational inertia (like
+ * mcI) Also checks the 4x4 Pseudo Inertia
  */
 TEST(Spatial, inertia) {
   // test spatial inertia, mcI, and Pat's PseudoInertia
@@ -104,17 +103,12 @@ TEST(Spatial, inertia) {
   SpatialInertia<double> IS(42, com, I);
   Mat6<double> ref;
   Mat4<double> pref;
-  pref << 4204.5, 4618, 5037, 420,
-          4618, 5083.5, 5539, 462,
-          5037, 5539, 6047.5, 504,
-          420, 462, 504, 42;
+  pref << 4204.5, 4618, 5037, 420, 4618, 5083.5, 5539, 462, 5037, 5539, 6047.5,
+      504, 420, 462, 504, 42;
 
-  ref << 11131, -4618, -5037, 0, -504, 462,
-          -4618, 10252, -5539, 504, 0, -420,
-          -5037, -5539, 9288, -462, 420, 0,
-          0, 504, -462, 42, 0, 0,
-          -504, 0, 420, 0, 42, 0,
-          462, -420, 0, 0, 0, 42;
+  ref << 11131, -4618, -5037, 0, -504, 462, -4618, 10252, -5539, 504, 0, -420,
+      -5037, -5539, 9288, -462, 420, 0, 0, 504, -462, 42, 0, 0, -504, 0, 420, 0,
+      42, 0, 462, -420, 0, 0, 0, 42;
 
   SpatialInertia<double> IS2(IS.getPseudoInertia());
 
@@ -132,10 +126,12 @@ TEST(Spatial, inertia) {
 TEST(Spatial, inertia_flips) {
   // test flipping inertias around axes
   MassProperties<double> a, aref;
-  a << 1,2,3,4,5,6,7,8,9,10;
-  aref << 1,2,-3,4,5,6,7,-8,9,-10;
-  EXPECT_TRUE(almostEqual(SpatialInertia<double>(aref).getMatrix(),
-          SpatialInertia<double>(a).flipAlongAxis(CoordinateAxis::Y).getMatrix(), .0001));
+  a << 1, 2, 3, 4, 5, 6, 7, 8, 9, 10;
+  aref << 1, 2, -3, 4, 5, 6, 7, -8, 9, -10;
+  EXPECT_TRUE(almostEqual(
+      SpatialInertia<double>(aref).getMatrix(),
+      SpatialInertia<double>(a).flipAlongAxis(CoordinateAxis::Y).getMatrix(),
+      .0001));
 }
 
 /*!
@@ -144,24 +140,21 @@ TEST(Spatial, inertia_flips) {
  */
 TEST(Spatial, pluho_and_plux) {
   // test homogeneous transformations and spatial transformations
-  RotMat<double> R = coordinateRotation(CoordinateAxis::X, 1.0) * coordinateRotation(CoordinateAxis::Y, 2.0) *
-          coordinateRotation(CoordinateAxis::Z, 3.0);
-  Vec3<double> r(4,5,6);
+  RotMat<double> R = coordinateRotation(CoordinateAxis::X, 1.0) *
+                     coordinateRotation(CoordinateAxis::Y, 2.0) *
+                     coordinateRotation(CoordinateAxis::Z, 3.0);
+  Vec3<double> r(4, 5, 6);
   Mat6<double> X = createSXform(R, r);
   Mat6<double> Xref, X2;
   Mat4<double> H = sxformToHomogeneous(X);
   Mat4<double> Href;
   X2 = homogeneousToSXform(H);
-  Xref << 0.4120, -0.0587, -0.9093, 0, 0, 0,
-          -0.8337, -0.4269, -0.3502, 0, 0, 0,
-          -0.3676, 0.9024, -0.2248, 0, 0, 0,
-          -4.1941, 6.1091, -2.2948, 0.4120, -0.0587, -0.9093,
-          0.8106, -3.6017, 2.4610, -0.8337, -0.4269, -0.3502,
-          -6.5385, -1.3064, 5.4477, -0.3676, 0.9024, -0.2248;
-  Href << 0.4120,   -0.0587,   -0.9093,    4.1015,
-         -0.8337,   -0.4269,   -0.3502,    7.5706,
-         -0.3676,    0.9024,   -0.2248 ,  -1.6923,
-               0,         0,         0 ,   1.0000;
+  Xref << 0.4120, -0.0587, -0.9093, 0, 0, 0, -0.8337, -0.4269, -0.3502, 0, 0, 0,
+      -0.3676, 0.9024, -0.2248, 0, 0, 0, -4.1941, 6.1091, -2.2948, 0.4120,
+      -0.0587, -0.9093, 0.8106, -3.6017, 2.4610, -0.8337, -0.4269, -0.3502,
+      -6.5385, -1.3064, 5.4477, -0.3676, 0.9024, -0.2248;
+  Href << 0.4120, -0.0587, -0.9093, 4.1015, -0.8337, -0.4269, -0.3502, 7.5706,
+      -0.3676, 0.9024, -0.2248, -1.6923, 0, 0, 0, 1.0000;
   EXPECT_TRUE(almostEqual(Xref, X, .001));
   EXPECT_TRUE(almostEqual(R, rotationFromSXform(X), .001));
   EXPECT_TRUE(almostEqual(r, translationFromSXform(X), .001));
@@ -170,12 +163,14 @@ TEST(Spatial, pluho_and_plux) {
 }
 
 /*!
- * Check invertSXform, which computes inverse(X) quickly if X is a plucker coordinate transform
+ * Check invertSXform, which computes inverse(X) quickly if X is a plucker
+ * coordinate transform
  */
 TEST(Spatial, invert_sxform) {
-  RotMat<double> R = coordinateRotation(CoordinateAxis::X, 1.0) * coordinateRotation(CoordinateAxis::Y, 2.0) *
+  RotMat<double> R = coordinateRotation(CoordinateAxis::X, 1.0) *
+                     coordinateRotation(CoordinateAxis::Y, 2.0) *
                      coordinateRotation(CoordinateAxis::Z, 3.0);
-  Vec3<double> r(4,5,6);
+  Vec3<double> r(4, 5, 6);
   Mat6<double> X = createSXform(R, r);
   Mat6<double> Xi_ref = X.inverse();
   Mat6<double> Xi = invertSXform(X);
@@ -183,7 +178,8 @@ TEST(Spatial, invert_sxform) {
 }
 
 /*!
- * Test the jointXform and jointMotionSubspace functions, which are similar to jcalc
+ * Test the jointXform and jointMotionSubspace functions, which are similar to
+ * jcalc
  */
 TEST(Spatial, jcalc) {
   Mat6<double> Xr, Xp, Xr_ref, Xp_ref;
@@ -194,23 +190,17 @@ TEST(Spatial, jcalc) {
   phi_r = jointMotionSubspace<double>(JointType::Revolute, CoordinateAxis::Y);
   phi_p = jointMotionSubspace<double>(JointType::Prismatic, CoordinateAxis::Z);
 
-  Xr_ref << 0.7072 ,        0   ,-0.7070  ,       0  ,       0  ,       0,
-               0  ,  1.0000  ,       0   ,      0  ,       0   ,      0,
-          0.7070  ,       0 ,   0.7072  ,       0  ,       0  ,       0,
-               0  ,       0  ,       0  ,  0.7072 ,        0 ,  -0.7070,
-            0    ,     0     ,    0    ,     0   , 1.0000     ,    0,
-              0   ,      0   ,      0  ,  0.7070  ,       0  ,  0.7072;
+  Xr_ref << 0.7072, 0, -0.7070, 0, 0, 0, 0, 1.0000, 0, 0, 0, 0, 0.7070, 0,
+      0.7072, 0, 0, 0, 0, 0, 0, 0.7072, 0, -0.7070, 0, 0, 0, 0, 1.0000, 0, 0, 0,
+      0, 0.7070, 0, 0.7072;
 
-  phi_r_ref << 0,1,0,0,0,0;
+  phi_r_ref << 0, 1, 0, 0, 0, 0;
 
-  Xp_ref << 1.0000 ,        0  ,       0   ,      0   ,      0   ,      0,
-               0  ,  1.0000  ,       0   ,      0 ,        0    ,     0,
-               0 ,        0  ,  1.0000  ,       0   ,      0   ,      0,
-               0  ,  0.2000   ,      0  ,  1.0000  ,       0   ,      0,
-         -0.2000  ,       0  ,       0 ,        0  ,  1.0000  ,       0,
-               0  ,       0   ,      0  ,       0  ,       0  ,  1.0000;
+  Xp_ref << 1.0000, 0, 0, 0, 0, 0, 0, 1.0000, 0, 0, 0, 0, 0, 0, 1.0000, 0, 0, 0,
+      0, 0.2000, 0, 1.0000, 0, 0, -0.2000, 0, 0, 0, 1.0000, 0, 0, 0, 0, 0, 0,
+      1.0000;
 
-  phi_p_ref << 0,0,0,0,0,1;
+  phi_p_ref << 0, 0, 0, 0, 0, 1;
 
   EXPECT_TRUE(almostEqual(Xr, Xr_ref, .001));
   EXPECT_TRUE(almostEqual(Xp, Xp_ref, .001));
@@ -224,14 +214,10 @@ TEST(Spatial, jcalc) {
  */
 TEST(Spatial, mass_properties) {
   MassProperties<double> a;
-  a << 1,2,3,4,5,6,7,8,9,10;
+  a << 1, 2, 3, 4, 5, 6, 7, 8, 9, 10;
   Mat6<double> I, I_ref;
-  I_ref << 5,    10  ,   9  ,   0   , -4 ,    3,
-          10 ,    6  ,   8  ,   4  ,   0 ,   -2,
-           9 ,    8  ,   7  ,  -3  ,   2   ,  0,
-           0 ,    4 ,   -3  ,   1   ,  0 ,    0,
-          -4 ,    0   ,  2   ,  0  ,   1  ,   0,
-           3 ,   -2   ,  0   ,  0   ,  0   ,  1;
+  I_ref << 5, 10, 9, 0, -4, 3, 10, 6, 8, 4, 0, -2, 9, 8, 7, -3, 2, 0, 0, 4, -3,
+      1, 0, 0, -4, 0, 2, 0, 1, 0, 3, -2, 0, 0, 0, 1;
   SpatialInertia<double> IS(a);
   EXPECT_TRUE(almostEqual(I_ref, IS.getMatrix(), .001));
   EXPECT_TRUE(almostEqual(a, IS.asMassPropertyVector(), .001));
@@ -242,19 +228,21 @@ TEST(Spatial, mass_properties) {
  */
 TEST(Spatial, box_inertia) {
   // test inertia of uniformly distributed box
-  Mat3<double> I_ref; I_ref << 2.0833, 0, 0, 0, 1.66667, 0, 0, 0, 1.083333;
-  Mat3<double> I_calc = rotInertiaOfBox(1., Vec3<double>(2,3,4));
+  Mat3<double> I_ref;
+  I_ref << 2.0833, 0, 0, 0, 1.66667, 0, 0, 0, 1.083333;
+  Mat3<double> I_calc = rotInertiaOfBox(1., Vec3<double>(2, 3, 4));
   EXPECT_TRUE(almostEqual(I_ref, I_calc, .001));
 }
 
 /*!
- * Test utility function for converting spatial velocity to linear velocity at a point
+ * Test utility function for converting spatial velocity to linear velocity at a
+ * point
  */
 TEST(Spatial, velocityConver) {
   Vec3<double> vRef(-2, 17, 0);
   SVec<double> vs;
-  vs << 1,2,3,4,5,6;
-  Vec3<double> p(7,8,9);
+  vs << 1, 2, 3, 4, 5, 6;
+  Vec3<double> p(7, 8, 9);
   Vec3<double> v = spatialToLinearVelocity(vs, p);
   EXPECT_TRUE(almostEqual(v, vRef, .00001));
 }
@@ -263,13 +251,13 @@ TEST(Spatial, velocityConver) {
  * Test utility function for transforming a point by a spatial transform
  */
 TEST(Spatial, pointTransform) {
-  Vec3<double> p0(1,2,3);
+  Vec3<double> p0(1, 2, 3);
   Vec3<double> pxRef(-3.0026, -1.9791, -3.7507);
   Mat3<double> R = coordinateRotation(CoordinateAxis::X, .2) *
-          coordinateRotation(CoordinateAxis::Y, .3) *
-          coordinateRotation(CoordinateAxis::Z, .5);
+                   coordinateRotation(CoordinateAxis::Y, .3) *
+                   coordinateRotation(CoordinateAxis::Z, .5);
 
-  Vec3<double> r(4,5,6);
+  Vec3<double> r(4, 5, 6);
   Mat6<double> X = createSXform(R, r);
 
   Vec3<double> px = sXFormPoint(X, p0);
@@ -280,80 +268,84 @@ TEST(Spatial, pointTransform) {
  * Test utility function for converting force at a point to a spatial force
  */
 TEST(Spatial, forceToSpatialForce) {
-  Vec3<double> fLinear(1,2,3);
-  Vec3<double> point(7,8,9);
+  Vec3<double> fLinear(1, 2, 3);
+  Vec3<double> point(7, 8, 9);
   SVec<double> fRef;
   fRef << 6, -12, 6, 1, 2, 3;
   SVec<double> fSpatial = forceToSpatialForce(fLinear, point);
   EXPECT_TRUE(almostEqual(fSpatial, fRef, .0005));
 }
 
-/*! 
- * Test utility function for converting the spatial velocity to the velocity at a point
+/*!
+ * Test utility function for converting the spatial velocity to the velocity at
+ * a point
  */
 TEST(Spatial, spatialToLinearVelocity) {
-
   SVec<double> vspat;
-  vspat << 1.93,2.34,3.345,-4.23,5.8383,6.921;
+  vspat << 1.93, 2.34, 3.345, -4.23, 5.8383, 6.921;
   Vec3<double> vlin = vspat.tail(3);
   Vec3<double> vang = vspat.head(3);
   Vec3<double> point;
-  point<<-23.23, 2.638, 9.324;
+  point << -23.23, 2.638, 9.324;
 
   Vec3<double> vpoint = vlin + vang.cross(point);
   Vec3<double> vpoint2 = spatialToLinearVelocity(vspat, point);
 
-  EXPECT_TRUE(almostEqual(vpoint2, vpoint,1e-8));
+  EXPECT_TRUE(almostEqual(vpoint2, vpoint, 1e-8));
 }
 
-/*! 
- * Test utility function for converting the spatial acceleration to the linear acceleration of a point
+/*!
+ * Test utility function for converting the spatial acceleration to the linear
+ * acceleration of a point
  */
 TEST(Spatial, spatialToLinearAcceleration) {
-
   SVec<double> vspat, aspat;
-  // Top spinning with angular velocity w on a skateboard that is traveling at velocity v and is currently at point p
+  // Top spinning with angular velocity w on a skateboard that is traveling at
+  // velocity v and is currently at point p
   double w = 5;
   double v = 1;
   double p = 1;
 
-  vspat << 0,0,w,v,-w*p,0;
-  aspat << 0,0,0,0,-w*v,0;
+  vspat << 0, 0, w, v, -w * p, 0;
+  aspat << 0, 0, 0, 0, -w * v, 0;
 
   Vec3<double> p2;
-  p2 <<p,0,0; 
+  p2 << p, 0, 0;
 
-  Vec3<double> a1  = spatialToLinearAcceleration(aspat, vspat);
+  Vec3<double> a1 = spatialToLinearAcceleration(aspat, vspat);
 
   Vec3<double> a2 = spatialToLinearAcceleration(aspat, vspat, p2);
 
-  Vec3<double> a1_expected , a2_expected;
-  a1_expected << w*w*p , 0, 0;
-  a2_expected << 0,0,0;
+  Vec3<double> a1_expected, a2_expected;
+  a1_expected << w * w * p, 0, 0;
+  a2_expected << 0, 0, 0;
 
-  EXPECT_TRUE(almostEqual(a1, a1_expected,1e-8));
-  EXPECT_TRUE(almostEqual(a2, a2_expected,1e-8));
+  EXPECT_TRUE(almostEqual(a1, a1_expected, 1e-8));
+  EXPECT_TRUE(almostEqual(a2, a2_expected, 1e-8));
 
-  vspat << 1.93,2.34,3.345,-4.23,5.8383,6.921;
-  aspat << -5.164,68.4,1.56879,-98.44,8.14,6.324;
-  p2 << 54.797,-6.1654,3.64587;
+  vspat << 1.93, 2.34, 3.345, -4.23, 5.8383, 6.921;
+  aspat << -5.164, 68.4, 1.56879, -98.44, 8.14, 6.324;
+  p2 << 54.797, -6.1654, 3.64587;
 
-  Vec3<double> w1,v1,wd1,vd1;
+  Vec3<double> w1, v1, wd1, vd1;
   Vec3<double> w2, v2, wd2, vd2;
 
-  w1 = vspat.head(3); v1 = vspat.tail(3);
-  wd1= aspat.head(3); vd1= aspat.tail(3);
+  w1 = vspat.head(3);
+  v1 = vspat.tail(3);
+  wd1 = aspat.head(3);
+  vd1 = aspat.tail(3);
 
-  w2 = w1; wd2 = w2;
+  w2 = w1;
+  wd2 = w2;
   v2 = v1 + w1.cross(p2);
-  vd2= vd1+wd1.cross(p2);
+  vd2 = vd1 + wd1.cross(p2);
 
-  a1_expected = vd1 +w1.cross(v1);
-  a2_expected = vd2 +w2.cross(v2);
+  a1_expected = vd1 + w1.cross(v1);
+  a2_expected = vd2 + w2.cross(v2);
 
-  a1  = spatialToLinearAcceleration(aspat, vspat);
+  a1 = spatialToLinearAcceleration(aspat, vspat);
   a2 = spatialToLinearAcceleration(aspat, vspat, p2);
 
-  EXPECT_TRUE(almostEqual(a1, a1_expected,1e-8));
-  EXPECT_TRUE(almostEqual(a2, a2_expected,1e-8));
+  EXPECT_TRUE(almostEqual(a1, a1_expected, 1e-8));
+  EXPECT_TRUE(almostEqual(a2, a2_expected, 1e-8));
 }

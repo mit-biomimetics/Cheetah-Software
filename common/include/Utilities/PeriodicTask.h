@@ -1,15 +1,15 @@
 /*!
  * @file PeriodicTask.h
- * @brief Implementation of a periodic function running in a separate thread.  Periodic tasks have a task manager,
- * which measure how long they take to run.
+ * @brief Implementation of a periodic function running in a separate thread.
+ * Periodic tasks have a task manager, which measure how long they take to run.
  */
 
 #ifndef PROJECT_PERIODICTASK_H
 #define PROJECT_PERIODICTASK_H
 
-#include <vector>
 #include <string>
 #include <thread>
+#include <vector>
 
 class PeriodicTaskManager;
 
@@ -17,8 +17,9 @@ class PeriodicTaskManager;
  * A single periodic task which will call run() at the given frequency
  */
 class PeriodicTask {
-public:
-  PeriodicTask(PeriodicTaskManager* taskManager, float period, std::string name);
+ public:
+  PeriodicTask(PeriodicTaskManager* taskManager, float period,
+               std::string name);
   void start();
   void stop();
   void printStatus();
@@ -27,27 +28,17 @@ public:
   virtual void init() = 0;
   virtual void run() = 0;
   virtual void cleanup() = 0;
-  virtual ~PeriodicTask() {
-    stop();
-  }
+  virtual ~PeriodicTask() { stop(); }
 
-  float getPeriod() {
-    return _period;
-  }
+  float getPeriod() { return _period; }
 
-  float getRuntime() {
-    return _lastRuntime;
-  }
+  float getRuntime() { return _lastRuntime; }
 
-  float getMaxPeriod() {
-    return _maxPeriod;
-  }
+  float getMaxPeriod() { return _maxPeriod; }
 
-  float getMaxRuntime() {
-    return _maxRuntime;
-  }
+  float getMaxRuntime() { return _maxRuntime; }
 
-private:
+ private:
   void loopFunction();
 
   float _period;
@@ -64,7 +55,7 @@ private:
  * A collection of periodic tasks which can be monitored together
  */
 class PeriodicTaskManager {
-public:
+ public:
   PeriodicTaskManager() = default;
   ~PeriodicTaskManager();
   void addTask(PeriodicTask* task);
@@ -72,7 +63,7 @@ public:
   void printStatusOfSlowTasks();
   void stopAll();
 
-private:
+ private:
   std::vector<PeriodicTask*> _tasks;
 };
 
@@ -80,20 +71,17 @@ private:
  * A periodic task for calling a function
  */
 class PeriodicFunction : public PeriodicTask {
-public:
+ public:
   PeriodicFunction(PeriodicTaskManager* taskManager, float period,
-                   std::string name, void (*function)()) : PeriodicTask(taskManager, period, name), _function(function) {
-  }
-  void cleanup() { }
-  void init() { }
-  void run() {
-    _function();
-  }
+                   std::string name, void (*function)())
+      : PeriodicTask(taskManager, period, name), _function(function) {}
+  void cleanup() {}
+  void init() {}
+  void run() { _function(); }
 
-  ~PeriodicFunction() {
-    stop();
-  }
-private:
+  ~PeriodicFunction() { stop(); }
+
+ private:
   void (*_function)() = nullptr;
 };
 
@@ -101,44 +89,38 @@ private:
  * A periodic task for printing the status of all tasks in the task manager
  */
 class PrintTaskStatus : public PeriodicTask {
-public:
-  PrintTaskStatus(PeriodicTaskManager* tm, float period) : PeriodicTask(tm, period, "print-tasks"), _tm(tm) { }
-  void run() override {
-    _tm->printStatus();
-  }
+ public:
+  PrintTaskStatus(PeriodicTaskManager* tm, float period)
+      : PeriodicTask(tm, period, "print-tasks"), _tm(tm) {}
+  void run() override { _tm->printStatus(); }
 
-  void init() override {
+  void init() override {}
 
-  }
+  void cleanup() override {}
 
-  void cleanup() override {
-
-  }
-private:
+ private:
   PeriodicTaskManager* _tm;
 };
 
 /*!
  * A periodic task for calling a member function
  */
-template<typename T>
+template <typename T>
 class PeriodicMemberFunction : public PeriodicTask {
-public:
-  PeriodicMemberFunction(PeriodicTaskManager* taskManager, float period, std::string name,
-      void (T::*function)(), T* obj) : PeriodicTask(taskManager, period, name), _function(function),
-      _obj(obj) {
+ public:
+  PeriodicMemberFunction(PeriodicTaskManager* taskManager, float period,
+                         std::string name, void (T::*function)(), T* obj)
+      : PeriodicTask(taskManager, period, name),
+        _function(function),
+        _obj(obj) {}
 
-  }
+  void cleanup() {}
+  void init() {}
+  void run() { (_obj->*_function)(); }
 
-  void cleanup() { }
-  void init() { }
-  void run() {
-    (_obj->*_function)();
-  }
-private:
+ private:
   void (T::*_function)();
   T* _obj;
 };
 
-
-#endif //PROJECT_PERIODICTASK_H
+#endif  // PROJECT_PERIODICTASK_H

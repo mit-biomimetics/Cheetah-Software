@@ -71,7 +71,8 @@ public:
       (void)(m_);
     }
 
-    void run(s64 nIterations = -1, bool sparse = false, bool b_print = true);
+    void runFromDense(s64 nIterations = -1, bool sparse = false, bool b_print = true);
+    void runFromTriples(s64 nIterations = -1, bool b_print = true);
 
     Vector<T>& getSolution() { return *_x; }
 
@@ -80,6 +81,7 @@ public:
   // public data
   QpProblemSettings<T> settings;
   DenseMatrix<T> A, P;
+  std::vector<SparseTriple<T>> A_triples, P_triples;
   Vector<T> l, u, q;
   s64 n, m;
 
@@ -90,30 +92,23 @@ public:
 private:
   void coldStart();
   void computeConstraintInfos();
-  void setupLinearSolverDense();
-  void setupLinearSolverSparse();
   void setupLinearSolverCommon();
-  void setupCholeskyDenseSolver();
   void stepSetup();
   void solveLinearSystem();
-  void solveLinearSystemSparse();
   void stepX();
   void stepZ();
   void stepY();
+  void setupTriples();
   T calcAndDisplayResidual(bool print);
-  void check();
   T infNorm(const Vector<T>& v);
 
   bool _print;
   DenseMatrix<T> _kkt;
-  SparseMatrix<T> _kktSparse;
-  Vector<T> _kktSparseX;
-//
-//  //Eigen::LDLT<DenseMatrix<T>> _kktSolver;
-//  //Eigen::SimplicialLDLT<Eigen::SparseMatrix<T>>* _kktSparseSolver = nullptr;
+  std::vector<SparseTriple<T>> _kktTriples;
+
   CholeskyDenseSolver<T> _cholDenseSolver;
   CholeskySparseSolver<T> _cholSparseSolver;
-  Eigen::SparseMatrix<T> Asparse;
+  Eigen::SparseMatrix<T> Asparse, Psparse;
 
   Vector<T> _xzTilde, _y;
   Vector<T> _x0, _x1, _z0, _z1;
@@ -121,6 +116,8 @@ private:
   Vector<T> _Ar, _Pr, _AtR; // residuals
   Vector<T> _deltaY, _AtDeltaY, _deltaX, _PDeltaX, _ADeltaX; // infeasibilities
   std::vector<ConstraintInfo<T>> _constraintInfos;
+
+
 
   bool _hotStarted = false, _sparse = false;
 };

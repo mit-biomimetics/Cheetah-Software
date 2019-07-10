@@ -4,13 +4,13 @@
  *
  */
 
-#include "Dynamics/Quadruped.h"
-#include "Dynamics/MiniCheetah.h"
-#include "Dynamics/Cheetah3.h"
 #include "Dynamics/ActuatorModel.h"
+#include "Dynamics/Cheetah3.h"
+#include "Dynamics/MiniCheetah.h"
+#include "Dynamics/Quadruped.h"
 
-#include "gtest/gtest.h"
 #include "gmock/gmock.h"
+#include "gtest/gtest.h"
 
 TEST(ActuatorModel, miniCheetah) {
   Quadruped<double> quad = buildMiniCheetah<double>();
@@ -24,38 +24,37 @@ TEST(ActuatorModel, miniCheetah) {
   double maxQdMaxTorque = 0, qdMax = 0;
 
   // check our max torque in the positive direction:
-  for(double tau = 0; tau < 200; tau += .1) {
+  for (double tau = 0; tau < 200; tau += .1) {
     double tauAct = hipModel.getTorque(tau, 0);
-    if(!fpEqual(tau, tauAct, .0001)) {
+    if (!fpEqual(tau, tauAct, .0001)) {
       tauMaxPositive = tauAct;
       break;
     }
   }
 
-  for(double tau = 0; tau > -200; tau -= .1) {
+  for (double tau = 0; tau > -200; tau -= .1) {
     double tauAct = hipModel.getTorque(tau, 0);
-    if(!fpEqual(tau, tauAct, .0001)) {
+    if (!fpEqual(tau, tauAct, .0001)) {
       tauMaxNegative = tauAct;
       break;
     }
   }
 
-  for(double qd = 0; qd < 40; qd += .01) {
+  for (double qd = 0; qd < 40; qd += .01) {
     double tauAct = hipModel.getTorque(18, qd);
-    if(!fpEqual(18., tauAct, .0001)) {
+    if (!fpEqual(18., tauAct, .0001)) {
       maxQdMaxTorque = qd;
       break;
     }
   }
 
-  for(double qd = 0; qd < 60; qd += .01) {
+  for (double qd = 0; qd < 60; qd += .01) {
     double tauAct = hipModel.getTorque(18, qd);
-    if(tauAct <= 0) {
+    if (tauAct <= 0) {
       qdMax = qd;
       break;
     }
   }
-
 
   EXPECT_TRUE(fpEqual(tauMaxPositive, 18., .0001));
   EXPECT_TRUE(fpEqual(tauMaxNegative, -18., .0001));
@@ -75,33 +74,33 @@ TEST(ActuatorModel, cheetah3) {
   double maxQdMaxTorque = 0, qdMax = 0;
 
   // check our max torque in the positive direction:
-  for(double tau = 0; tau < 300; tau += .1) {
+  for (double tau = 0; tau < 300; tau += .1) {
     double tauAct = hipModel.getTorque(tau, 0);
-    if(!fpEqual(tau, tauAct, .0001)) {
+    if (!fpEqual(tau, tauAct, .0001)) {
       tauMaxPositive = tauAct;
       break;
     }
   }
 
-  for(double tau = 0; tau > -300; tau -= .1) {
+  for (double tau = 0; tau > -300; tau -= .1) {
     double tauAct = hipModel.getTorque(tau, 0);
-    if(!fpEqual(tau, tauAct, .0001)) {
+    if (!fpEqual(tau, tauAct, .0001)) {
       tauMaxNegative = tauAct;
       break;
     }
   }
 
-  for(double qd = 0; qd < 40; qd += .01) {
+  for (double qd = 0; qd < 40; qd += .01) {
     double tauAct = hipModel.getTorque(208, qd);
-    if(!fpEqual(208., tauAct, .0001)) {
+    if (!fpEqual(208., tauAct, .0001)) {
       maxQdMaxTorque = qd;
       break;
     }
   }
 
-  for(double qd = 0; qd < 60; qd += .01) {
+  for (double qd = 0; qd < 60; qd += .01) {
     double tauAct = hipModel.getTorque(208, qd);
-    if(tauAct <= 0) {
+    if (tauAct <= 0) {
       qdMax = qd;
       break;
     }

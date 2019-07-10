@@ -38,7 +38,8 @@
 // * @param parity Parity
 // * @param port Port number
 // */
-//int set_interface_attribs_custom_baud(int fd, int speed, int parity, int port) {
+// int set_interface_attribs_custom_baud(int fd, int speed, int parity, int
+// port) {
 //  printf("\t[RT SERIAL] Configuring serial device...\n");
 //  struct termios2 tty;
 //

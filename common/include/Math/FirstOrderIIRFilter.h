@@ -16,8 +16,7 @@
  */
 template <typename T, typename T2>
 class FirstOrderIIRFilter {
-public:
-
+ public:
   /*!
    * Create a new first order filter
    * @param cutoffFrequency : cutoff frequency of filter
@@ -34,7 +33,8 @@ public:
    * @param alpha : filter parameter
    * @param initialValue : initial value
    */
-  FirstOrderIIRFilter(T2 alpha, T& initialValue) : _state(initialValue), _alpha(alpha) {}
+  FirstOrderIIRFilter(T2 alpha, T& initialValue)
+      : _state(initialValue), _alpha(alpha) {}
 
   /*!
    * Update the filter with a new sample
@@ -49,17 +49,13 @@ public:
   /*!
    * Get the value of the filter, without updating
    */
-  T get() {
-    return _state;
-  }
+  T get() { return _state; }
 
-  void reset() {
-    _state *= T2(0);
-  }
+  void reset() { _state *= T2(0); }
 
-private:
+ private:
   T _state;
   T2 _alpha;
 };
 
-#endif //PROJECT_FIRSTORDERIIRFILTER_H
+#endif  // PROJECT_FIRSTORDERIIRFILTER_H

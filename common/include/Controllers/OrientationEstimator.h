@@ -16,29 +16,17 @@
 
 template <typename T>
 class CheaterOrientationEstimator : public GenericEstimator<T> {
-public:
+ public:
   virtual void run();
-  virtual void setup() { }
+  virtual void setup() {}
 };
-
 
 template <typename T>
 class VectorNavOrientationEstimator : public GenericEstimator<T> {
-public:
+ public:
   virtual void run();
-  virtual void setup() { }
+  virtual void setup() {}
 };
 
 
-template <typename T>
-class KvhOrientationEstimator : public GenericEstimator<T> {
-public:
-  virtual void run();
-  virtual void setup() { }
-};
-
-
-
-// todo KVH Orientation Estimator
-
-#endif //PROJECT_ORIENTATIONESTIMATOR_H
+#endif  // PROJECT_ORIENTATIONESTIMATOR_H

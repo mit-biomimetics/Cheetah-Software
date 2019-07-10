@@ -23,10 +23,159 @@ void QpProblem<T>::coldStart()
 }
 
 /*!
+ * Build KKT matrix with triples.
+ * @tparam T
+ */
+template<typename T>
+void QpProblem<T>::setupTriples() {
+  _kktTriples.clear();
+  _kktTriples.resize(P_triples.size() + A_triples.size() * 2 + n + m);
+
+  // upper left P term
+  _kktTriples.insert(_kktTriples.end(), P_triples.begin(), P_triples.end());
+
+  // sigma * I upper left
+  for(u32 i = 0; i < (u32)n; i++) {
+    _kktTriples.push_back({settings.sigma, i, i});
+  }
+
+  // upper right A transpose term
+  for(auto& tri : A_triples) {
+    _kktTriples.push_back({tri.value, tri.c, tri.r + (u32)n});
+  }
+
+  // bottom left A term
+  for(auto & tri : A_triples) {
+    _kktTriples.push_back({tri.value, tri.r+(u32)n, tri.c});
+  }
+
+  // bottom right invRho term
+  for(u32 i = 0; i < (u32)m; i++) {
+    _kktTriples.push_back({-_constraintInfos[i].invRho, (u32)(i+n), (u32)(i+n)});
+  }
+
+  sortAndSumTriples(_kktTriples);
+}
+
+/*!
+ * Solve QP using A,P values from A_triples and P_triples
+ */
+template<typename T>
+void QpProblem<T>::runFromTriples(s64 nIterations, bool b_print) {
+
+  Timer timer;
+  Timer totalTimer, setupTimer;
+  // setup iterations
+  if(nIterations < 0) {
+    nIterations = settings.maxIterations;
+  }
+
+  // print status
+  if(b_print) {
+    printf("QP Solve (runFromTriples)\n");
+    printf("n: %ld\nm: %ld\nsz: %ld\niterations: %ld\n", n,m,sizeof(T), nIterations);
+    settings.print();
+  }
+
+  // setup x/z/xprev/zprev/y
+  if(!_hotStarted)
+    coldStart();
+
+  computeConstraintInfos();
+
+  if(b_print) {
+    printf("QP Init Time: %.3f ms\n", timer.getMs());
+    timer.start();
+  }
+
+  // setup kkt matrix
+  setupTriples();
+  if(b_print) {
+    printf("QP KKT Form Time: %.3f ms\n", timer.getMs());
+    timer.start();
+  }
+
+  // setup A matrix for eigen operations
+  std::vector<Eigen::Triplet<T>> eigenTriplets;
+  eigenTriplets.reserve(A_triples.size());
+  for(auto& tri : A_triples)
+    eigenTriplets.push_back(Eigen::Triplet<T>(tri.r, tri.c, tri.value));
+  Asparse = Eigen::SparseMatrix<T>(m,n);
+  Asparse.setFromTriplets(eigenTriplets.begin(), eigenTriplets.end());
+
+  // setup P matrix for eigen operations
+  eigenTriplets.clear();
+  eigenTriplets.reserve(P_triples.size());
+  for(auto& tri : P_triples)
+    eigenTriplets.push_back(Eigen::Triplet<T>(tri.r, tri.c, tri.value));
+  Psparse = Eigen::SparseMatrix<T>(n,n);
+  Psparse.setFromTriplets(eigenTriplets.begin(), eigenTriplets.end());
+  if(b_print) {
+    printf("QP A Sparse (Eigen) Form Time: %.3f ms\n", timer.getMs());
+    timer.start();
+  }
+
+
+  // pre-setup the solver
+  _cholSparseSolver.preSetup(_kktTriples, n+m, b_print);
+  if(b_print) {
+    printf("QP Cholesky pre-setup Time: %.3f ms\n", timer.getMs());
+    timer.start();
+  }
+
+  // setup the solver (factor)
+  _cholSparseSolver.setup(b_print);
+  if(b_print) {
+    printf("QP Cholesky setup Time: %.3f ms\n", timer.getMs());
+    timer.start();
+  }
+
+  double totalResidTime = 0;
+  _sparse = true;
+
+  double setupTime = setupTimer.getMs();
+  for(s64 iteration = 0; iteration < settings.maxIterations; iteration++) {
+
+    Timer iterationTimer;
+    stepSetup();
+
+    solveLinearSystem();
+
+    stepX();
+    stepZ();
+    stepY();
+
+    if(!((iteration + 1) % 10)) {
+      Timer residTimer;
+      T residual;
+      if(b_print) {
+        printf("Iteration %5ld: ", iteration + 1);
+      }
+      residual = calcAndDisplayResidual(b_print);
+
+
+      if(residual < settings.terminate || iteration + 1 >= nIterations) {
+        if(b_print) {
+          printf("\n\nTERMINATE at iteration %ld, total time %.3f ms (%.3f on setup, %.3f on termination checks), residual %g\n",
+                 iteration + 1, totalTimer.getMs(), setupTime, totalResidTime, residual);
+          fprintf(stderr, "%.3f, ", totalTimer.getMs());
+        }
+
+        break;
+      }
+
+      if(b_print) printf(" took %.3f ms (%.3f on residual), %6.3f total\n", iterationTimer.getMs(), residTimer.getMs(), totalTimer.getMs());
+
+      totalResidTime += residTimer.getMs();
+    }
+  }
+}
+
+/*!
  * Solve QP
  */
 template<typename T>
-void QpProblem<T>::run(s64 nIterations, bool sparse, bool b_print)
+void QpProblem<T>::runFromDense(s64 nIterations, bool sparse, bool b_print)
 {
     if(nIterations <0) {nIterations = settings.maxIterations; }
   _sparse = sparse;
@@ -44,8 +193,11 @@ void QpProblem<T>::run(s64 nIterations, bool sparse, bool b_print)
   computeConstraintInfos();
   setupLinearSolverCommon(); // do not include setup time to build sparse matrix to be consistent
 
-  if(sparse)
+  if(sparse){
     Asparse = A.sparseView();
+    Psparse = P.sparseView();
+  }
+
 
   Timer preSetupTimer;
   if(sparse) // don't include time to build sparse matrices
@@ -94,7 +246,6 @@ void QpProblem<T>::run(s64 nIterations, bool sparse, bool b_print)
               iteration + 1, totalTimer.getMs(), setupTimeMs, totalResidTime, residual);
           fprintf(stderr, "%.3f, ", totalTimer.getMs());
         }
-        check();
 
         if(!solutionLog.empty()) {
           for(u64 i = 0; i < solutionLog.size() -1; i++) {
@@ -124,11 +275,9 @@ void QpProblem<T>::computeConstraintInfos()
     if(l(i) < -settings.infty || u(i) > settings.infty){
       _constraintInfos[i].type = ConstraintType::INFINITE;
       _constraintInfos[i].rho = settings.rhoInfty;
-      printf("infty!!!\n\n\n");
     } else if(u(i) - l(i) < settings.eqlTol) {
       _constraintInfos[i].type = ConstraintType::EQUALITY;
       _constraintInfos[i].rho = settings.rho * settings.rhoEqualityScale;
-      //printf("equal!!! %f %f\n\n\n", u(i), l(i));
     } else {
       _constraintInfos[i].type = ConstraintType::INEQUALITY;
       _constraintInfos[i].rho = settings.rho;
@@ -216,11 +365,11 @@ void QpProblem<T>::stepY()
 
 template<typename T>
 T QpProblem<T>::infNorm(const Vector<T>& v) {
-  T m(0);
+  T mm(0);
   for(s64 i = 0; i < v.rows(); i++) {
-    if(std::abs(v[i]) > m) m = std::abs(v[i]);
+    if(std::abs(v[i]) > mm) mm = std::abs(v[i]);
   }
-  return m;
+  return mm;
 }
 
 
@@ -232,7 +381,7 @@ T QpProblem<T>::calcAndDisplayResidual(bool print)
     Vector<T> Axz = Asparse * (*_x) - (*_zPrev);
     T p = infNorm(Axz);
 
-    Vector<T> dual = P * (*_x) + q + Asparse.transpose() * _y;
+    Vector<T> dual = Psparse * (*_x) + q + Asparse.transpose() * _y;
     T d = infNorm(dual);
 
     if(print)
@@ -253,11 +402,6 @@ T QpProblem<T>::calcAndDisplayResidual(bool print)
   }
 }
 
-template<typename T>
-void QpProblem<T>::check()
-{
-
-}
 
 
 template class QpProblem<double>;

@@ -1,8 +1,9 @@
 /*! @file ContactEstimator.h
  *  @brief All Contact Estimation Algorithms
  *
- *  This file will contain all contact detection algorithms. For now, it just has a pass-through algorithm which
- *  passes the phase estimation to the state estimator.  This will need to change once we move contact detection to C++
+ *  This file will contain all contact detection algorithms. For now, it just
+ * has a pass-through algorithm which passes the phase estimation to the state
+ * estimator.  This will need to change once we move contact detection to C++
  *
  *  We also still need to establish conventions for "phase" and "contact".
  */
@@ -14,13 +15,12 @@
 
 template <typename T>
 class ContactEstimator : public GenericEstimator<T> {
-public:
+ public:
   virtual void run() {
-    this->_stateEstimatorData.result->contactEstimate = *this->_stateEstimatorData.contactPhase;
+    this->_stateEstimatorData.result->contactEstimate =
+        *this->_stateEstimatorData.contactPhase;
   }
-  virtual void setup() {
-
-  }
+  virtual void setup() {}
 };
 
-#endif //PROJECT_CONTACTESTIMATOR_H
+#endif  // PROJECT_CONTACTESTIMATOR_H

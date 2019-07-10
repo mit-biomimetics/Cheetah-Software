@@ -1,9 +1,8 @@
-#include "gtest/gtest.h"
 #include "gmock/gmock.h"
+#include "gtest/gtest.h"
 
 #include "ParamHandler.hpp"
 #include "Utilities/utilities.h"
-
 
 TEST(YAML, yaml_category_read) {
   ParamHandler paramHandler(getConfigDirectoryPath() + "test-yaml.yaml");
@@ -30,4 +29,3 @@ TEST(YAML, yaml_category_read) {
   ParamHandler badHandler("not-a-real-file.potato");
   EXPECT_FALSE(badHandler.fileOpenedSuccessfully());
 }
-

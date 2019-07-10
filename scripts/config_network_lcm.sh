@@ -18,6 +18,7 @@ fi
 if [ "$1" == "-I" ]; then
     sudo ifconfig $2 multicast
     sudo route add -net 224.0.0.0 netmask 240.0.0.0 dev $2
+    #sudo route add -net 10.0.0.0 netmask 255.0.0.0 dev $2
 fi
 
 if [ "$1" == "thinkpad" ]; then

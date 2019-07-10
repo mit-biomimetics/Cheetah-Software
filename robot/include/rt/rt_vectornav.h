@@ -15,8 +15,6 @@ extern "C" {
 }
 #endif
 
-
-
 bool init_vectornav(VectorNavData* vd_data);
 
 #endif

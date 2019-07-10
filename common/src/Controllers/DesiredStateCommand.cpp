@@ -11,7 +11,6 @@
  */
 template <typename T>
 void DesiredStateData<T>::zero() {
-
   // Overall desired state
   stateDes = Vec12<T>::Zero();
   stateTrajDes = Eigen::Matrix<T, 12, 10>::Zero();
@@ -20,20 +19,20 @@ void DesiredStateData<T>::zero() {
 template struct DesiredStateData<double>;
 template struct DesiredStateData<float>;
 
-
 /**
  *
  */
 template <typename T>
 void DesiredStateCommand<T>::convertToStateCommands() {
-
   data.zero();
 
   // Forward linear velocity
-  data.stateDes(6) = deadband(gamepadCommand->leftStickAnalog[1], minVelX, maxVelX);
+  data.stateDes(6) =
+      deadband(gamepadCommand->leftStickAnalog[1], minVelX, maxVelX);
 
   // Lateral linear velocity
-  data.stateDes(7) = deadband(gamepadCommand->leftStickAnalog[0], minVelY, maxVelY);
+  data.stateDes(7) =
+      deadband(gamepadCommand->leftStickAnalog[0], minVelY, maxVelY);
 
   // VErtical linear velocity
   data.stateDes(8) = 0.0;
@@ -54,19 +53,19 @@ void DesiredStateCommand<T>::convertToStateCommands() {
   data.stateDes(10) = 0.0;
 
   // Yaw turn rate
-  data.stateDes(11) = deadband(gamepadCommand->rightStickAnalog[0], minTurnRate, maxTurnRate);
+  data.stateDes(11) =
+      deadband(gamepadCommand->rightStickAnalog[0], minTurnRate, maxTurnRate);
 
   // Roll
   data.stateDes(3) = 0.0;
 
   // Pitch
-  data.stateDes(4) = deadband(gamepadCommand->rightStickAnalog[1], minPitch, maxPitch);
+  data.stateDes(4) =
+      deadband(gamepadCommand->rightStickAnalog[1], minPitch, maxPitch);
 
   // Yaw
   data.stateDes(5) = stateEstimate->rpy(2) + dt * data.stateDes(11);
-
 }
-
 
 /**
  *
@@ -97,14 +96,12 @@ void DesiredStateCommand<T>::desiredStateTrajectory(int N, Vec10<T> dtVec) {
     A(5, 11) = dtVec(k - 1);
     data.stateTrajDes.col(k) = A * data.stateTrajDes.col(k - 1);
     for (int i = 0; i < 12; i++) {
-      //std::cout << data.stateTrajDes(i, k) << " ";
+      // std::cout << data.stateTrajDes(i, k) << " ";
     }
-    //std::cout << std::endl;
+    // std::cout << std::endl;
   }
-  //std::cout << std::endl;
-
+  // std::cout << std::endl;
 }
-
 
 /**
  *
@@ -118,60 +115,75 @@ float DesiredStateCommand<T>::deadband(float command, T minVal, T maxVal) {
   }
 }
 
-
 /**
  *
  */
 template <typename T>
 void DesiredStateCommand<T>::printRawInfo() {
-
   // Increment printing iteration
   printIter++;
 
   // Print at requested frequency
   if (printIter == printNum) {
-
     std::cout << "[DESIRED STATE COMMAND] Printing Raw Gamepad Info...\n";
     std::cout << "---------------------------------------------------------\n";
-    std::cout << "Button Start: " << gamepadCommand->start << " | Back: " << gamepadCommand->back << "\n";
-    std::cout << "Button A: " << gamepadCommand->a << " | B: " << gamepadCommand->b << " | X: " << gamepadCommand->x << " | Y: " << gamepadCommand->y << "\n";
-    std::cout << "Left Stick Button: " << gamepadCommand->leftStickButton << " | X: " << gamepadCommand->leftStickAnalog[0] << " | Y: " << gamepadCommand->leftStickAnalog[1] << "\n";
-    std::cout << "Right Analog Button: " << gamepadCommand->rightStickButton << " | X: " << gamepadCommand->rightStickAnalog[0] << " | Y: " << gamepadCommand->rightStickAnalog[1] << "\n";
-    std::cout << "Left Bumper: " << gamepadCommand->leftBumper << " | Trigger Switch: " << gamepadCommand->leftTriggerButton << " | Trigger Value: " << gamepadCommand->leftTriggerAnalog << "\n";
-    std::cout << "Right Bumper: " << gamepadCommand->rightBumper << " | Trigger Switch: " << gamepadCommand->rightTriggerButton << " | Trigger Value: " << gamepadCommand->rightTriggerAnalog << "\n\n";
+    std::cout << "Button Start: " << gamepadCommand->start
+              << " | Back: " << gamepadCommand->back << "\n";
+    std::cout << "Button A: " << gamepadCommand->a
+              << " | B: " << gamepadCommand->b << " | X: " << gamepadCommand->x
+              << " | Y: " << gamepadCommand->y << "\n";
+    std::cout << "Left Stick Button: " << gamepadCommand->leftStickButton
+              << " | X: " << gamepadCommand->leftStickAnalog[0]
+              << " | Y: " << gamepadCommand->leftStickAnalog[1] << "\n";
+    std::cout << "Right Analog Button: " << gamepadCommand->rightStickButton
+              << " | X: " << gamepadCommand->rightStickAnalog[0]
+              << " | Y: " << gamepadCommand->rightStickAnalog[1] << "\n";
+    std::cout << "Left Bumper: " << gamepadCommand->leftBumper
+              << " | Trigger Switch: " << gamepadCommand->leftTriggerButton
+              << " | Trigger Value: " << gamepadCommand->leftTriggerAnalog
+              << "\n";
+    std::cout << "Right Bumper: " << gamepadCommand->rightBumper
+              << " | Trigger Switch: " << gamepadCommand->rightTriggerButton
+              << " | Trigger Value: " << gamepadCommand->rightTriggerAnalog
+              << "\n\n";
     std::cout << std::endl;
 
     // Reset iteration counter
     printIter = 0;
   }
 }
-
 
 /**
  *
  */
 template <typename T>
 void DesiredStateCommand<T>::printStateCommandInfo() {
-
   // Increment printing iteration
   printIter++;
 
   // Print at requested frequency
   if (printIter == printNum) {
-
     std::cout << "[DESIRED STATE COMMAND] Printing State Command Info...\n";
     std::cout << "---------------------------------------------------------\n";
-    std::cout << "Position X: " << data.stateDes(0) << " | Y: " << data.stateDes(1) << " | Z: " << data.stateDes(2) << "\n";
-    std::cout << "Orientation Roll: " << data.stateDes(3) << " | Pitch: " << data.stateDes(4) << " | Yaw: " << data.stateDes(5) << "\n";
-    std::cout << "Velocity X: " << data.stateDes(6) << " | Y: " << data.stateDes(7) << " | Z: " << data.stateDes(8) << "\n";
-    std::cout << "Angular Velocity X: " << data.stateDes(9) << " | Y: " << data.stateDes(10) << " | Z: " << data.stateDes(11) << "\n"; std::cout << std::endl;
+    std::cout << "Position X: " << data.stateDes(0)
+              << " | Y: " << data.stateDes(1) << " | Z: " << data.stateDes(2)
+              << "\n";
+    std::cout << "Orientation Roll: " << data.stateDes(3)
+              << " | Pitch: " << data.stateDes(4)
+              << " | Yaw: " << data.stateDes(5) << "\n";
+    std::cout << "Velocity X: " << data.stateDes(6)
+              << " | Y: " << data.stateDes(7) << " | Z: " << data.stateDes(8)
+              << "\n";
+    std::cout << "Angular Velocity X: " << data.stateDes(9)
+              << " | Y: " << data.stateDes(10) << " | Z: " << data.stateDes(11)
+              << "\n";
+    std::cout << std::endl;
     std::cout << std::endl;
 
     // Reset iteration counter
     printIter = 0;
   }
 }
-
 
 template class DesiredStateCommand<double>;
 template class DesiredStateCommand<float>;

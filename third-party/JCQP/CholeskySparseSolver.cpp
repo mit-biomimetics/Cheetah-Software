@@ -1,4 +1,11 @@
+/*!
+ * @file: CholeskySparseSolver.cpp
+ *
+ * Sparse Cholesky Solver.
+ */
+
 #include "CholeskySparseSolver.h"
+#include "SparseMatrixMath.h"
 #include "Timer.h"
 #include "amd.h"
 #include <iostream>
@@ -59,11 +66,62 @@ void CholeskySparseSolver<T>::preSetup(const DenseMatrix<T> &kktMat, bool b_prin
   }
 
   assert(i == A.nnz);
+
   if(b_print) printf("CHOLSPARSE SETUP %.3f ms\n", tim.getMs());
   tim.start();
 
   sanityCheck();
   if(b_print) printf("CHOLSPARSE CHECK %.3f ms\n", tim.getMs());
+}
+
+template<typename T>
+void CholeskySparseSolver<T>::preSetup(const std::vector<SparseTriple<T>>& kktMat, u32 _n, bool b_print) {
+  Timer tim;
+
+  A.m = _n;
+  A.n = _n;
+  n = _n;
+  A.nnz = kktMat.size();
+
+  if(b_print) {
+    printf("PRESETUP:\n\tnnz: %d, fill %.3f\n", A.nnz, (double)A.nnz / (double)(A.n*A.m));
+  }
+
+  // allocate
+  A.values = new T[A.nnz];
+  A.colPtrs = new u32[A.n + 1];
+  A.rowIdx = new u32[A.nnz];
+  nnzLCol = new u32[n];
+  parent = new s32[n];
+  D = new T[n];
+  rD = new T[n];
+  tempSolve = new T[n];
+  L.colPtrs = new u32[A.n + 1];
+  if(b_print) {
+    printf("\tallocate time: %.3f ms\n", tim.getMs());
+    tim.start();
+  }
+
+  // compress!
+  u32 i = 0, j = 0;
+  A.colPtrs[0] = 0;
+  for(u32 c = 0; c < A.n; c++) {
+    u32 cNNZ = 0;
+    while(kktMat[j].c == c && j < A.nnz) {
+      if(kktMat[j].r <= kktMat[j].c) {
+        A.values[i] = kktMat[j].value;
+        A.rowIdx[i] = kktMat[j].r;
+        cNNZ++;
+        i++;
+      }
+      j++;
+    }
+    A.colPtrs[c + 1] = A.colPtrs[c] + cNNZ;
+    assert(j == A.nnz || kktMat[j].c > c);
+  }
+
+  assert(j == A.nnz);
+  A.nnz = i;
 }
 
 template<typename T>
@@ -269,15 +327,15 @@ void CholeskySparseSolver<T>::factor()
     for(s32 i = nnzRow - 1; i >= 0; i--) {
       u32 cSel = yIdx[i];
 
-      u32 end = next[cSel];
+      u32 end2 = next[cSel];
       T yi = y[cSel];
-      for(s32 j = L.colPtrs[cSel]; j < (s32)end; j++) {
+      for(s32 j = L.colPtrs[cSel]; j < (s32)end2; j++) {
         y[L.rowIdx[j]] -= L.values[j] * yi;
       }
 
-      L.rowIdx[end] = k;
-      L.values[end] = yi * rD[cSel];
-      D[k] -= yi * L.values[end];
+      L.rowIdx[end2] = k;
+      L.values[end2] = yi * rD[cSel];
+      D[k] -= yi * L.values[end2];
       next[cSel]++;
 
       y[cSel] = 0.;

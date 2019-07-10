@@ -8,7 +8,7 @@
 
 void init_spi_lcm(lcm::LCM *main_lcm);
 
-void publish_spi_data(spi_data_t* data);
+void publish_spi_data(spi_data_t *data);
 void publish_spi_torque(spi_torque_t *data);
 
 #endif

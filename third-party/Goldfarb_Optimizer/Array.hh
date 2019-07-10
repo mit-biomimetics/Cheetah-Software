@@ -1978,7 +1978,7 @@ namespace GolDIdnani{
   }
 
   template <typename T>
-  GVect<T> lu_solve(const GMatr<T>& LU, const GVect<T>& b, GVect<unsigned int>& index)
+  GVect<T> lu_solve_gold(const GMatr<T>& LU, const GVect<T>& b, GVect<unsigned int>& index)
   {
     if (LU.ncols() != LU.nrows())
       throw std::logic_error("Error in LU solve: LU matrix should be squared");
@@ -2012,9 +2012,9 @@ namespace GolDIdnani{
   }
 
   template <typename T>
-  void lu_solve(const GMatr<T>& LU, GVect<T>& x, const GVect<T>& b, GVect<unsigned int>& index)
+  void lu_solve_gold(const GMatr<T>& LU, GVect<T>& x, const GVect<T>& b, GVect<unsigned int>& index)
   {
-    x = lu_solve(LU, b, index);
+    x = lu_solve_gold(LU, b, index);
   }
 
   template <typename T>
@@ -2031,7 +2031,7 @@ namespace GolDIdnani{
     for (unsigned i = 0; i < n; i++)
       {
         e.reset(i);
-        A1.setColumn(i, lu_solve(LU, e, index));
+        A1.setColumn(i, lu_solve_gold(LU, e, index));
       }
 
     return A1;
@@ -2176,7 +2176,7 @@ namespace GolDIdnani{
 
 #define det lu_det
 //#define inverse lu_inverse
-#define solve lu_solve
+#define solve_gold lu_solve_gold
 
   /* Random */
 

@@ -4,27 +4,28 @@
  * Test the various utilities
  */
 
-#include "cppTypes.h"
-#include "Utilities/utilities.h"
 #include "Math/MathUtilities.h"
+#include "Utilities/utilities.h"
+#include "cppTypes.h"
 
-#include "gtest/gtest.h"
 #include "gmock/gmock.h"
+#include "gtest/gtest.h"
 
 #include <string>
 #include <unordered_map>
 #include "include/Utilities/Utilities_print.h"
 
-
 TEST(Utilities, strintToVec3) {
-  std::vector<std::string> strings = {"[1.1, 2.2, 3.3]", "  [  1.1  ,  2.2 ,3.3  ]  ", "[1.1,2.2  ,3.3]", "[1.1, 2.2, 3.3]"};
+  std::vector<std::string> strings = {"[1.1, 2.2, 3.3]",
+                                      "  [  1.1  ,  2.2 ,3.3  ]  ",
+                                      "[1.1,2.2  ,3.3]", "[1.1, 2.2, 3.3]"};
 
   Vec3<double> ref(1.1, 2.2, 3.3);
   Vec3<double> v1 = stringToVec3<double>("[1.1,2.2,3.3]");
 
   EXPECT_TRUE(almostEqual(ref, v1, .0000001));
 
-  for(auto& str : strings) {
+  for (auto& str : strings) {
     Vec3<double> vv = stringToVec3<double>(str);
     EXPECT_TRUE(almostEqual(ref, vv, .0000001));
   }
@@ -38,7 +39,6 @@ TEST(Utilities, coerce) {
   EXPECT_EQ(-0.1f, coerce<float>(-0.5f, -0.1f, 0.1f));
   EXPECT_EQ(0.5f, coerce<float>(0.5f, -1.f, 1.f));
 }
-
 
 TEST(Utilities, sgn) {
   EXPECT_EQ(1, sgn<int>(10));

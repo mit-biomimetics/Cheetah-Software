@@ -43,8 +43,8 @@ struct SpiData {
 };
 
 class SpineBoard {
-public:
-  SpineBoard() { }
+ public:
+  SpineBoard() {}
   void init(float side_sign, s32 board);
   void run();
   void resetData();
@@ -53,11 +53,11 @@ public:
   SpiData* data = nullptr;
   float torque_out[3];
 
-private:
+ private:
   float side_sign;
   s32 board_num;
-  const float max_torque[3] =  {17.f, 17.f, 26.f}; // TODO CHECK WITH BEN
-  const float wimp_torque[3] = {6.f,  6.f,  6.f }; // TODO CHECK WITH BEN
+  const float max_torque[3] = {17.f, 17.f, 26.f};  // TODO CHECK WITH BEN
+  const float wimp_torque[3] = {6.f, 6.f, 6.f};    // TODO CHECK WITH BEN
   const float disabled_torque[3] = {0.f, 0.f, 0.f};
   const float q_limit_p[3] = {1.5f, 5.0f, 0.f};
   const float q_limit_n[3] = {-1.5f, -5.0f, 0.f};
@@ -66,6 +66,4 @@ private:
   s32 iter_counter = 0;
 };
 
-
-
-#endif //PROJECT_SPINEBOARD_H
+#endif  // PROJECT_SPINEBOARD_H

@@ -1,0 +1,86 @@
+# Initialization
+
+## Mini Cheetah
+swing_time: 0.14
+transition_time: 0.003
+stance_time: 0.004
+
+#swing_time: 0.07
+#transition_time: 0.002
+#stance_time: 0.001
+  
+# Timing Parameters (sec)
+
+
+step_time_ratio: 0.7
+
+body_height: .28
+
+CTRL_move_to_target_height:
+    max_rf_z: 100
+    min_rf_z: 0
+    body_lifting_time: 0.7
+
+CTRL_fix_stance:
+
+CTRL_frhl_swing:
+    default_target_foot_location_1: [0.18, -0.08, 0.0] # Front Right
+    default_target_foot_location_2: [-0.18, 0.08, 0.0] # Hind Left
+    Kp_foot: [100., 100., 100.]
+    Kd_foot: [5., 5., 5.]
+    swing_height: 0.05
+    landing_offset: [0, 0, 0]
+    foot_step_min: [-0.15, -0.06]
+    foot_step_max: [0.15, 0.06]
+
+CTRL_flhr_swing:
+    default_target_foot_location_1: [0.18, 0.08,  0.0] # Front Left
+    default_target_foot_location_2: [-0.18, -0.08, 0.0] # Hind Right
+    Kp_foot: [100., 100., 100.]
+    Kd_foot: [5., 5., 5.]
+    swing_height: 0.05
+    landing_offset: [0, 0, 0]
+    foot_step_min: [-0.15, -0.06]
+    foot_step_max: [0.15, 0.06]
+
+
+CTRL_two_leg_trans:
+    max_rf_z: 100
+    min_rf_z: 0
+
+Kp_body_pos_kin: [1.0, 1.0, 1.0]
+Kp_body_pos: [100., 100., 100.]
+Kd_body_pos: [5., 5., 5.]
+
+Kp_body_ori_kin: [1.0, 1.0, 1.0]
+Kp_body_ori: [130., 130., 90.]
+Kd_body_ori: [5., 5., 5.]
+#Kp_body_ori: [10., 10., 10.]
+#Kp_body_ori: [0., 0., 0.]
+
+
+Kp_joint: [5.0, 5.0, 5.0]
+Kd_joint: [1.5, 1.5, 1.5]
+
+#Kp_joint: [0., 0., 0.]
+#Kd_joint: [0., 0., 0.]
+
+
+Kp: [ 130., 130., 130., 
+      130., 130., 130., 
+      130., 130., 130., 
+      130., 130., 130. ]
+
+Kd: [ 5., 5., 5., 
+      5., 5., 5., 
+      5., 5., 5., 
+      5., 5., 5. ]
+      
+#Kp_joint: [40.0, 40.0, 40.0]
+#Kd_joint: [1.5, 1.5, 1.5]
+
+remote_control: true
+#remote_control: false 
+    
+#save_file: true
+save_file: false

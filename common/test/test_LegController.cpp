@@ -2,12 +2,11 @@
  *  Todo: it would be nice to test these against the full dynamics model!
  */
 
-
 #include "Controllers/LegController.h"
-#include "Dynamics/Quadruped.h"
 #include "Dynamics/MiniCheetah.h"
-#include "gtest/gtest.h"
+#include "Dynamics/Quadruped.h"
 #include "gmock/gmock.h"
+#include "gtest/gtest.h"
 
 /*!
  * Test jacobian by verifying that
@@ -15,14 +14,15 @@
  */
 TEST(LegController, JacobianAndFwdKinematics1) {
   Quadruped<double> quadruped = buildMiniCheetah<double>();
-  Vec3<double> q0(1,2,3);
+  Vec3<double> q0(1, 2, 3);
   Vec3<double> dq(.001, .002, -.001);
   Mat3<double> J;
   Vec3<double> p0, p1Ref, p1;
 
   Vec3<double> q1 = q0 + dq;
   computeLegJacobianAndPosition(quadruped, q0, &J, &p0, 0);
-  computeLegJacobianAndPosition(quadruped, q1, (Mat3<double>*)nullptr, &p1Ref, 0);
+  computeLegJacobianAndPosition(quadruped, q1, (Mat3<double>*)nullptr, &p1Ref,
+                                0);
 
   p1 = p0 + J * dq;
 
@@ -34,7 +34,7 @@ TEST(LegController, JacobianAndFwdKinematics1) {
  */
 TEST(LegController, JacobianAndFwdKinematics2) {
   Quadruped<double> quadruped = buildMiniCheetah<double>();
-  Vec3<double> q0(4,5,6);
+  Vec3<double> q0(4, 5, 6);
   Vec3<double> p0;
   Mat3<double> Jref;
   Mat3<double> J;
@@ -42,15 +42,15 @@ TEST(LegController, JacobianAndFwdKinematics2) {
   computeLegJacobianAndPosition(quadruped, q0, &Jref, &p0, 0);
   double d = .001;
 
-
-  for(int dim = 0; dim < 3; dim++) {
+  for (int dim = 0; dim < 3; dim++) {
     Vec3<double> dq = Vec3<double>::Zero();
     dq(dim) = d;
     Vec3<double> q1 = q0 + dq;
     Vec3<double> p1;
-    computeLegJacobianAndPosition(quadruped, q1, (Mat3<double>*)nullptr, &p1, 0);
+    computeLegJacobianAndPosition(quadruped, q1, (Mat3<double>*)nullptr, &p1,
+                                  0);
     Vec3<double> dp = p1 - p0;
-    J.block<3,1>(0, dim) = dp / d;
+    J.block<3, 1>(0, dim) = dp / d;
   }
 
   EXPECT_TRUE(almostEqual(J, Jref, .001));
@@ -61,18 +61,19 @@ TEST(LegController, JacobianAndFwdKinematics2) {
  */
 TEST(LegController, FwdKinematicsLegSign) {
   Quadruped<double> quadruped = buildMiniCheetah<double>();
-  Vec3<double> q(0,0,0);
+  Vec3<double> q(0, 0, 0);
   Vec3<double> p;
   computeLegJacobianAndPosition(quadruped, q, (Mat3<double>*)nullptr, &p, 0);
 
-  Vec3<double> pRef(0, -quadruped._abadLinkLength, -quadruped._hipLinkLength - quadruped._kneeLinkLength);
+  Vec3<double> pRef(0, -quadruped._abadLinkLength,
+                    -quadruped._hipLinkLength - quadruped._kneeLinkLength);
 
   EXPECT_TRUE(almostEqual(pRef, p, .00001));
 
   computeLegJacobianAndPosition(quadruped, q, (Mat3<double>*)nullptr, &p, 1);
 
-  Vec3<double> pRef2(0, quadruped._abadLinkLength, -quadruped._hipLinkLength - quadruped._kneeLinkLength);
+  Vec3<double> pRef2(0, quadruped._abadLinkLength,
+                     -quadruped._hipLinkLength - quadruped._kneeLinkLength);
 
   EXPECT_TRUE(almostEqual(pRef2, p, .00001));
-
 }

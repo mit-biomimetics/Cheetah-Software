@@ -8,15 +8,6 @@
 #include "cppTypes.h"
 
 /*!
- * Cheetah 3's IMU
- */
-struct KvhImuData {
-  Vec3<float> accelerometer;
-  Vec3<float> gyro;
-  // todo add status
-};
-
-/*!
  * Mini Cheetah's IMU
  */
 struct VectorNavData {
@@ -32,8 +23,7 @@ struct CheaterState {
   Vec3<T> position;
   Vec3<T> omegaBody;
   Vec3<T> vBody;
-
   Vec3<T> acceleration;
 };
 
-#endif //PROJECT_IMUTYPES_H
+#endif  // PROJECT_IMUTYPES_H

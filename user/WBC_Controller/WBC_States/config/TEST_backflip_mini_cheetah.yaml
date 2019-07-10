@@ -1,0 +1,55 @@
+# Initialization
+
+# Mini
+body_height: 0.15
+CTRL_move_to_target_height:
+    max_rf_z: 50
+    min_rf_z: 3
+    body_lifting_time: 1.0
+
+CTRL_backflip_pre:
+    motion_type: "move_to_target"
+    move_time: 2.0
+
+CTRL_backflip:
+    q_knee_max: 2.0 # used to detect landing instant 
+    qdot_knee_max: 2.0
+
+CTRL_backflip_landing:
+    max_rf_z: 50
+    min_rf_z: 10
+    body_lifting_time: 1.0
+
+# Timing Parameters (sec)
+
+
+CTRL_fix_stance:
+
+Kp: [ 100, 100, 100, 
+      100, 100, 100, 
+      100, 100, 100, 
+      100, 100, 100 ]
+
+Kd: [ 5., 5., 5., 
+      5., 5., 5., 
+      5., 5., 5., 
+      5., 5., 5. ]
+
+# Joint Feedback gain
+
+Kp_joint: [20., 20., 20.]
+Kd_joint: [3., 3., 3.]
+#Kp_joint: [20., 20., 15.]
+#Kd_joint: [0.5, 0.5, 0.3]
+
+Kp_joint_backflip: [20., 20., 15.]
+Kd_joint_backflip: [0.5, 0.5, 0.3]
+# temp
+target_jpos: [ 
+    -0.2, -1.1, 1.8, 
+    0.2, -1.0, 1.8, 
+    -0.2, -1.0, 1.8, 
+    0.2, -1.0, 1.8 ]
+
+save_file: false
+#save_file: true

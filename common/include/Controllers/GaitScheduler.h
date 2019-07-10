@@ -5,7 +5,6 @@
 #include <iostream>
 #include "Dynamics/Quadruped.h"
 
-
 /**
  * Enumerated gait types. Preplanned gaits are defined.
  */
@@ -27,16 +26,13 @@ enum class GaitType {
   TRANSITION_TO_STAND
 };
 
-
 /**
  *
  */
 template <typename T>
 struct GaitData {
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-  GaitData() {
-    zero();
-  }
+  GaitData() { zero(); }
 
   // Zero out all of the data
   void zero();
@@ -63,15 +59,15 @@ struct GaitData {
   Vec4<T> timeStance;           // total stance time
   Vec4<T> timeSwing;            // total swing time
   Vec4<T> timeStanceRemaining;  // stance time remaining
-  Vec4<T> timeSwingRemaining;    // swing time remaining
+  Vec4<T> timeSwingRemaining;   // swing time remaining
 
   // Phase based descriptors
-  Vec4<T> switchingPhase;   // phase to switch to swing
-  Vec4<T> phaseVariable;    // overall gait phase for each foot
-  Vec4<T> phaseOffset;      // nominal gait phase offsets
-  Vec4<T> phaseScale;       // phase scale relative to variable
-  Vec4<T> phaseStance;      // stance subphase
-  Vec4<T> phaseSwing;       // swing subphase
+  Vec4<T> switchingPhase;  // phase to switch to swing
+  Vec4<T> phaseVariable;   // overall gait phase for each foot
+  Vec4<T> phaseOffset;     // nominal gait phase offsets
+  Vec4<T> phaseScale;      // phase scale relative to variable
+  Vec4<T> phaseStance;     // stance subphase
+  Vec4<T> phaseSwing;      // swing subphase
 
   // Scheduled contact states
   Eigen::Vector4i contactStateScheduled;  // contact state of the foot
@@ -80,20 +76,19 @@ struct GaitData {
   Eigen::Vector4i liftoffScheduled;       // scheduled touchdown event flag
 
   // Position of the feet in the world frame at takeoff time
-  Mat34<T> posFootLiftoffWorld;     // foot position when scheduled to lift off
-  Mat34<T> posFootTouchdownWorld;   // foot position when scheduled to touchdown
+  Mat34<T> posFootLiftoffWorld;    // foot position when scheduled to lift off
+  Mat34<T> posFootTouchdownWorld;  // foot position when scheduled to touchdown
 };
-
 
 /**
  *
  */
 template <typename T>
 class GaitScheduler {
-public:
+ public:
   // Constructors for the GaitScheduler
   GaitScheduler();
-  ~GaitScheduler() {};
+  ~GaitScheduler(){};
 
   // Initialize the Gait Scheduler
   void initialize();
@@ -110,7 +105,7 @@ public:
   // Struct containing all of the gait relevant data
   GaitData<T> gaitData;
 
-private:
+ private:
   // The quadruped model
   // Quadruped<T>& _quadruped;
 
@@ -121,7 +116,7 @@ private:
   T dphase;
 
   // Choose how often to print info, every N iterations
-  int printNum = 5; // N*(0.001s) in simulation time
+  int printNum = 5;  // N*(0.001s) in simulation time
 
   // Track the number of iterations since last info print
   int printIter = 0;

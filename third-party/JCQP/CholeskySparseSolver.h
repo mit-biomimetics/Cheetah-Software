@@ -2,29 +2,9 @@
 #define QPSOLVER_CHOLESKYSPARSESOLVER_H
 
 #include "types.h"
+#include "SparseMatrixMath.h"
 
-template<typename T>
-struct MatCSC {
-  u32 nnz, m, n;
-  T* values = nullptr; // x
-  u32* colPtrs = nullptr; // p
-  u32* rowIdx = nullptr; // i
 
-  void alloc(u32 _n, u32 _nnz) {
-    nnz = _nnz;
-    n = _n;
-    m = _n;
-    values = new T[nnz];
-    colPtrs = new u32[n + 1];
-    rowIdx = new u32[nnz];
-  }
-
-  void freeAll() {
-    delete[] values;
-    delete[] colPtrs;
-    delete[] rowIdx;
-  }
-};
 
 
 template<typename T>
@@ -33,6 +13,7 @@ class CholeskySparseSolver
 public:
   CholeskySparseSolver() = default;
   void preSetup(const DenseMatrix<T>& kktMat, bool b_print = true);
+  void preSetup(const std::vector<SparseTriple<T>>& kktMat, u32 n, bool b_print = true);
   void setup(bool b_print = true);
   void solve(Vector<T>& out);
   void amdOrder(MatCSC<T>& mat, u32* perm, u32* iperm);
@@ -55,6 +36,7 @@ private:
   void factor();
   void sanityCheck();
   void solveOrder();
+  SparseTriple<T> A_triple;
   MatCSC<T> A;
   MatCSC<T> L;
   u32 n;

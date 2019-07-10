@@ -13,6 +13,7 @@ To build all code:
 mkdir build
 cd build
 cmake ..
+./../scripts/make_types.sh
 make -j4
 ```
 
@@ -41,11 +42,11 @@ To run the simulator:
 ```
 2. In the another command window, run the robot control code
 ```
-./robot/robot ${robot_name} ${target_system}
+./user/${controller_folder}/${controller_name} ${robot_name} ${target_system}
 ```
 Example)
 ```
-./robot/robot 3 s
+./user/JPos_Controller/jpos_ctrl 3 s
 ```
 3: Cheetah 3, m: Mini Cheetah
 s: simulation, r: robot
@@ -64,7 +65,7 @@ s: simulation, r: robot
 
 ## Dependencies:
 - Qt 5.10 - https://www.qt.io/download-qt-installer
-- LCM - https://lcm-proj.github.io/
+- LCM - https://lcm-proj.github.io/ (Please make it sure that you have a java to let lcm compile java-extension together)
 - Eigen - http://eigen.tuxfamily.org
 - `mesa-common-dev`
 - `freeglut3-dev`
