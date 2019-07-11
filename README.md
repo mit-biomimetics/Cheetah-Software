@@ -1,5 +1,5 @@
 ## Cheetah-Software
-This repository contains the Robot and Simulation software project.
+This repository contains the Robot and Simulation software project.  For a getting started guide, see the documentation folder.
 
 The common folder contains the common library with dynamics and utilities
 The resources folder will contain data files, like CAD of the robot used for the visualization
