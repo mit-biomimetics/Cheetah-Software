@@ -106,6 +106,48 @@ The joint PD control actually runs at 40 kHz on the motor controllers.
 
 If you would like to see more of how this works, look at the `robot` folder.  The `RobotRunner` class actually runs the control code, and connects it with either the `HardwareBridge` or `SimulationBridge`.  The code in the `rt` folder actually interacts with the hardware.
 
+# User Parameters
+User Parameters are settings which are specific to the controller you are running.  The list of user parameters and their values are defined in a yaml file.  On startup, the file `config/default-user.yaml` is loaded into the simulator. Currently you must manually make sure that your currently loaded list of user parameters (on the right of the simulator window) matches the user parameters you define in your controller.  If these do not match, the controller will see the mismatch and print an error like 
+
+`parameter cmpc_gait wasn't found in parameter collection user-parameters`
+
+In this case, you should edit `config/default-user.yaml` to have the same parameters as your controller's user parameters. After changing `default-user.yaml`, you must either restart the simulator, or use the "Load" button to reload the parameters.
+
+If you do not want to use user parameters, you can simply put
+
+`__collection-name__: user-parameters`
+
+as the only thing in `config/default-user.yaml`.  Then, in your `RobotController` class, you should provide the method
+
+```
+  // indicate that there are no user control parameters for this controller
+  virtual ControlParameters* getUserControlParameters() {
+    return nullptr;
+  }
+```
+
+
+# Errors
+If the controller software encounters an error where it cannot determine what to do safely (such as incompatible control parameters), it will stop itself.  Currently it will crash with `terminate called after throwing an instance of ....` and should print the exception and an error message. 
+
+If you see the controller crash with `CRASH: Caught 11` (segfault)  or `terminate called without active exception`, it is because the code has actually crashed.  If this crash is not caused by your controller code, this is a bug, and you should create a Github issue.
+
+If the controller stops responding for more than 1 second (it has crashed, or is stuck in a loop), the simulator will go into an error state.  It will print `[ERROR] Timed out waiting for message from robot!  Did it crash?`. 
+
+If the simulator itself throws an exception or crashes, this is a bug, and you should create a Github issue.
+
+# Recovering from Errors
+Currently, the most reliable way to recover from errors is:
+
+- Kill the controller code
+- Click "Stop" in the simulator
+- Click "Start" in the simulator
+- Restart the controller code
+
+
+If you ever get the simulator in a state where you can't click "Stop" to reset the simulation (or the simulator crashes), it is a bug and you should open a Github issue.
+
+
 
 # Unfinished
 - Verify that the controller update rate can be changed in simulation/robot hardware
