@@ -1,9 +1,0 @@
-digraph "GamepadCommand::GamepadCommand"
-{
-  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
-  node [fontname="FreeSans",fontsize="10",shape=record];
-  rankdir="LR";
-  Node1 [label="GamepadCommand::GamepadCommand",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
-  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
-  Node2 [label="GamepadCommand::zero",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d51/struct_gamepad_command.html#a9eaa9194374572d57b23de164ee6b29f"];
-}

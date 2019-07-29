@@ -1,8 +1,0 @@
-digraph "SimControlPanel"
-{
-  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
-  node [fontname="FreeSans",fontsize="10",shape=record];
-  Node1 [label="{SimControlPanel\n|- _simThread\l- _started\l- ui\l- _simulation\l- _interfaceTaskManager\l- _robotInterface\l- _graphicsWindow\l- _parameters\l- _userParameters\l- _simulationMode\l- _firstStart\l- _ignoreTableCallbacks\l- _loadedUserSettings\l- _terrainFileName\l|+ SimControlPanel()\l+ ~SimControlPanel()\l- updateUiEnable()\l- on_startButton_clicked()\l- on_stopButton_clicked()\l- on_joystickButton_clicked()\l- on_driverButton_clicked()\l- on_simulatorTable_cellChanged()\l- on_saveSimulatorButton\l_clicked()\l- on_loadSimulatorButton\l_clicked()\l- on_robotTable_cellChanged()\l- on_saveRobotButton\l_clicked()\l- on_loadRobotButton\l_clicked()\land 10 more...\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
-  Node2 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal",fontname="FreeSans"];
-  Node2 [label="{QMainWindow\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
-}

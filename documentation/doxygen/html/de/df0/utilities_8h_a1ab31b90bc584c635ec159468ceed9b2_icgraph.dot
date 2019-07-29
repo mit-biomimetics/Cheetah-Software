@@ -1,9 +1,0 @@
-digraph "sgn"
-{
-  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
-  node [fontname="FreeSans",fontsize="10",shape=record];
-  rankdir="LR";
-  Node1 [label="sgn",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
-  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
-  Node2 [label="ActuatorModel::getTorque",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/dec/class_actuator_model.html#a4636ef2d74cba1302f99f973f1701318"];
-}

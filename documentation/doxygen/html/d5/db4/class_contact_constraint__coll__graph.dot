@@ -1,6 +1,0 @@
-digraph "ContactConstraint&lt; T &gt;"
-{
-  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
-  node [fontname="FreeSans",fontsize="10",shape=record];
-  Node1 [label="{ContactConstraint\< T \>\n|# deflectionRate\l# _tangentialDeflections\l# _nContact\l# _nCollision\l# _model\l# _collision_list\l# _idx_list\l# _cp_resti_list\l# _cp_mu_list\l# _cp_penetration_list\l# _cp_force_list\l# _cp_local_force_list\l# _cp_pos_list\l# _cp_frame_list\l|+ ContactConstraint()\l+ ~ContactConstraint()\l+ AddCollision()\l+ UpdateExternalForces()\l+ UpdateQdot()\l+ getContactPosList()\l+ getGCForce()\l# _groundContactWithOffset()\l# _CheckContact()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
-}

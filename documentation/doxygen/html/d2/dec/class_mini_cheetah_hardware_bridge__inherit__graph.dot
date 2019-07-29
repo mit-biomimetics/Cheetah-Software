@@ -1,8 +1,0 @@
-digraph "MiniCheetahHardwareBridge"
-{
-  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
-  node [fontname="FreeSans",fontsize="10",shape=record];
-  Node1 [label="{MiniCheetahHardwareBridge\n|- _vectorNavData\l- _spiLcm\l|+ MiniCheetahHardwareBridge()\l+ runSpi()\l+ initHardware()\l+ run()\l+ abort()\l+ abort()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
-  Node2 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal",fontname="FreeSans"];
-  Node2 [label="{HardwareBridge\n|# taskManager\l# statusTask\l# _gamepadCommand\l# _visualizationData\l# _mainCheetahVisualization\l# _interfaceLCM\l# _visualizationLCM\l# _parameter_response_lcmt\l# _spiData\l# _spiCommand\land 8 more...\l|+ HardwareBridge()\l+ prefaultStack()\l+ setupScheduler()\l+ initError()\l+ initCommon()\l+ ~HardwareBridge()\l+ handleGamepadLCM()\l+ handleInterfaceLCM()\l+ handleControlParameter()\l+ publishVisualizationLCM()\l+ run_sbus()\l}",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/dd8/class_hardware_bridge.html"];
-}

@@ -1,8 +1,0 @@
-digraph "CollisionPlane&lt; T &gt;"
-{
-  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
-  node [fontname="FreeSans",fontsize="10",shape=record];
-  Node1 [label="{CollisionPlane\< T \>\n|- _height\l|+ CollisionPlane()\l+ ~CollisionPlane()\l+ ContactDetection()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
-  Node2 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal",fontname="FreeSans"];
-  Node2 [label="{Collision\< T \>\n|# _mu\l# _restitution_coeff\l|+ Collision()\l+ ~Collision()\l+ ContactDetection()\l+ getFrictionCoeff()\l+ getRestitutionCoeff()\l}",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/dc6/class_collision.html"];
-}

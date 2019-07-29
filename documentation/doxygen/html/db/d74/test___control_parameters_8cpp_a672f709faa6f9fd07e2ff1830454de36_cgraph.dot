@@ -1,9 +1,0 @@
-digraph "TEST"
-{
-  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
-  node [fontname="FreeSans",fontsize="10",shape=record];
-  rankdir="LR";
-  Node1 [label="TEST",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
-  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
-  Node2 [label="getControlParameterValue\lKindFromString",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d01/_control_parameters_8h.html#a49f66b4d586d9f1e4eb1d789abb5098f"];
-}

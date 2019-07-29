@@ -1,6 +1,0 @@
-digraph "Quadruped&lt; T &gt;"
-{
-  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
-  node [fontname="FreeSans",fontsize="10",shape=record];
-  Node1 [label="{Quadruped\< T \>\n|+ _robotType\l+ _bodyLength\l+ _bodyWidth\l+ _bodyHeight\l+ _bodyMass\l+ _abadGearRatio\l+ _hipGearRatio\l+ _kneeGearRatio\l+ _abadLinkLength\l+ _hipLinkLength\land 21 more...\l|+ buildModel()\l+ buildModel()\l+ buildActuatorModels()\l+ getHipLocation()\l+ getSideSign()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
-}

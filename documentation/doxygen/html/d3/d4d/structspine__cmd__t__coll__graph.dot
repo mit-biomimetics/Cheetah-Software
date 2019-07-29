@@ -1,6 +1,0 @@
-digraph "spine_cmd_t"
-{
-  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
-  node [fontname="FreeSans",fontsize="10",shape=record];
-  Node1 [label="{spine_cmd_t\n|+ q_des_abad\l+ q_des_hip\l+ q_des_knee\l+ qd_des_abad\l+ qd_des_hip\l+ qd_des_knee\l+ kp_abad\l+ kp_hip\l+ kp_knee\l+ kd_abad\land 7 more...\l|}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
-}

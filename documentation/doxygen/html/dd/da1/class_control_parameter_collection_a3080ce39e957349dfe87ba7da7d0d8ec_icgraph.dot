@@ -1,9 +1,0 @@
-digraph "ControlParameterCollection::addParameter"
-{
-  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
-  node [fontname="FreeSans",fontsize="10",shape=record];
-  rankdir="LR";
-  Node1 [label="ControlParameterCollection\l::addParameter",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
-  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
-  Node2 [label="ControlParameter::Control\lParameter",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d98/class_control_parameter.html#ac3856141809ee15f4c1e5fb3899bf1f9"];
-}
