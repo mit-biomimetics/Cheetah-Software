@@ -1,0 +1,8 @@
+digraph "FirstOrderIIRFilter&lt; T, T2 &gt;"
+{
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  Node1 [label="{FirstOrderIIRFilter\l\< T, T2 \>\n|- _state\l- _alpha\l|+ FirstOrderIIRFilter()\l+ FirstOrderIIRFilter()\l+ update()\l+ get()\l+ reset()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 -> Node2 [dir="back",color="orange",fontsize="10",style="solid",label=" \< Vec3\< float \>, float \>" ,fontname="FreeSans"];
+  Node2 [label="{FirstOrderIIRFilter\l\< Vec3\< float \>, float \>\n|- _state\l- _alpha\l|+ FirstOrderIIRFilter()\l+ FirstOrderIIRFilter()\l+ update()\l+ get()\l+ reset()\l}",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d6f/class_first_order_i_i_r_filter.html"];
+}

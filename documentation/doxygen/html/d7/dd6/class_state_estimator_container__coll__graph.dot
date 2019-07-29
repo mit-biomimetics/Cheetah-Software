@@ -1,0 +1,6 @@
+digraph "StateEstimatorContainer&lt; T &gt;"
+{
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  Node1 [label="{StateEstimatorContainer\< T \>\n|- _data\l- _estimators\l- _phase\l|+ StateEstimatorContainer()\l+ run()\l+ getResult()\l+ setContactPhase()\l+ addEstimator()\l+ removeEstimator()\l+ removeAllEstimators()\l+ ~StateEstimatorContainer()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+}

@@ -1,0 +1,8 @@
+digraph "TestVectorControlParameters"
+{
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  Node1 [label="{TestVectorControlParameters\n|+ test_double\l+ test_double_param\l+ test_float\l+ test_float_param\l|+ TestVectorControlParameters()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal",fontname="FreeSans"];
+  Node2 [label="{ControlParameters\n|+ collection\l# _name\l# _mutex\l|+ ControlParameters()\l+ isFullyInitialized()\l+ initializeDouble()\l+ initializeFloat()\l+ initializeInteger()\l+ initializeVec3f()\l+ initializeVec3d()\l+ lockMutex()\l+ unlockMutex()\l+ writeToIniFile()\l+ initializeFromIniFile()\l+ initializeFromYamlFile()\l+ defineAndInitializeFromYamlFile()\l+ writeToYamlFile()\l+ generateUnitializedList()\l}",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/d86/class_control_parameters.html"];
+}

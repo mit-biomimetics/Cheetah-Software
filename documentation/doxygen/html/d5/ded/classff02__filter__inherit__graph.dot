@@ -1,0 +1,8 @@
+digraph "ff02_filter&lt; T &gt;"
+{
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  Node1 [label="{ff02_filter\< T \>\n|- Lpf_in_prev\l- Lpf_out_prev\l- Lpf_in1\l- Lpf_in2\l- Lpf_in3\l- Lpf_out1\l- Lpf_out2\l- lpf_out\l|+ ff02_filter()\l+ ~ff02_filter()\l+ input()\l+ output()\l+ clear()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal",fontname="FreeSans"];
+  Node2 [label="{filter\< T \>\n||+ filter()\l+ ~filter()\l+ input()\l+ output()\l+ clear()\l}",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/db7/classfilter.html"];
+}

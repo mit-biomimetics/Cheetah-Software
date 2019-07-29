@@ -1,0 +1,9 @@
+digraph "deriv_lp_filter::deriv_lp_filter"
+{
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="deriv_lp_filter::deriv\l_lp_filter",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node2 [label="moving_average_filter\l::clear",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d92/classmoving__average__filter.html#ad2b6e828e52260af67a503c8adfea845"];
+}

@@ -1,0 +1,17 @@
+digraph "Dynamics" {
+  compound=true
+  node [ fontsize="10", fontname="FreeSans"];
+  edge [ labelfontsize="10", labelfontname="FreeSans"];
+  subgraph clusterdir_275ce76ae8a9e2090fbb7142d3994a0e {
+    graph [ bgcolor="#ddddee", pencolor="black", label="include" fontname="FreeSans", fontsize="10", URL="dir_275ce76ae8a9e2090fbb7142d3994a0e.html"]
+  dir_5f249a132d763dc59b0ff1086b98b7c1 [shape=box, label="Dynamics", style="filled", fillcolor="#eeeeff", pencolor="black", URL="dir_5f249a132d763dc59b0ff1086b98b7c1.html"];
+  }
+  dir_d631aa3083290dc23dd8bdcd7ad213ec [shape=box label="Utilities" URL="dir_d631aa3083290dc23dd8bdcd7ad213ec.html"];
+  dir_584205112fbaf643cea6b51b9cb6fcc8 [shape=box label="Math" URL="dir_584205112fbaf643cea6b51b9cb6fcc8.html"];
+  dir_9f3746ebe7983c5cb005f7fd6ef8aef4 [shape=box label="Collision" URL="dir_9f3746ebe7983c5cb005f7fd6ef8aef4.html"];
+  dir_5f249a132d763dc59b0ff1086b98b7c1->dir_d631aa3083290dc23dd8bdcd7ad213ec [headlabel="1", labeldistance=1.5 headhref="dir_000006_000007.html"];
+  dir_5f249a132d763dc59b0ff1086b98b7c1->dir_584205112fbaf643cea6b51b9cb6fcc8 [headlabel="4", labeldistance=1.5 headhref="dir_000006_000020.html"];
+  dir_5f249a132d763dc59b0ff1086b98b7c1->dir_9f3746ebe7983c5cb005f7fd6ef8aef4 [headlabel="4", labeldistance=1.5 headhref="dir_000006_000011.html"];
+  dir_9f3746ebe7983c5cb005f7fd6ef8aef4->dir_d631aa3083290dc23dd8bdcd7ad213ec [headlabel="3", labeldistance=1.5 headhref="dir_000011_000007.html"];
+  dir_9f3746ebe7983c5cb005f7fd6ef8aef4->dir_5f249a132d763dc59b0ff1086b98b7c1 [headlabel="3", labeldistance=1.5 headhref="dir_000011_000006.html"];
+}

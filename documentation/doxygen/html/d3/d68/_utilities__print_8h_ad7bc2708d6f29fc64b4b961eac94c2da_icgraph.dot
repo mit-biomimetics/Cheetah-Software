@@ -1,0 +1,15 @@
+digraph "fprintf_color"
+{
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="fprintf_color",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node2 [label="segfault_handler",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/d17/_segfault_handler_8cpp.html#a20c4060e48b7a8bc188d81b87e974c05"];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node3 [label="install_segfault_handler",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/d17/_segfault_handler_8cpp.html#a13a0654cbf892725bd09b7d25d1fe57b"];
+  Node3 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node4 [label="main",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/d0a/main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97"];
+  Node3 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node5 [label="main_helper",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d3/dfa/main__helper_8cpp.html#acd1b6ffaae55ecc3c765c38ce5bf3a95"];
+}

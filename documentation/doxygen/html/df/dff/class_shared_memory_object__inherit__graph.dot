@@ -1,0 +1,8 @@
+digraph "SharedMemoryObject&lt; T &gt;"
+{
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  Node1 [label="{SharedMemoryObject\< T \>\n|- _data\l- _name\l- _size\l- _fd\l|+ SharedMemoryObject()\l+ createNew()\l+ attach()\l+ closeNew()\l+ detach()\l+ get()\l+ operator()()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 -> Node2 [dir="back",color="orange",fontsize="10",style="solid",label=" \< SimulatorSyncronizedMessage \>" ,fontname="FreeSans"];
+  Node2 [label="{SharedMemoryObject\l\< SimulatorSyncronizedMessage \>\n|- _data\l- _name\l- _size\l- _fd\l|+ SharedMemoryObject()\l+ createNew()\l+ attach()\l+ closeNew()\l+ detach()\l+ get()\l+ operator()()\l}",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d8d/class_shared_memory_object.html"];
+}

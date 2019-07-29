@@ -1,0 +1,23 @@
+digraph "RobotRunner::setupStep"
+{
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="RobotRunner::setupStep",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node2 [label="RobotRunner::initializeState\lEstimator",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d42/class_robot_runner.html#a2690089988868e09ee5827788bded47a"];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node3 [label="StateEstimatorContainer\l::addEstimator",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d3b/class_state_estimator_container.html#a82af04a884b97b78cabfa79e85fd353f"];
+  Node2 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node4 [label="StateEstimatorContainer\l::removeAllEstimators",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d3b/class_state_estimator_container.html#ad14b9aedc91b17e460bec6f5b73e024e"];
+  Node2 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node5 [label="StateEstimatorContainer\l::setContactPhase",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d3b/class_state_estimator_container.html#a100bfcb62c735fef211ae5564ca2e4f6"];
+  Node1 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node6 [label="LegController::setEnabled",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/d96/class_leg_controller.html#a47178c450659ac6793ac7a74351094e5"];
+  Node1 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node7 [label="LegController::setMaxTorque\lCheetah3",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/d96/class_leg_controller.html#a2ccb52cceb6b9ac1a6ef86c823d81fa1"];
+  Node1 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node8 [label="LegController::updateData",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/d96/class_leg_controller.html#aec19eaa7a02abc15dba5106b82c5a8bc"];
+  Node1 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node9 [label="LegController::zeroCommand",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/d96/class_leg_controller.html#a8fc971360d5ce54469d219c6aa4b51e4"];
+}

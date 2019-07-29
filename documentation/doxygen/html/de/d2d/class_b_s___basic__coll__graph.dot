@@ -1,0 +1,8 @@
+digraph "BS_Basic&lt; T, DIM, DEGREE, NUM_MIDDLE, CONST_LEVEL_INI, CONST_LEVEL_FIN &gt;"
+{
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  Node1 [label="{BS_Basic\< T, DIM, DEGREE,\l NUM_MIDDLE, CONST_LEVEL\l_INI, CONST_LEVEL_FIN \>\n|- NumKnots_\l- NumCPs_\l|+ BS_Basic()\l+ ~BS_Basic()\l+ SetParam()\l+ getCurvePoint()\l+ getCurveDerPoint()\l- _CalcKnot()\l- _CurveDerivsAlg1V()\l- _BasisFunsDers()\l- _BasisFunsDers()\l- _BasisFuns()\l- _BasisFuns()\l- _Left()\l- _Right()\l- _findSpan()\l- _CalcConstrainedCPoints()\l- _PrintCP()\l- _CalcCPoints()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node1 [color="grey25",fontsize="10",style="solid",label=" -CPoints_\n-fin_time_\n-Knots_" ,arrowhead="odiamond",fontname="FreeSans"];
+  Node2 [label="{T\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+}

@@ -1,0 +1,42 @@
+digraph "sim_utilities.cpp"
+{
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  Node1 [label="sim_utilities.cpp",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node2 [label="sim_utilities.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/dff/sim__utilities_8h.html",tooltip="Utility functions that exist only in the simulator. "];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node3 [label="Dynamics/spatial.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/dc8/spatial_8h.html",tooltip="Utility functions for manipulating spatial quantities. "];
+  Node3 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node4 [label="Math/orientation_tools.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/dfb/orientation__tools_8h.html",tooltip="Utility functions for 3D rotations. "];
+  Node4 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node5 [label="Math/MathUtilities.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/dda/_math_utilities_8h.html",tooltip="Utility functions for math. "];
+  Node5 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node6 [label="eigen3/Eigen/Dense",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node4 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node7 [label="cppTypes.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d8e/cpp_types_8h.html"];
+  Node7 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node7 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node8 [label="vector",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node7 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node9 [label="cTypes.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/d99/c_types_8h.html",tooltip="Common types that are only valid in C++. "];
+  Node9 -> Node10 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node10 [label="stddef.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node9 -> Node11 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node11 [label="stdint.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node4 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node4 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node12 [label="cmath",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node4 -> Node13 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node13 [label="iostream",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node4 -> Node14 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node14 [label="type_traits",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node3 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node3 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node3 -> Node13 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node3 -> Node14 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node2 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node2 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node2 -> Node15 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node15 [label="QMatrix4x4",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+}

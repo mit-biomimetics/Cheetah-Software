@@ -7,6 +7,8 @@ The robot folder will contain the robot program
 The sim folder will contain the simulation program. It is the only program which depends on QT.
 The third-party will contain *small* third party libraries that we have modified. This should just be libsoem for Cheetah 3, which Pat modified at one point.
 
+Doxygen document: https://mit-biomimetics.github.io
+
 ## Build
 To build all code:
 ```

@@ -1,0 +1,13 @@
+digraph "Graphical Class Hierarchy"
+{
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="Collision\< T \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/dc6/class_collision.html"];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node2 [label="CollisionBox\< T \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/db3/class_collision_box.html"];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node3 [label="CollisionMesh\< T \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/daa/class_collision_mesh.html"];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node4 [label="CollisionPlane\< T \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d38/class_collision_plane.html"];
+}

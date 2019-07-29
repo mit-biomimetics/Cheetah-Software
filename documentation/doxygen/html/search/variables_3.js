@@ -1,0 +1,26 @@
+var searchData=
+[
+  ['channel_5fdata',['channel_data',['../d2/dad/rt__sbus_8cpp.html#a4e7ed72b0ccac4c7b9c209145ea4b01b',1,'rt_sbus.cpp']]],
+  ['channels',['channels',['../d2/dad/rt__sbus_8cpp.html#a45701f35ad10342d895fc3637c8fc227',1,'rt_sbus.cpp']]],
+  ['cheaterstate',['cheaterState',['../d1/d0d/struct_state_estimator_data.html#a8f51121c7f0d6035b636f03a04b012c7',1,'StateEstimatorData::cheaterState()'],['../da/d43/struct_simulator_to_robot_message.html#a03381cb1b455da775b2529d7b0bec173',1,'SimulatorToRobotMessage::cheaterState()'],['../d9/d42/class_robot_runner.html#a0c0ed1f15b551e355dd724696830d9ce',1,'RobotRunner::cheaterState()']]],
+  ['checkerboarddark',['checkerboardDark',['../dc/daa/_colors_8h.html#a5455a636720a913de6ab033eae5e0746',1,'Colors.h']]],
+  ['checkerboardlight',['checkerboardLight',['../dc/daa/_colors_8h.html#a8450fe3cef6bee0f0ca51bff464853b7',1,'Colors.h']]],
+  ['checksum',['checksum',['../d1/d9e/structspine__cmd__t.html#a429b53cc60d1d79cf6836ee79cee7453',1,'spine_cmd_t::checksum()'],['../de/de1/structspine__data__t.html#ae29473391ce68697b43e91176742ade0',1,'spine_data_t::checksum()']]],
+  ['cheetahmainvisualization',['cheetahMainVisualization',['../d9/d42/class_robot_runner.html#ad49f79affbf6c35d4c8ac21a50cb8ae3',1,'RobotRunner']]],
+  ['clearcolor',['clearColor',['../d7/d90/_graphics3_d_8cpp.html#af71db2fb04cedbd9e3c5ecfef59668f5',1,'Graphics3D.cpp']]],
+  ['cmd',['cmd',['../d1/da3/class_spine_board.html#aa14a53c2ee68bf08c9a0e81071f88d0e',1,'SpineBoard']]],
+  ['collection',['collection',['../d8/d86/class_control_parameters.html#ab42dff0f07e88bf44c831238dd4ce96f',1,'ControlParameters']]],
+  ['color',['color',['../d7/d94/struct_sphere_visualization.html#aea69e24257acb3572997bf10ac849aa5',1,'SphereVisualization::color()'],['../d5/d38/struct_block_visualization.html#a53d11cfe2073612d72b2bf135e810549',1,'BlockVisualization::color()'],['../d4/d7b/struct_arrow_visualization.html#a6a693a511a4598a5f1342d660d94058f',1,'ArrowVisualization::color()'],['../d0/d6d/struct_cheetah_visualization.html#a78d3a586c160f8ec983f65f1605bacb1',1,'CheetahVisualization::color()'],['../d1/d06/struct_path_visualization.html#a9bfc2fdcd8c81c4adaabfae7939d6025',1,'PathVisualization::color()'],['../df/da6/struct_cone_visualization.html#ac7cbde74fb410d14c1ee05fba6919149',1,'ConeVisualization::color()']]],
+  ['command',['command',['../d4/d1a/class_t_i___board_control.html#a34adea65f3e6967356c8da43562bb3a9',1,'TI_BoardControl']]],
+  ['commands',['commands',['../d0/d96/class_leg_controller.html#a0989efb2b62a34f7cef3f4cf29b6783f',1,'LegController']]],
+  ['cones',['cones',['../d3/d60/struct_visualization_data.html#a3ad962607df43b9c3341fd66fccf7965',1,'VisualizationData']]],
+  ['contactestimate',['contactEstimate',['../dd/df3/struct_state_estimate.html#ad28dec217f9efc12b6f7fbeacbb5abbb',1,'StateEstimate']]],
+  ['contactphase',['contactPhase',['../d1/d0d/struct_state_estimator_data.html#a5b4dc863a1cc24560e63e3210788d1c3',1,'StateEstimatorData']]],
+  ['contactstateprev',['contactStatePrev',['../d9/d28/struct_gait_data.html#abe8407729e50c8e324ea6e10f5ca4eeb',1,'GaitData']]],
+  ['contactstatescheduled',['contactStateScheduled',['../d9/d28/struct_gait_data.html#ac4110d976fc64261b1056ca00dc42d6d',1,'GaitData']]],
+  ['controlparameterrequest',['controlParameterRequest',['../da/d43/struct_simulator_to_robot_message.html#a939fd50f424b63b652f74e0b10a859eb',1,'SimulatorToRobotMessage']]],
+  ['controlparameterresponse',['controlParameterResponse',['../df/dc1/struct_robot_to_simulator_message.html#ae877e8f32edbcece569582b85929b3a2',1,'RobotToSimulatorMessage']]],
+  ['controlparameters',['controlParameters',['../d9/d42/class_robot_runner.html#a1738f8f82abdedc10c25e0360fba2dec',1,'RobotRunner']]],
+  ['corner_5fposition',['corner_position',['../d5/d38/struct_block_visualization.html#a36f8d0393f0e30ae00a6ef8172cf5d4b',1,'BlockVisualization']]],
+  ['cpoints_5f',['CPoints_',['../d9/da0/class_b_s___basic.html#a4af5e2969d7a9941af6ebcf97b3abee5',1,'BS_Basic']]]
+];

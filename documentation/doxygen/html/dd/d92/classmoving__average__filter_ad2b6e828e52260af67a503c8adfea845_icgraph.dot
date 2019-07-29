@@ -1,0 +1,11 @@
+digraph "moving_average_filter::clear"
+{
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="moving_average_filter\l::clear",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node2 [label="deriv_lp_filter::deriv\l_lp_filter",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d40/classderiv__lp__filter.html#aae4b9d0d55f74e3b812e4f654ed1aea6"];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node3 [label="ff02_filter::ff02_filter",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/dcb/classff02__filter.html#aac8fac9ac96fee668af4d0a2ba98b434"];
+}

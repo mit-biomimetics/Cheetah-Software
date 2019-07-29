@@ -1,0 +1,10 @@
+digraph "BS_Basic&lt; T, DIM, DEGREE, NUM_MIDDLE, CONST_LEVEL_INI, CONST_LEVEL_FIN &gt;"
+{
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  Node1 [label="{BS_Basic\< T, DIM, DEGREE,\l NUM_MIDDLE, CONST_LEVEL\l_INI, CONST_LEVEL_FIN \>\n|- fin_time_\l- NumKnots_\l- NumCPs_\l- Knots_\l- CPoints_\l|+ BS_Basic()\l+ ~BS_Basic()\l+ SetParam()\l+ getCurvePoint()\l+ getCurveDerPoint()\l- _CalcKnot()\l- _CurveDerivsAlg1V()\l- _BasisFunsDers()\l- _BasisFunsDers()\l- _BasisFuns()\l- _BasisFuns()\l- _Left()\l- _Right()\l- _findSpan()\l- _CalcConstrainedCPoints()\l- _PrintCP()\l- _CalcCPoints()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 -> Node2 [dir="back",color="orange",fontsize="10",style="solid",label=" \< T, cheetah::num_act\l_joint, 3, 1, 2, 2 \>" ,fontname="FreeSans"];
+  Node2 [label="{BS_Basic\< T, cheetah\l::num_act_joint, 3, 1,\l 2, 2 \>\n|- fin_time_\l- NumKnots_\l- NumCPs_\l- Knots_\l- CPoints_\l|+ BS_Basic()\l+ ~BS_Basic()\l+ SetParam()\l+ getCurvePoint()\l+ getCurveDerPoint()\l- _CalcKnot()\l- _CurveDerivsAlg1V()\l- _BasisFunsDers()\l- _BasisFunsDers()\l- _BasisFuns()\l- _BasisFuns()\l- _Left()\l- _Right()\l- _findSpan()\l- _CalcConstrainedCPoints()\l- _PrintCP()\l- _CalcCPoints()\l}",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/da0/class_b_s___basic.html"];
+  Node1 -> Node3 [dir="back",color="orange",fontsize="10",style="solid",label=" \< float, cheetah::num\l_act_joint, 3, 1, 2, 2 \>" ,fontname="FreeSans"];
+  Node3 [label="{BS_Basic\< float, cheetah\l::num_act_joint, 3, 1, 2, 2 \>\n|- fin_time_\l- NumKnots_\l- NumCPs_\l- Knots_\l- CPoints_\l|+ BS_Basic()\l+ ~BS_Basic()\l+ SetParam()\l+ getCurvePoint()\l+ getCurveDerPoint()\l- _CalcKnot()\l- _CurveDerivsAlg1V()\l- _BasisFunsDers()\l- _BasisFunsDers()\l- _BasisFuns()\l- _BasisFuns()\l- _Left()\l- _Right()\l- _findSpan()\l- _CalcConstrainedCPoints()\l- _PrintCP()\l- _CalcCPoints()\l}",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/da0/class_b_s___basic.html"];
+}

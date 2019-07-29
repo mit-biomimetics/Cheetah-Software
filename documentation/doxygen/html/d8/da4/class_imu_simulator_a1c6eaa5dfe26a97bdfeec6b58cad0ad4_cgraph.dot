@@ -1,0 +1,17 @@
+digraph "ImuSimulator::updateVectornav"
+{
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="ImuSimulator::updateVectornav",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node2 [label="f",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/dd7/test__casadi_8cpp.html#ae20d7fba59865a21504b65cdb44cbfe5"];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node3 [label="fillEigenWithRandom",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/df0/utilities_8h.html#abbe68d910024077560aa4d2c88c9ca76"];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node4 [label="ori::integrateQuat",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d9b/namespaceori.html#ac12ecf143879de178929ecaad1714a6a"];
+  Node4 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node5 [label="ori::quatProduct",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d9b/namespaceori.html#a89494866325446c634184782e56113ff"];
+  Node1 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node6 [label="ori::quaternionToRotation\lMatrix",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d9b/namespaceori.html#af88fa91d686c646d41f9b747a6bc90f0"];
+}

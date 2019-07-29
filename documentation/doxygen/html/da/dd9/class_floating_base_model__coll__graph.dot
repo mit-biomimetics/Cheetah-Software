@@ -1,0 +1,40 @@
+digraph "FloatingBaseModel&lt; T &gt;"
+{
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  Node1 [label="{FloatingBaseModel\< T \>\n|+ _nDof\l+ _gravity\l+ _nGroundContact\l+ _state\l+ _dState\l+ _v\l+ _vrot\l+ _a\l+ _arot\l+ _avp\land 41 more...\l|+ FloatingBaseModel()\l+ ~FloatingBaseModel()\l+ addBase()\l+ addBase()\l+ addGroundContactPoint()\l+ addGroundContactBoxPoints()\l+ addBody()\l+ addBody()\l+ check()\l+ totalRotorMass()\land 41 more...\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node1 [color="grey25",fontsize="10",style="solid",label=" +_gcLocation\n+_pGC\n+_vGC" ,arrowhead="odiamond",fontname="FreeSans"];
+  Node2 [label="{vector\< Vec3\< T \> \>\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node3 -> Node2 [dir="back",color="orange",fontsize="10",style="solid",label=" \< Vec3\< T \> \>" ,fontname="FreeSans"];
+  Node3 [label="{vector\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node4 -> Node1 [color="grey25",fontsize="10",style="solid",label=" +_Ibody\n+_Irot" ,arrowhead="odiamond",fontname="FreeSans"];
+  Node4 [label="{vector\< SpatialInertia\l\< T \>, Eigen::aligned\l_allocator\< SpatialInertia\l\< T \> \> \>\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node3 -> Node4 [dir="back",color="orange",fontsize="10",style="solid",label=" \< SpatialInertia\< T\l \>, Eigen::aligned_allocator\l\< SpatialInertia\< T \> \> \>" ,fontname="FreeSans"];
+  Node5 -> Node1 [color="grey25",fontsize="10",style="solid",label=" +_Xtree\n+_Xrot" ,arrowhead="odiamond",fontname="FreeSans"];
+  Node5 [label="{vector\< Mat6\< T \>,\l Eigen::aligned_allocator\l\< Mat6\< T \> \> \>\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node3 -> Node5 [dir="back",color="orange",fontsize="10",style="solid",label=" \< Mat6\< T \>, Eigen\l::aligned_allocator\l\< Mat6\< T \> \> \>" ,fontname="FreeSans"];
+  Node6 -> Node1 [color="grey25",fontsize="10",style="solid",label=" +_jointTypes" ,arrowhead="odiamond",fontname="FreeSans"];
+  Node6 [label="{vector\< JointType \>\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node3 -> Node6 [dir="back",color="orange",fontsize="10",style="solid",label=" \< JointType \>" ,fontname="FreeSans"];
+  Node7 -> Node1 [color="grey25",fontsize="10",style="solid",label=" +_jointAxes" ,arrowhead="odiamond",fontname="FreeSans"];
+  Node7 [label="{vector\< CoordinateAxis \>\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node3 -> Node7 [dir="back",color="orange",fontsize="10",style="solid",label=" \< CoordinateAxis \>" ,fontname="FreeSans"];
+  Node8 -> Node1 [color="grey25",fontsize="10",style="solid",label=" +_footIndicesGC" ,arrowhead="odiamond",fontname="FreeSans"];
+  Node8 [label="{vector\< uint64_t \>\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node3 -> Node8 [dir="back",color="orange",fontsize="10",style="solid",label=" \< uint64_t \>" ,fontname="FreeSans"];
+  Node9 -> Node1 [color="grey25",fontsize="10",style="solid",label=" +_gearRatios\n+_u\n+_d" ,arrowhead="odiamond",fontname="FreeSans"];
+  Node9 [label="{vector\< T \>\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node3 -> Node9 [dir="back",color="orange",fontsize="10",style="solid",label=" \< T \>" ,fontname="FreeSans"];
+  Node10 -> Node1 [color="grey25",fontsize="10",style="solid",label=" +_gcParent" ,arrowhead="odiamond",fontname="FreeSans"];
+  Node10 [label="{vector\< size_t \>\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node3 -> Node10 [dir="back",color="orange",fontsize="10",style="solid",label=" \< size_t \>" ,fontname="FreeSans"];
+  Node11 -> Node1 [color="grey25",fontsize="10",style="solid",label=" +_parents" ,arrowhead="odiamond",fontname="FreeSans"];
+  Node11 [label="{vector\< int \>\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node3 -> Node11 [dir="back",color="orange",fontsize="10",style="solid",label=" \< int \>" ,fontname="FreeSans"];
+  Node12 -> Node1 [color="grey25",fontsize="10",style="solid",label=" +_compute_contact_info" ,arrowhead="odiamond",fontname="FreeSans"];
+  Node12 [label="{vector\< bool \>\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node3 -> Node12 [dir="back",color="orange",fontsize="10",style="solid",label=" \< bool \>" ,fontname="FreeSans"];
+  Node13 -> Node1 [color="grey25",fontsize="10",style="solid",label=" +_bodyNames" ,arrowhead="odiamond",fontname="FreeSans"];
+  Node13 [label="{vector\< std::string \>\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node3 -> Node13 [dir="back",color="orange",fontsize="10",style="solid",label=" \< std::string \>" ,fontname="FreeSans"];
+}

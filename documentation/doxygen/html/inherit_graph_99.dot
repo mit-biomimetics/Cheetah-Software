@@ -1,0 +1,7 @@
+digraph "Graphical Class Hierarchy"
+{
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="TiBoardData",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/de1/struct_ti_board_data.html"];
+}

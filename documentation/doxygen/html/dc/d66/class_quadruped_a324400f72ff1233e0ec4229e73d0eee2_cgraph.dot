@@ -1,0 +1,21 @@
+digraph "Quadruped::buildModel"
+{
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="Quadruped::buildModel",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node2 [label="FloatingBaseModel::\laddBase",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/db1/class_floating_base_model.html#ab3dfc6605561bee26b4f7a893e44c78d"];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node3 [label="FloatingBaseModel::\laddBody",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/db1/class_floating_base_model.html#adcff6806f39aedf95a3723fc10c6144e"];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node4 [label="FloatingBaseModel::\laddGroundContactBoxPoints",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/db1/class_floating_base_model.html#aff2cddc3077b282fe3504ecd28bc08cb"];
+  Node1 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node5 [label="FloatingBaseModel::\laddGroundContactPoint",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/db1/class_floating_base_model.html#a3f2a319bbd26e5e7f91c7d3b980e28c4"];
+  Node1 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node6 [label="spatial::createSXform",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/d1a/namespacespatial.html#ae4a2145f3028087511b4f17c0152ec83"];
+  Node6 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node7 [label="ori::vectorToSkewMat",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d9b/namespaceori.html#a153f2a76610f0c5524da3f8bf8fa4dfa"];
+  Node1 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node8 [label="FloatingBaseModel::\lsetGravity",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/db1/class_floating_base_model.html#a32274ad578f7ad30bd79e786b62cdd62"];
+}
