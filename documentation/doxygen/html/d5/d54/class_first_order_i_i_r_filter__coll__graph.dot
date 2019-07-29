@@ -1,0 +1,10 @@
+digraph "FirstOrderIIRFilter&lt; T, T2 &gt;"
+{
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  Node1 [label="{FirstOrderIIRFilter\l\< T, T2 \>\n||+ FirstOrderIIRFilter()\l+ FirstOrderIIRFilter()\l+ update()\l+ get()\l+ reset()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node1 [color="grey25",fontsize="10",style="solid",label=" -_alpha" ,arrowhead="odiamond",fontname="FreeSans"];
+  Node2 [label="{T2\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node3 -> Node1 [color="grey25",fontsize="10",style="solid",label=" -_state" ,arrowhead="odiamond",fontname="FreeSans"];
+  Node3 [label="{T\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+}

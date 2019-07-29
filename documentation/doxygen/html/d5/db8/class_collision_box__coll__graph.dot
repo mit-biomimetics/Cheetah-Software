@@ -1,0 +1,11 @@
+digraph "CollisionBox&lt; T &gt;"
+{
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  Node1 [label="{CollisionBox\< T \>\n|- _position\l- _orientation\l|+ CollisionBox()\l+ ~CollisionBox()\l+ ContactDetection()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal",fontname="FreeSans"];
+  Node2 [label="{Collision\< T \>\n||+ Collision()\l+ ~Collision()\l+ ContactDetection()\l+ getFrictionCoeff()\l+ getRestitutionCoeff()\l}",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/dc6/class_collision.html"];
+  Node3 -> Node2 [color="grey25",fontsize="10",style="solid",label=" #_mu\n#_restitution_coeff" ,arrowhead="odiamond",fontname="FreeSans"];
+  Node3 [label="{T\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node3 -> Node1 [color="grey25",fontsize="10",style="solid",label=" -_size" ,arrowhead="odiamond",fontname="FreeSans"];
+}

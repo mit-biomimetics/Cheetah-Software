@@ -1,0 +1,9 @@
+digraph "Handler::main_control_settings_handler"
+{
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="Handler::main_control\l_settings_handler",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node2 [label="init_interface_lcm",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/df1/rt__interface__lcm_8cpp.html#a23857b25ac0abcaea372b7fd3cedc04d",tooltip="Initializer for all handlers related to the interface LCM streams. "];
+}

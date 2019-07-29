@@ -1,0 +1,14 @@
+digraph "ControlParameters"
+{
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  Node1 [label="{ControlParameters\n|+ collection\l# _name\l# _mutex\l|+ ControlParameters()\l+ isFullyInitialized()\l+ initializeDouble()\l+ initializeFloat()\l+ initializeInteger()\l+ initializeVec3f()\l+ initializeVec3d()\l+ lockMutex()\l+ unlockMutex()\l+ writeToIniFile()\l+ initializeFromIniFile()\l+ initializeFromYamlFile()\l+ defineAndInitializeFromYamlFile()\l+ writeToYamlFile()\l+ generateUnitializedList()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal",fontname="FreeSans"];
+  Node2 [label="{RobotControlParameters\n||+ RobotControlParameters()\l}",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/d73/class_robot_control_parameters.html"];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal",fontname="FreeSans"];
+  Node3 [label="{SimulatorControlParameters\n||+ SimulatorControlParameters()\l}",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/dcf/class_simulator_control_parameters.html"];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal",fontname="FreeSans"];
+  Node4 [label="{TestControlParameters\n|+ test_double\l+ test_double_param\l+ test_float\l+ test_float_param\l+ test_integer\l+ test_integer_param\l|+ TestControlParameters()\l}",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d1d/class_test_control_parameters.html"];
+  Node1 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal",fontname="FreeSans"];
+  Node5 [label="{TestVectorControlParameters\n|+ test_double\l+ test_double_param\l+ test_float\l+ test_float_param\l|+ TestVectorControlParameters()\l}",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/dbe/class_test_vector_control_parameters.html"];
+}

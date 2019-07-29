@@ -1,0 +1,11 @@
+digraph "receive_sbus"
+{
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="receive_sbus",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node2 [label="read_sbus_data",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/dad/rt__sbus_8cpp.html#a9e7b14a9fd5b1e62a38337c44d95ff04"];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node3 [label="unpack_sbus_data",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/dad/rt__sbus_8cpp.html#ae5c751d99f7c584b302ee953b66fbce1"];
+}

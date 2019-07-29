@@ -1,0 +1,6 @@
+digraph "GamepadCommand"
+{
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  Node1 [label="{GamepadCommand\n|+ leftBumper\l+ rightBumper\l+ leftTriggerButton\l+ rightTriggerButton\l+ back\l+ start\l+ a\l+ b\l+ x\l+ y\land 7 more...\l|+ GamepadCommand()\l+ zero()\l+ set()\l+ get()\l+ applyDeadband()\l+ toString()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+}

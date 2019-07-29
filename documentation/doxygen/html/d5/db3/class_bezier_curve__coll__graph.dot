@@ -1,0 +1,8 @@
+digraph "BezierCurve&lt; T, DIM, NUM_CTR_PT &gt;"
+{
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  Node1 [label="{BezierCurve\< T, DIM,\l NUM_CTR_PT \>\n||+ BezierCurve()\l+ SetParam()\l+ getCurvePoint()\l+ getCurveVelocity()\l- _factorial()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node1 [color="grey25",fontsize="10",style="solid",label=" +_coeff\n+_end_time\n+_CtrlPt" ,arrowhead="odiamond",fontname="FreeSans"];
+  Node2 [label="{T\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+}

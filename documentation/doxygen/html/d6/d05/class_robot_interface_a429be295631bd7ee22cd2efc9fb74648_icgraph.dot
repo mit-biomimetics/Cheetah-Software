@@ -1,0 +1,17 @@
+digraph "RobotInterface::handleControlParameter"
+{
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="RobotInterface::handleControl\lParameter",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node2 [label="RobotInterface::RobotInterface",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d05/class_robot_interface.html#af09b1f8b1e20aa72ee5e02cad4ca43c9"];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node3 [label="RobotInterface::getParams",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d05/class_robot_interface.html#a273ece51bef7819a95e7924d2a130976"];
+  Node3 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node4 [label="SimControlPanel::on\l_startButton_clicked",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d22/class_sim_control_panel.html#afdfa6b365805d23d5438862de97856ae"];
+  Node3 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node5 [label="SimControlPanel::on\l_robotTable_cellChanged",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d22/class_sim_control_panel.html#aac45ac89880d2d316de41365cd6b7cfb"];
+  Node3 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node6 [label="SimControlPanel::on\l_loadRobotButton_clicked",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d22/class_sim_control_panel.html#a932918fe9325002dec7f5585c4bfc4f3"];
+}

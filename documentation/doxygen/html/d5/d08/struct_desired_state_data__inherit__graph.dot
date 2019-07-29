@@ -1,0 +1,8 @@
+digraph "DesiredStateData&lt; T &gt;"
+{
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  Node1 [label="{DesiredStateData\< T \>\n|+ stateDes\l+ stateTrajDes\l|+ DesiredStateData()\l+ zero()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 -> Node2 [dir="back",color="orange",fontsize="10",style="solid",label=" \< float \>" ,fontname="FreeSans"];
+  Node2 [label="{DesiredStateData\< float \>\n|+ stateDes\l+ stateTrajDes\l|+ DesiredStateData()\l+ zero()\l}",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/dc1/struct_desired_state_data.html"];
+}

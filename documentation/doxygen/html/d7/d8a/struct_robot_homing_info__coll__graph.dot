@@ -1,0 +1,6 @@
+digraph "RobotHomingInfo&lt; T &gt;"
+{
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  Node1 [label="{RobotHomingInfo\< T \>\n|+ position\l+ rpy\l+ kp_lin\l+ kd_lin\l+ kp_ang\l+ kd_ang\l+ active_flag\l|}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+}

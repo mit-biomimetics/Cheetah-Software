@@ -1,0 +1,10 @@
+digraph "SpatialInertia&lt; T &gt;"
+{
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  Node1 [label="{SpatialInertia\< T \>\n|- _inertia\l|+ SpatialInertia()\l+ SpatialInertia()\l+ SpatialInertia()\l+ SpatialInertia()\l+ SpatialInertia()\l+ asMassPropertyVector()\l+ getMatrix()\l+ setMatrix()\l+ addMatrix()\l+ getMass()\l+ getCOM()\l+ getInertiaTensor()\l+ getPseudoInertia()\l+ flipAlongAxis()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 -> Node2 [dir="back",color="orange",fontsize="10",style="solid",label=" \< double \>" ,fontname="FreeSans"];
+  Node2 [label="{SpatialInertia\< double \>\n|- _inertia\l|+ SpatialInertia()\l+ SpatialInertia()\l+ SpatialInertia()\l+ SpatialInertia()\l+ SpatialInertia()\l+ asMassPropertyVector()\l+ getMatrix()\l+ setMatrix()\l+ addMatrix()\l+ getMass()\l+ getCOM()\l+ getInertiaTensor()\l+ getPseudoInertia()\l+ flipAlongAxis()\l}",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d81/class_spatial_inertia.html"];
+  Node1 -> Node3 [dir="back",color="orange",fontsize="10",style="solid",label=" \< float \>" ,fontname="FreeSans"];
+  Node3 [label="{SpatialInertia\< float \>\n|- _inertia\l|+ SpatialInertia()\l+ SpatialInertia()\l+ SpatialInertia()\l+ SpatialInertia()\l+ SpatialInertia()\l+ asMassPropertyVector()\l+ getMatrix()\l+ setMatrix()\l+ addMatrix()\l+ getMass()\l+ getCOM()\l+ getInertiaTensor()\l+ getPseudoInertia()\l+ flipAlongAxis()\l}",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d81/class_spatial_inertia.html"];
+}

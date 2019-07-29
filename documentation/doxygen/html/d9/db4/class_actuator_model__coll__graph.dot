@@ -1,0 +1,8 @@
+digraph "ActuatorModel&lt; T &gt;"
+{
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  Node1 [label="{ActuatorModel\< T \>\n|- _frictionEnabled\l|+ ActuatorModel()\l+ ActuatorModel()\l+ getTorque()\l+ setFriction()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node1 [color="grey25",fontsize="10",style="solid",label=" -_V\n-_damping\n-_dryFriction\n-_tauMax\n-_kt\n-_gr\n-_R" ,arrowhead="odiamond",fontname="FreeSans"];
+  Node2 [label="{T\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+}

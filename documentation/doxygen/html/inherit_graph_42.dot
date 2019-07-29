@@ -1,0 +1,7 @@
+digraph "Graphical Class Hierarchy"
+{
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="FootSwingTrajectory\< T \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d2d/class_foot_swing_trajectory.html"];
+}

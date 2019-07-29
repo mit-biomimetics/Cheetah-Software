@@ -1,0 +1,9 @@
+digraph "ori::integrateQuat"
+{
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="ori::integrateQuat",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node2 [label="ori::quatProduct",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d9b/namespaceori.html#a89494866325446c634184782e56113ff"];
+}

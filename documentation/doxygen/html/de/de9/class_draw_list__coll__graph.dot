@@ -1,0 +1,18 @@
+digraph "DrawList"
+{
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  Node1 [label="{DrawList\n|+ _instanceColor\l+ _kinematicXform\l- _nUnique\l- _nTotal\l- _vertexData\l- _normalData\l- _colorData\l- _offsetXforms\l- _baseFileName\l- _objectMap\l- _glArrayOffsets\l- _glArraySizes\land 21 more...\l|+ DrawList()\l+ addCheetah3()\l+ addMiniCheetah()\l+ buildDrawList()\l+ loadFiles()\l+ addCheckerboard()\l+ addDebugSphere()\l+ addBox()\l+ addMesh()\l+ resize()\land 26 more...\l+ setSolidColor()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node1 [color="grey25",fontsize="10",style="solid",label=" +_visualizationData" ,arrowhead="odiamond",fontname="FreeSans"];
+  Node2 [label="{VisualizationData\n|+ num_paths\l+ num_arrows\l+ num_cones\l+ num_spheres\l+ num_blocks\l|+ clear()\l+ addSphere()\l+ addBlock()\l+ addArrow()\l+ addCone()\l+ addPath()\l}",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d3/d60/struct_visualization_data.html"];
+  Node3 -> Node2 [color="grey25",fontsize="10",style="solid",label=" +arrows" ,arrowhead="odiamond",fontname="FreeSans"];
+  Node3 [label="{ArrowVisualization\n|+ base_position\l+ direction\l+ color\l+ head_width\l+ head_length\l+ shaft_width\l|}",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d7b/struct_arrow_visualization.html"];
+  Node4 -> Node2 [color="grey25",fontsize="10",style="solid",label=" +cones" ,arrowhead="odiamond",fontname="FreeSans"];
+  Node4 [label="{ConeVisualization\n|+ point_position\l+ direction\l+ color\l+ radius\l|}",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/da6/struct_cone_visualization.html"];
+  Node5 -> Node2 [color="grey25",fontsize="10",style="solid",label=" +blocks" ,arrowhead="odiamond",fontname="FreeSans"];
+  Node5 [label="{BlockVisualization\n|+ dimension\l+ corner_position\l+ rpy\l+ color\l|}",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/d38/struct_block_visualization.html"];
+  Node6 -> Node2 [color="grey25",fontsize="10",style="solid",label=" +paths" ,arrowhead="odiamond",fontname="FreeSans"];
+  Node6 [label="{PathVisualization\n|+ num_points\l+ color\l+ position\l|+ clear()\l}",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d06/struct_path_visualization.html"];
+  Node7 -> Node2 [color="grey25",fontsize="10",style="solid",label=" +spheres" ,arrowhead="odiamond",fontname="FreeSans"];
+  Node7 [label="{SphereVisualization\n|+ position\l+ color\l+ radius\l|}",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d94/struct_sphere_visualization.html"];
+}

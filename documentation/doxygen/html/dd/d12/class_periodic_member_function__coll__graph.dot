@@ -1,0 +1,8 @@
+digraph "PeriodicMemberFunction&lt; T &gt;"
+{
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  Node1 [label="{PeriodicMemberFunction\< T \>\n|- _function\l- _obj\l|+ PeriodicMemberFunction()\l+ cleanup()\l+ init()\l+ run()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal",fontname="FreeSans"];
+  Node2 [label="{PeriodicTask\n|- _period\l- _running\l- _lastRuntime\l- _lastPeriodTime\l- _maxPeriod\l- _maxRuntime\l- _name\l- _thread\l|+ PeriodicTask()\l+ start()\l+ stop()\l+ printStatus()\l+ clearMax()\l+ isSlow()\l+ init()\l+ run()\l+ cleanup()\l+ ~PeriodicTask()\l+ getPeriod()\l+ getRuntime()\l+ getMaxPeriod()\l+ getMaxRuntime()\l- loopFunction()\l}",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/d2f/class_periodic_task.html"];
+}
