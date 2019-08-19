@@ -1,7 +1,5 @@
 # Generated on Sat Feb  9 13:18:45 2019
+
 __collection-name__: user-parameters
-
-#testValue : 100
-#testValue2 : 102
-
-cmpc_gait : 9
+cmpc_gait: 9
+test_param: 100

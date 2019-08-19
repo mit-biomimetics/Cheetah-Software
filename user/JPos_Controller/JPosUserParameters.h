@@ -6,13 +6,13 @@
 class JPosUserParameters : public ControlParameters {
 public:
   JPosUserParameters()
-      : ControlParameters("user-parameters"),
-        INIT_PARAMETER(testValue),
-        INIT_PARAMETER(testValue2)
-      {}
+      : ControlParameters("jpos-parameters"),
+        INIT_PARAMETER(cmpc_gait),
+        INIT_PARAMETER(test_param){
+        }
 
-  DECLARE_PARAMETER(double, testValue);
-  DECLARE_PARAMETER(double, testValue2)
+  DECLARE_PARAMETER(double, cmpc_gait);
+  DECLARE_PARAMETER(double, test_param);
 };
 
 #endif //PROJECT_JPOSUSERPARAMETERS_H
