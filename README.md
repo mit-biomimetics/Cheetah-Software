@@ -78,3 +78,7 @@ To use casadi,
 
 - `sudo apt-get install gfortran liblapack-dev`
 - `sudo apt-get install coinor-libipopt-dev`
+
+## Ubuntu RT
+A Ubuntu real time system is runing on Mini Cheetah's UP board.
+For more details, check: https://github.com/QiayuanLiao/Ubuntu-RT-UP-Board
