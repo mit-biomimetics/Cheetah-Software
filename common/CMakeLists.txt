@@ -1,9 +1,3 @@
-# common library (libbiomimetics)
-
-cmake_minimum_required(VERSION 2.8.2)
-
-project(libbiomimetics)
-
 # Source/Include files
 include_directories(".")
 include_directories("include/" )                 # common includes
@@ -15,6 +9,7 @@ include_directories("../third-party/ParamHandler")
 include_directories("/usr/local/include/eigen3")   # lcm includes
 include_directories("FootstepPlanner")
 include_directories(${CMAKE_BINARY_DIR})
+include_directories(${PROJECT_SOURCE_DIR})
 file(GLOB_RECURSE sources "src/*.cpp")                   # common library cpp files
 
 # Library
@@ -50,13 +45,6 @@ target_link_libraries(test-common gtest gmock_main lcm rt inih osqp dynacore_par
 target_link_libraries(test-common Goldfarb_Optimizer)
 target_link_libraries(test-common JCQP)
 
-if(IPOPT_OPTION)
-link_directories("../third-party/CoinIpopt/build/lib")
-include_directories(SYSTEM "../third-party/CoinIpopt/build/include/coin")
-find_library(ipopt NAMES libipopt.so PATHS "../third-party/CoinIpopt/build/lib")
-target_link_libraries(test-common ${ipopt})# liblapack blas m dl ipoptamplinterface)
-target_link_libraries(test-common WBC_Ctrl)# liblapack blas m dl ipoptamplinterface)
-endif(IPOPT_OPTION)
 
 add_test(NAME example_test COMMAND test-common)
 

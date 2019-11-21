@@ -6,7 +6,7 @@
  */
 
 #include "ControlFSM.h"
-#include <rt/rt_interface_lcm.h>
+#include <rt/rt_rc_interface.h>
 
 /**
  * Constructor for the Control FSM. Passes in all of the necessary
@@ -48,11 +48,9 @@ ControlFSM<T>::ControlFSM(Quadruped<T>* _quadruped,
   statesList.standUp = new FSM_State_StandUp<T>(&data);
   statesList.balanceStand = new FSM_State_BalanceStand<T>(&data);
   statesList.locomotion = new FSM_State_Locomotion<T>(&data);
-  statesList.bounding = new FSM_State_Bounding<T>(&data);
   statesList.recoveryStand = new FSM_State_RecoveryStand<T>(&data);
   statesList.vision = new FSM_State_Vision<T>(&data);
   statesList.backflip = new FSM_State_BackFlip<T>(&data);
-  statesList.twocontactStand = new FSM_State_TwoContactStand<T>(&data);
   statesList.frontJump = new FSM_State_FrontJump<T>(&data);
 
   safetyChecker = new SafetyChecker<T>(&data);
@@ -99,27 +97,24 @@ void ControlFSM<T>::runFSM() {
   operatingMode = safetyPreCheck();
 
   if(data.controlParameters->use_rc){
-    if(data._desiredStateCommand->rcCommand->mode == RC_mode::RECOVERY_STAND){
+    int rc_mode = data._desiredStateCommand->rcCommand->mode;
+    if(rc_mode == RC_mode::RECOVERY_STAND){
       data.controlParameters->control_mode = K_RECOVERY_STAND;
-    } else if(data._desiredStateCommand->rcCommand->mode == RC_mode::LOCOMOTION){
-      data.controlParameters->control_mode = K_LOCOMOTION;
-    } else if(data._desiredStateCommand->rcCommand->mode == RC_mode::QP_STAND){
-      data.controlParameters->control_mode = K_BALANCE_STAND;
-    } else if(data._desiredStateCommand->rcCommand->mode == RC_mode::VISION){
-      //data.controlParameters->control_mode = K_TWO_CONTACT_STAND;
-      data.controlParameters->control_mode = K_VISION;
-    } else if(data._desiredStateCommand->rcCommand->mode == RC_mode::BACKFLIP ||
-      data._desiredStateCommand->rcCommand->mode == RC_mode::BACKFLIP_PRE){
-      data.controlParameters->control_mode = K_BACKFLIP;
-      //data.controlParameters->control_mode = K_TWO_CONTACT_STAND;
-      //data.controlParameters->control_mode = K_FRONTJUMP;
-    }
-    //std::cout<< "control mode: "<<data.controlParameters->control_mode<<std::endl;
-  }
 
-  if(data.controlParameters->control_mode == K_RECOVERY_STAND){
-      // Ignore Safety Check
-      operatingMode = FSM_OperatingMode::NORMAL;
+    } else if(rc_mode == RC_mode::LOCOMOTION){
+      data.controlParameters->control_mode = K_LOCOMOTION;
+
+    } else if(rc_mode == RC_mode::QP_STAND){
+      data.controlParameters->control_mode = K_BALANCE_STAND;
+
+    } else if(rc_mode == RC_mode::VISION){
+      data.controlParameters->control_mode = K_VISION;
+
+    } else if(rc_mode == RC_mode::BACKFLIP || rc_mode == RC_mode::BACKFLIP_PRE){
+      data.controlParameters->control_mode = K_BACKFLIP;
+   }
+      //data.controlParameters->control_mode = K_FRONTJUMP;
+    //std::cout<< "control mode: "<<data.controlParameters->control_mode<<std::endl;
   }
 
   // Run the robot control code if operating mode is not unsafe
@@ -182,7 +177,10 @@ void ControlFSM<T>::runFSM() {
   }
 
   // Print the current state of the FSM
-  //printInfo(0);
+  printInfo(0);
+
+  // Increase the iteration counter
+  iter++;
 }
 
 /**
@@ -195,10 +193,10 @@ void ControlFSM<T>::runFSM() {
 template <typename T>
 FSM_OperatingMode ControlFSM<T>::safetyPreCheck() {
   // Check for safe orientation if the current state requires it
-  if (currentState->checkSafeOrientation) {
+  if (currentState->checkSafeOrientation && data.controlParameters->control_mode != K_RECOVERY_STAND) {
     if (!safetyChecker->checkSafeOrientation()) {
       operatingMode = FSM_OperatingMode::ESTOP;
-      std::cout << "broken" << std::endl;
+      std::cout << "broken: Orientation Safety Ceck FAIL" << std::endl;
     }
   }
 
@@ -263,9 +261,6 @@ FSM_State<T>* ControlFSM<T>::getNextState(FSM_StateName stateName) {
     case FSM_StateName::LOCOMOTION:
       return statesList.locomotion;
 
-    case FSM_StateName::BOUNDING:
-      return statesList.bounding;
-
     case FSM_StateName::RECOVERY_STAND:
       return statesList.recoveryStand;
 
@@ -274,9 +269,6 @@ FSM_State<T>* ControlFSM<T>::getNextState(FSM_StateName stateName) {
 
     case FSM_StateName::BACKFLIP:
       return statesList.backflip;
-
-    case FSM_StateName::TWO_CONTACT_STAND:
-      return statesList.twocontactStand;
 
     case FSM_StateName::FRONTJUMP:
       return statesList.frontJump;
@@ -305,6 +297,7 @@ void ControlFSM<T>::printInfo(int opt) {
         std::cout << "[CONTROL FSM] Printing FSM Info...\n";
         std::cout
             << "---------------------------------------------------------\n";
+        std::cout << "Iteration: " << iter << "\n";
         if (operatingMode == FSM_OperatingMode::NORMAL) {
           std::cout << "Operating Mode: NORMAL in " << currentState->stateString
                     << "\n";

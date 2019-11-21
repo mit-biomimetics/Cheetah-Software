@@ -16,16 +16,16 @@
 #include "ParamHandler.hpp"
 #include "Utilities/Timer.h"
 #include "Controllers/PositionVelocityEstimator.h"
-#include "rt/rt_interface_lcm.h"
+//#include "rt/rt_interface_lcm.h"
 
 RobotRunner::RobotRunner(RobotController* robot_ctrl, 
-                         PeriodicTaskManager* manager, 
-                         float period, std::string name):
-                         PeriodicTask(manager, period, name),
-                         _lcm(getLcmUrl(255)) {
+    PeriodicTaskManager* manager, 
+    float period, std::string name):
+  PeriodicTask(manager, period, name),
+  _lcm(getLcmUrl(255)) {
 
     _robot_ctrl = robot_ctrl;
-}
+  }
 
 /**
  * Initializes the robot model, state estimator, leg controller,
@@ -44,7 +44,7 @@ void RobotRunner::init() {
   // Initialize the model and robot data
   _model = _quadruped.buildModel();
   _jpos_initializer = new JPosInitializer<float>(3., controlParameters->controller_dt);
-  
+
   // Always initialize the leg controller and state entimator
   _legController = new LegController<float>(_quadruped);
   _stateEstimator = new StateEstimatorContainer<float>(
@@ -52,14 +52,14 @@ void RobotRunner::init() {
       &_stateEstimate, controlParameters);
   initializeStateEstimator(false);
 
-  memset(&main_control_settings, 0, sizeof(gui_main_control_settings_t));
+  memset(&rc_control, 0, sizeof(rc_control_settings));
   // Initialize the DesiredStateCommand object
   _desiredStateCommand =
-      new DesiredStateCommand<float>(driverCommand,
-          &main_control_settings,
-          controlParameters,
-          &_stateEstimate,
-          controlParameters->controller_dt);
+    new DesiredStateCommand<float>(driverCommand,
+        &rc_control,
+        controlParameters,
+        &_stateEstimate,
+        controlParameters->controller_dt);
 
   // Controller initializations
   _robot_ctrl->_model = &_model;
@@ -74,7 +74,7 @@ void RobotRunner::init() {
   _robot_ctrl->_desiredStateCommand = _desiredStateCommand;
 
   _robot_ctrl->initializeController();
-  
+
 }
 
 /**
@@ -102,19 +102,27 @@ void RobotRunner::run() {
   } else {
     _legController->setEnabled(true);
 
-    if( (main_control_settings.mode == 0) && controlParameters->use_rc ) {
+    if( (rc_control.mode == 0) && controlParameters->use_rc ) {
       if(count_ini%1000 ==0)   printf("ESTOP!\n");
-        for (int leg = 0; leg < 4; leg++) {
-          _legController->commands[leg].zero();
-        }
-        _robot_ctrl->Estop();
-     }else {
+      for (int leg = 0; leg < 4; leg++) {
+        _legController->commands[leg].zero();
+      }
+      _robot_ctrl->Estop();
+    }else {
       // Controller
       if (!_jpos_initializer->IsInitialized(_legController)) {
         Mat3<float> kpMat;
         Mat3<float> kdMat;
-        kpMat << 5, 0, 0, 0, 5, 0, 0, 0, 5;
-        kdMat << 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1;
+        // Update the jpos feedback gains
+        if (robotType == RobotType::MINI_CHEETAH) {
+          kpMat << 5, 0, 0, 0, 5, 0, 0, 0, 5;
+          kdMat << 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1;
+        } else if (robotType == RobotType::CHEETAH_3) {
+          kpMat << 50, 0, 0, 0, 50, 0, 0, 0, 50;
+          kdMat << 1, 0, 0, 0, 1, 0, 0, 0, 1;
+        } else {
+          assert(false);
+        } 
 
         for (int leg = 0; leg < 4; leg++) {
           _legController->commands[leg].kpJoint = kpMat;
@@ -123,11 +131,11 @@ void RobotRunner::run() {
       } else {
         // Run Control 
         _robot_ctrl->runController();
-          cheetahMainVisualization->p = _stateEstimate.position;
+        cheetahMainVisualization->p = _stateEstimate.position;
 
         // Update Visualization
         _robot_ctrl->updateVisualization();
-          cheetahMainVisualization->p = _stateEstimate.position;
+        cheetahMainVisualization->p = _stateEstimate.position;
       }
     }
 
@@ -185,7 +193,7 @@ void RobotRunner::setupStep() {
     _cheaterModeEnabled = false;
   }
 
-  get_main_control_settings(&main_control_settings);
+  get_rc_control_settings(&rc_control);
 
   // todo safety checks, sanity checks, etc...
 }

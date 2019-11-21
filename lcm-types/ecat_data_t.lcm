@@ -1,4 +1,3 @@
-package cheetahlcm;
 
 struct ecat_data_t
 {

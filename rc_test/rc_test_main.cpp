@@ -3,7 +3,7 @@
 #include <unistd.h>
 
 #include "rt/rt_sbus.h"
-#include "rt/rt_interface_lcm.h"
+#include "rt/rt_rc_interface.h"
 
 static struct {
  double     mode;

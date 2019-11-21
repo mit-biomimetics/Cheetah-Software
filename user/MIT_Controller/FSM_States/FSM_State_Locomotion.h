@@ -33,7 +33,7 @@ class FSM_State_Locomotion : public FSM_State<T> {
  private:
   // Keep track of the control iterations
   int iter = 0;
-  ConvexMPCLocomotion cMPCOld;
+  ConvexMPCLocomotion* cMPCOld;
   WBC_Ctrl<T> * _wbc_ctrl;
   LocomotionCtrlData<T> * _wbc_data;
 

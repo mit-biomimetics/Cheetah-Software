@@ -1,7 +1,7 @@
 # Generated on Mon Aug  5 18:20:08 2019
 __collection-name__: user-parameters
 
-Kd_joint          : [1.0, 0.3, 0.3]
+Kd_joint          : [1, 0.2, 0.2]
 Kp_joint          : [3, 3, 3]
 
 #Kp_body           : [100, 100, 100]
@@ -20,7 +20,7 @@ Kp_joint          : [3, 3, 3]
 Kp_body           : [100, 100, 100]
 Kd_body           : [10, 10, 10]
 
-Kp_foot           : [100, 100, 100]
+Kp_foot           : [500, 500, 500]
 Kd_foot           : [10, 10, 10]
 
 #Kp_foot           : [200, 200, 200]
@@ -41,15 +41,62 @@ jcqp_terminate    : 0.1
 use_jcqp          : 0
 use_wbc           : 1
 
+# Swing leg parameters
+Swing_Kp_cartesian : [350, 350, 75]
+Swing_Kd_cartesian : [5.5, 5.5, 5.5]
+Swing_Kp_joint     : [0, 0, 0]
+Swing_Kd_joint     : [0.2, 0.2, 0.2]
+Swing_step_offset  : [0,0.05,-0.003]
+Swing_traj_height  : 0.07
+Swing_use_tau_ff   : 0
 
-Q_pos             : [20, 20, 10000]
+# Two Leg Stance parameters
+Q_pos             : [20, 20, 20000]
 Q_vel             : [0, 0, 0]
-Q_ori             : [800, 800, 300]
-Q_ang             : [0, 0, 0]
+Q_ori             : [1500, 1900, 900]
+Q_ang             : [30, 40, 10]
 
-R_control         : 2.0
-R_prev            : 3.5
+R_control         : 1.1
+R_prev            : 2.0
 
-two_leg_threshold : 0.1
-two_leg_ramp      : 1.5
+two_leg_orient    : [0.225, 9.1, 0.0]
 stance_legs       : 4
+
+# RPC parameters
+RPC_Q_p             : [10000, 10000, 100000]
+RPC_Q_theta         : [5000, 10000, 2500]
+RPC_Q_dp            : [2500, 2500, 500]
+RPC_Q_dtheta        : [2.5, 2.5, 50]
+RPC_R_r             : [350000, 350000, 350000]
+RPC_R_f             : [0.001, 0.001, 0.001]
+RPC_H_r_trans       : [1, 2, 1]
+RPC_H_r_rot         : [1, 1, 0]
+RPC_H_theta0        : [1.25, 0, 0]
+RPC_H_phi0          : [-0.3, 0.02, 0]
+RPC_mass            : 9
+RPC_inertia         : [0.07, 0.26, 0.242]
+RPC_gravity         : [0, 0, -9.81]
+RPC_mu              : 0.5
+RPC_filter          : [0.5, 0.1, 0]
+RPC_use_pred_comp   : 1
+RPC_use_async_filt  : 1
+RPC_visualize_pred  : 1
+RPC_use_separate    : 1
+
+# Desired state commands
+des_p             : [0,0,0.26]
+des_theta         : [0,0,0]
+des_dp            : [0,0,0]
+des_dtheta        : [0,0,0]
+des_theta_max     : [0,0.4,0]
+des_dp_max        : [1.0,0.5,0]
+des_dtheta_max    : [0,0,3]
+
+# Gait parameters
+gait_type             : 4
+gait_period_time      : 0.5
+gait_switching_phase  : 0.5
+gait_override         : 4
+gait_max_leg_angle    : 15
+gait_max_stance_time  : 0.25
+gait_min_stance_time  : 0.1

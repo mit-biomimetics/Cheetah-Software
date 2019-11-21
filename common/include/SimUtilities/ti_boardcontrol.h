@@ -17,10 +17,22 @@ struct TiBoardCommand {
   float velocity_des[3];
   float kp[3];
   float kd[3];
+
+  u32 enable; // uint32t
+  u32 zero;   // uint32t
+
   float force_ff[3];
   float tau_ff[3];
-  s32 enable;
-  float max_torque;
+
+  float zero_offset[3];
+
+  float q_des[3];
+  float qd_des[3];
+  float kp_joint[3];
+  float kd_joint[3];
+
+  float max_torque; // todo this isn't used.
+
 };
 
 /*!
@@ -33,7 +45,7 @@ struct TiBoardData {
   float q[3];
   float dq[3];
   float tau[3];
-  float tau_des[3];
+  float tau_des[3]; // todo this is encoder ticks?
   u32 loop_count_ti;
   u32 ethercat_count_ti;
   u32 microtime_ti;

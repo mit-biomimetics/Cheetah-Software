@@ -22,6 +22,7 @@ class RobotState
         Quaternionf q;
         fpt yaw;
         fpt m = 9;
+        //fpt m = 50.236; //DH
     //private:
 };
 #endif

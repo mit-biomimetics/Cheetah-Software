@@ -4,7 +4,6 @@
  */
 
 #include "Controllers/DesiredStateCommand.h"
-#include "../robot/include/rt/rt_interface_lcm.h"
 /*=========================== Gait Data ===============================*/
 /**
  *
@@ -25,46 +24,45 @@ template struct DesiredStateData<float>;
 template <typename T>
 void DesiredStateCommand<T>::convertToStateCommands() {
   data.zero();
-
-  static bool b_firstVisit(true);
-  if(b_firstVisit){
-    data.pre_stateDes(0) = stateEstimate->position(0);
-    data.pre_stateDes(1) = stateEstimate->position(1);
-    data.pre_stateDes(5) = stateEstimate->rpy(2);
-    b_firstVisit = false;
-  }
-
   Vec2<float> joystickLeft, joystickRight;
 
+  //T height_cmd(0.3);
+
+  // THIS SHOULD be DISABLE Soon
   if(parameters->use_rc) {
     if(rcCommand->mode == RC_mode::QP_STAND){ // Stand
-      joystickLeft[0] = -rcCommand->p_des[1]; // Y
+      joystickLeft[0] = 0.; // Y
       joystickLeft[1] = 0.;
-      joystickRight[0] = -rcCommand->rpy_des[2]; // Yaw
+      joystickRight[0] = rcCommand->rpy_des[2]; // Yaw
+      //height_cmd = rcCommand->height_variation;
+
     }else if(rcCommand->mode == RC_mode::LOCOMOTION ||
         rcCommand->mode == RC_mode::VISION){ // Walking
-      joystickLeft[0] = -rcCommand->v_des[1]; // Y
+      joystickLeft[0] = rcCommand->v_des[1]; // Y
       joystickLeft[1] = rcCommand->v_des[0]; // X
-      joystickRight[0] = -rcCommand->omega_des[2]; // Yaw
+      joystickRight[0] = rcCommand->omega_des[2]; // Yaw
       joystickRight[1] = rcCommand->omega_des[1]; // Pitch
-    }else if(rcCommand->mode == RC_mode::BACKFLIP){ // Two Contact Stand
-      joystickLeft[0] = -rcCommand->p_des[1]; // Y
+      //height_cmd = rcCommand->height_variation;
+
+    }else if(rcCommand->mode == RC_mode::TWO_LEG_STANCE){ // Two Contact Stand
+      //joystickLeft[0] = rcCommand->p_des[1]; // Y
       joystickLeft[1] = rcCommand->p_des[0]; // X
-      joystickRight[0] = -rcCommand->rpy_des[2]; // Yaw
+      joystickRight[0] = rcCommand->rpy_des[2]; // Yaw
       joystickRight[1] = rcCommand->rpy_des[1]; // Pitch
+      joystickLeft[0] = rcCommand->rpy_des[0]; // Roll
+
     }else{
       joystickLeft.setZero();
       joystickRight.setZero();
     }
-    // todo trigger
-    trigger_pressed = rcCommand->alexa_mode > 0.5;
-  } else {
+  } else { // No Remote Controller
     joystickLeft = gamepadCommand->leftStickAnalog;
     joystickRight = gamepadCommand->rightStickAnalog;
     trigger_pressed = gamepadCommand->a;
   }
-
-  
+  // Warning!!!!
+  // Recommend not to use stateDes
+  // We are going to remove it soon
 
   joystickLeft[0] *= -1.f;
   joystickRight[0] *= -1.f;
@@ -72,53 +70,30 @@ void DesiredStateCommand<T>::convertToStateCommands() {
   leftAnalogStick = leftAnalogStick * (T(1) - filter) + joystickLeft * filter;
   rightAnalogStick = rightAnalogStick * (T(1) - filter) + joystickRight * filter;
 
-  //leftAnalogStick = joystickLeft;
-  //rightAnalogStick = joystickRight;
-  
-   // Forward linear velocity
-  data.stateDes(6) =
-    deadband(leftAnalogStick[1], minVelX, maxVelX);
+  // Desired states from the controller
+  data.stateDes(6) = deadband(leftAnalogStick[1], minVelX, maxVelX);  // forward linear velocity
+  data.stateDes(7) = deadband(leftAnalogStick[0], minVelY, maxVelY);  // lateral linear velocity
+  data.stateDes(8) = 0.0;  // vertical linear velocity
+  data.stateDes(0) = dt * data.stateDes(6);  // X position
+  data.stateDes(1) = dt * data.stateDes(7);  // Y position
+  data.stateDes(2) = 0.26;  // Z position height
+  data.stateDes(9) = 0.0;  // Roll rate
+  data.stateDes(10) = 0.0;  // Pitch rate
+  data.stateDes(11) = deadband(rightAnalogStick[0], minTurnRate, maxTurnRate);  // Yaw turn rate
+  data.stateDes(3) = 0.0; // Roll
+  data.stateDes(4) = deadband(rightAnalogStick[1], minPitch, maxPitch);  // Pitch
+  data.stateDes(5) = dt * data.stateDes(11);  // Yaw
+}
 
-  // Lateral linear velocity
-  data.stateDes(7) =
-      deadband(leftAnalogStick[0], minVelY, maxVelY);
-
-  // VErtical linear velocity
-  data.stateDes(8) = 0.0;
-
-  // X position
-  data.stateDes(0) = stateEstimate->position(0) + dt * data.stateDes(6);
-  //data.stateDes(0) = data.pre_stateDes(0) + dt * data.stateDes(6);
-
-  // Y position
-  data.stateDes(1) = stateEstimate->position(1) + dt * data.stateDes(7);
-  //data.stateDes(1) = data.pre_stateDes(1) + dt * data.stateDes(7);
-  
-  // Z position height
-  data.stateDes(2) = rcCommand->p_des[2];
-
-  // Roll rate
-  data.stateDes(9) = 0.0;
-
-  // Pitch rate
-  data.stateDes(10) = 0.0;
-
-  // Yaw turn rate
-  data.stateDes(11) =
-      deadband(rightAnalogStick[0], minTurnRate, maxTurnRate);
-
-  // Roll
-  data.stateDes(3) = 0.0;
-
-  // Pitch
-  data.stateDes(4) =
-      deadband(rightAnalogStick[1], minPitch, maxPitch);
-
-  // Yaw
-  data.stateDes(5) = stateEstimate->rpy(2) + dt * data.stateDes(11);
-  //data.stateDes(5) = data.pre_stateDes(5) + dt * data.stateDes(11);
-
-  data.pre_stateDes = data.stateDes;
+template <typename T>
+void DesiredStateCommand<T>::setCommandLimits(T minVelX_in, T maxVelX_in,
+    T minVelY_in, T maxVelY_in, T minTurnRate_in, T maxTurnRate_in) {
+  minVelX = minVelX_in;
+  maxVelX = maxVelX_in;
+  minVelY = minVelY_in;
+  maxVelY = maxVelY_in;
+  minTurnRate = minTurnRate_in;
+  maxTurnRate = maxTurnRate_in;
 }
 
 /**

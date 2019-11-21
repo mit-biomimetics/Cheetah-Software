@@ -234,21 +234,12 @@ FSM_StateName FSM_State_RecoveryStand<T>::checkTransition() {
       this->nextStateName = FSM_StateName::LOCOMOTION;
       break;
 
-    case K_BOUNDING:
-      this->nextStateName = FSM_StateName::BOUNDING;
-      break;
-
-
     case K_PASSIVE:  // normal c
       this->nextStateName = FSM_StateName::PASSIVE;
       break;
 
     case K_BALANCE_STAND: 
       this->nextStateName = FSM_StateName::BALANCE_STAND;
-      break;
-
-    case K_TWO_CONTACT_STAND: 
-      this->nextStateName = FSM_StateName::TWO_CONTACT_STAND;
       break;
 
     case K_BACKFLIP: 
@@ -292,14 +283,6 @@ TransitionData<T> FSM_State_RecoveryStand<T>::transition() {
       break;
 
     case FSM_StateName::LOCOMOTION:
-      this->transitionData.done = true;
-      break;
-
-    case FSM_StateName::BOUNDING:
-      this->transitionData.done = true;
-      break;
-
-    case FSM_StateName::TWO_CONTACT_STAND:
       this->transitionData.done = true;
       break;
 

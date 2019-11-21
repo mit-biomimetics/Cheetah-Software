@@ -6,8 +6,3 @@ add_library (WBC_Ctrl SHARED ${headers} ${sources} )
 target_link_libraries (WBC_Ctrl biomimetics lcm)
 target_link_libraries (WBC_Ctrl WBIC dynacore_param_handler)
 
-if(IPOPT_OPTION)
-target_link_libraries(WBC_Ctrl ${ipopt})
-endif(IPOPT_OPTION)
-
-

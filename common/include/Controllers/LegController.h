@@ -79,6 +79,8 @@ class LegController {
   Quadruped<T>& _quadruped;
   bool _legsEnabled = false;
   T _maxTorque = 0;
+  bool _zeroEncoders = false;
+  u32 _calibrateEncoders = 0;
 };
 
 template <typename T>

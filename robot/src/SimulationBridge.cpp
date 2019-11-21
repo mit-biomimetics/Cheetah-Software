@@ -5,10 +5,9 @@
  */
 
 #include "SimulationBridge.h"
-#include "gui_main_control_settings_t.hpp"
 #include "Utilities/SegfaultHandler.h"
 #include "Controllers/LegController.h"
-#include "rt/rt_interface_lcm.h"
+#include "rt/rt_rc_interface.h"
 #include "rt/rt_sbus.h"
 
 /*!

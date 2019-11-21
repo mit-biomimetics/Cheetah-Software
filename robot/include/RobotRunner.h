@@ -12,7 +12,7 @@
 #include "ControlParameters/RobotParameters.h"
 #include "Controllers/StateEstimatorContainer.h"
 #include "SimUtilities/IMUTypes.h"
-#include "gui_main_control_settings_t.hpp"
+#include "rt/rt_rc_interface.h"
 #include "Controllers/ContactEstimator.h"
 #include "Controllers/DesiredStateCommand.h"
 #include "Controllers/LegController.h"
@@ -70,7 +70,7 @@ class RobotRunner : public PeriodicTask {
   StateEstimatorContainer<float>* _stateEstimator;
   bool _cheaterModeEnabled = false;
   DesiredStateCommand<float>* _desiredStateCommand;
-  gui_main_control_settings_t main_control_settings;
+  rc_control_settings rc_control;
   lcm::LCM _lcm;
   leg_control_command_lcmt leg_control_command_lcm;
   state_estimator_lcmt state_estimator_lcm;

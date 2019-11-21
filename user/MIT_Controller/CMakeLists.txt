@@ -11,19 +11,13 @@ include_directories("../../lcm-types/cpp")
 include_directories("/usr/local/include/lcm/")   # lcm includes
 include_directories("/usr/local/include/eigen3")   # lcm includes
 include_directories(${CMAKE_BINARY_DIR})
+include_directories(${PROJECT_SOURCE_DIR})
 
 file(GLOB_RECURSE sources
 "./*.cpp"
 "FSM_States/*.cpp" 
 "Controllers/BalanceController/*.cpp" 
 "Controllers/convexMPC/*.cpp")
-
-if(IPOPT_OPTION)
-link_directories("../../third-party/CoinIpopt/build/lib")
-include_directories(SYSTEM "../../third-party/CoinIpopt/build/include/coin")
-find_library(ipopt NAMES libipopt.so PATHS "../../third-party/CoinIpopt/build/lib")
-endif(IPOPT_OPTION)
-
 
 add_subdirectory(Controllers/WBC)
 add_subdirectory(Controllers/WBC_Ctrl)

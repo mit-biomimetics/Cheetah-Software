@@ -220,18 +220,27 @@ void FSM_State_BalanceStand<T>::BalanceStandStep() {
 
   _wbc_data->pBody_RPY_des = _ini_body_ori_rpy;
   if(this->_data->controlParameters->use_rc){
-    _wbc_data->pBody_RPY_des[0] = this->_data->_desiredStateCommand->rcCommand->rpy_des[0];
-    _wbc_data->pBody_RPY_des[1] = this->_data->_desiredStateCommand->rcCommand->rpy_des[1];
-    _wbc_data->pBody_RPY_des[2] += this->_data->_desiredStateCommand->rcCommand->rpy_des[2];
-    _wbc_data->pBody_des[2] += this->_data->_desiredStateCommand->rcCommand->p_des[2];
+    const rc_control_settings* rc_cmd = this->_data->_desiredStateCommand->rcCommand;
+    // Orientation
+    _wbc_data->pBody_RPY_des[0] = rc_cmd->rpy_des[0]*1.4;
+    _wbc_data->pBody_RPY_des[1] = rc_cmd->rpy_des[1]*0.46;
+    _wbc_data->pBody_RPY_des[2] -= rc_cmd->rpy_des[2];
+
+    // Height
+    _wbc_data->pBody_des[2] += 0.12 * rc_cmd->height_variation;
   }else{
+    // Orientation
     _wbc_data->pBody_RPY_des[0] = 
      0.6* this->_data->_desiredStateCommand->gamepadCommand->leftStickAnalog[0];
      _wbc_data->pBody_RPY_des[1] = 
       0.6*this->_data->_desiredStateCommand->gamepadCommand->rightStickAnalog[0];
-    _wbc_data->pBody_RPY_des[2] += 
+    _wbc_data->pBody_RPY_des[2] -= 
       this->_data->_desiredStateCommand->gamepadCommand->rightStickAnalog[1];
-    }
+    
+    // Height
+    _wbc_data->pBody_des[2] += 
+      0.12 * this->_data->_desiredStateCommand->gamepadCommand->rightStickAnalog[0];
+  }
   _wbc_data->vBody_Ori_des.setZero();
 
   for(size_t i(0); i<4; ++i){
@@ -246,13 +255,10 @@ void FSM_State_BalanceStand<T>::BalanceStandStep() {
   if(this->_data->_desiredStateCommand->trigger_pressed) {
     _wbc_data->pBody_des[2] = 0.05;
 
-      if(last_height_command - _wbc_data->pBody_des[2] > 0.001) {
-    _wbc_data->pBody_des[2] = last_height_command - 0.001;
+    if(last_height_command - _wbc_data->pBody_des[2] > 0.001) {
+      _wbc_data->pBody_des[2] = last_height_command - 0.001;
+    }
   }
-  }
-
-
-
   last_height_command = _wbc_data->pBody_des[2];
 
   _wbc_ctrl->run(_wbc_data, *this->_data);

@@ -67,6 +67,14 @@ void TI_BoardControl::run_ti_board_iteration() {
                      command.force_ff, command.tau_ff, data->position,
                      data->velocity, data->force, data->tau_des);
 
+    // joint position feedback.
+    for(int i = 0; i < 3; i++) {
+      data->tau_des[i] += (command.q_des[i] - data->q[i]) * command.kp_joint[i];
+      data->tau_des[i] += (command.qd_des[i] - data->dq[i]) * command.kd_joint[i];
+    }
+
+
+
     for (int i = 0; i < 3; ++i) {
       if (std::abs(data->tau_des[i]) > command.max_torque) {
         data->tau_des[i] =

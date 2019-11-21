@@ -92,8 +92,8 @@ void LinearKFPositionVelocityEstimator<T>::run() {
 
   Vec3<T> g(0, 0, T(-9.81));
   Mat3<T> Rbod = this->_stateEstimatorData.result->rBody.transpose();
-  Vec3<T> a = this->_stateEstimatorData.result->aWorld +
-              g;  // in old code, Rbod * se_acc + g
+  // in old code, Rbod * se_acc + g
+  Vec3<T> a = this->_stateEstimatorData.result->aWorld + g; 
   // std::cout << "A WORLD\n" << a << "\n";
   Vec4<T> pzs = Vec4<T>::Zero();
   Vec4<T> trusts = Vec4<T>::Zero();
@@ -106,10 +106,10 @@ void LinearKFPositionVelocityEstimator<T>::run() {
     Quadruped<T>& quadruped =
         *(this->_stateEstimatorData.legControllerData->quadruped);
     Vec3<T> ph = quadruped.getHipLocation(i);  // hip positions relative to CoM
-    Vec3<T> p_rel = ph + this->_stateEstimatorData.legControllerData[i]
-                             .p;  // hw_i->leg_controller->leg_datas[i].p; //
-    Vec3<T> dp_rel = this->_stateEstimatorData.legControllerData[i]
-                         .v;  // hw_i->leg_controller->leg_datas[i].v;
+    // hw_i->leg_controller->leg_datas[i].p; 
+    Vec3<T> p_rel = ph + this->_stateEstimatorData.legControllerData[i].p;
+    // hw_i->leg_controller->leg_datas[i].v;
+    Vec3<T> dp_rel = this->_stateEstimatorData.legControllerData[i].v;  
     Vec3<T> p_f = Rbod * p_rel;
     Vec3<T> dp_f =
         Rbod *
@@ -148,7 +148,6 @@ void LinearKFPositionVelocityEstimator<T>::run() {
     _vs.segment(i1, 3) = (1.0f - trust) * v0 + trust * (-dp_f);
     pzs(i) = (1.0f - trust) * (p0(2) + p_f(2));
   }
-
 
   Eigen::Matrix<T, 28, 1> y;
   y << _ps, _vs, pzs;

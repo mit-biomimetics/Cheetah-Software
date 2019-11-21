@@ -9,7 +9,7 @@
 #include <iostream>
 
 #include "cppTypes.h"
-#include "Dynamics/Quadruped.h"
+#include "../../user/MIT_Controller/MIT_UserParameters.h"
 
 /**
  * Enumerated gait types. Preplanned gaits are defined.
@@ -56,9 +56,10 @@ struct GaitData {
   T periodTimeNominal;      // overall period time to scale
   T initialPhase;           // initial phase to offset
   T switchingPhaseNominal;  // nominal phase to switch contacts
+  int overrideable;
 
   // Enable flag for each foot
-  Eigen::Vector4i gaitEnabled;  // enable gaint controlled legs
+  Eigen::Vector4i gaitEnabled;  // enable gait controlled legs
 
   // Time based descriptors
   Vec4<T> periodTime;           // overall foot scaled gait period time
@@ -80,10 +81,6 @@ struct GaitData {
   Eigen::Vector4i contactStatePrev;       // previous contact state of the foot
   Eigen::Vector4i touchdownScheduled;     // scheduled touchdown event flag
   Eigen::Vector4i liftoffScheduled;       // scheduled touchdown event flag
-
-  // Position of the feet in the world frame at takeoff time
-  Mat34<T> posFootLiftoffWorld;    // foot position when scheduled to lift off
-  Mat34<T> posFootTouchdownWorld;  // foot position when scheduled to touchdown
 };
 
 /**
@@ -93,7 +90,7 @@ template <typename T>
 class GaitScheduler {
  public:
   // Constructors for the GaitScheduler
-  GaitScheduler(float _dt);
+  GaitScheduler(MIT_UserParameters* _userParameters, float _dt);
   ~GaitScheduler(){};
 
   // Initialize the Gait Scheduler
@@ -103,7 +100,9 @@ class GaitScheduler {
   void step();
 
   // Creates a new gait from predefined library
+  void modifyGait();
   void createGait();
+  void calcAuxiliaryGaitData();
 
   // Prints the characteristic info and curret state
   void printGaitInfo();
@@ -111,9 +110,15 @@ class GaitScheduler {
   // Struct containing all of the gait relevant data
   GaitData<T> gaitData;
 
+  // Natural gait modifiers
+  T period_time_natural = 0.5;
+  T switching_phase_natural = 0.5;
+  T swing_time_natural = 0.25;
+  
  private:
   // The quadruped model
   // Quadruped<T>& _quadruped;
+  MIT_UserParameters* userParameters;
 
   // Control loop timestep change
   T dt;

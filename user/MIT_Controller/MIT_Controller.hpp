@@ -6,7 +6,7 @@
 #include "Controllers/ContactEstimator.h"
 #include "FSM_States/ControlFSM.h"
 #include "MIT_UserParameters.h"
-#include <gui_main_control_settings_t.hpp>
+//#include <gui_main_control_settings_t.hpp>
 
 class MIT_Controller: public RobotController{
 public:

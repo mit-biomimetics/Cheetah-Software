@@ -1,0 +1,4 @@
+struct rpc_data_clean_t
+{
+      double value[186];
+}

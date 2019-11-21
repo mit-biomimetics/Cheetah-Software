@@ -8,7 +8,7 @@ MIT_Controller::MIT_Controller():RobotController(){  }
  */
 void MIT_Controller::initializeController() {
   // Initialize a new GaitScheduler object
-  _gaitScheduler = new GaitScheduler<float>(_controlParameters->controller_dt);
+  _gaitScheduler = new GaitScheduler<float>(&userParameters, _controlParameters->controller_dt);
 
   // Initialize a new ContactEstimator object
   //_contactEstimator = new ContactEstimator<double>();

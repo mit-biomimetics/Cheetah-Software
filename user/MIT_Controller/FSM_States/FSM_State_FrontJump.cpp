@@ -6,8 +6,6 @@
 
 #include "FSM_State_FrontJump.h"
 #include <Utilities/Utilities_print.h>
-#include <rt/rt_interface_lcm.h>
-
 
 /**
  * Constructor for the FSM State that passes in state specific info to
@@ -195,11 +193,6 @@ FSM_StateName FSM_State_FrontJump<T>::checkTransition() {
       this->nextStateName = FSM_StateName::LOCOMOTION;
       break;
 
-    case K_BOUNDING:
-      this->nextStateName = FSM_StateName::BOUNDING;
-      break;
-
-
     case K_PASSIVE:  // normal c
       this->nextStateName = FSM_StateName::PASSIVE;
       break;
@@ -237,10 +230,6 @@ TransitionData<T> FSM_State_FrontJump<T>::transition() {
       break;
 
     case FSM_StateName::LOCOMOTION:
-      this->transitionData.done = true;
-      break;
-
-    case FSM_StateName::BOUNDING:
       this->transitionData.done = true;
       break;
 

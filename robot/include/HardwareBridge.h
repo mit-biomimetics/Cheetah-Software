@@ -24,6 +24,8 @@
 #include "control_parameter_respones_lcmt.hpp"
 #include "gamepad_lcmt.hpp"
 #include "microstrain_lcmt.hpp"
+#include "ecat_command_t.hpp"
+#include "ecat_data_t.hpp"
 
 
 
@@ -113,9 +115,14 @@ public:
   void runEcat();
   void initHardware();
   void run();
+  void publishEcatLCM();
   // todo imu?
 
 private:
+  VectorNavData _vectorNavData;
+  lcm::LCM _ecatLCM;
+  ecat_command_t ecatCmdLcm;
+  ecat_data_t ecatDataLcm;
   // nothing?
 };
 #endif // END of #ifdef linux

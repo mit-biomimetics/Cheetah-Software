@@ -8,7 +8,7 @@
 #include "FSM_State_Locomotion.h"
 #include <Utilities/Timer.h>
 #include <Controllers/WBC_Ctrl/LocomotionCtrl/LocomotionCtrl.hpp>
-#include <rt/rt_interface_lcm.h>
+//#include <rt/rt_interface_lcm.h>
 
 /**
  * Constructor for the FSM State that passes in state specific info to
@@ -17,15 +17,26 @@
  * @param _controlFSMData holds all of the relevant control data
  */
 template <typename T>
-FSM_State_Locomotion<T>::FSM_State_Locomotion(
-    ControlFSMData<T>* _controlFSMData)
-    : FSM_State<T>(_controlFSMData, FSM_StateName::LOCOMOTION, "LOCOMOTION"),
-        cMPCOld(_controlFSMData->controlParameters->controller_dt,
-                //30 / (1000. * _controlFSMData->controlParameters->controller_dt),
-                //22 / (1000. * _controlFSMData->controlParameters->controller_dt),
-                27 / (1000. * _controlFSMData->controlParameters->controller_dt),
-                _controlFSMData->userParameters){
-  // Set the safety checks
+FSM_State_Locomotion<T>::FSM_State_Locomotion(ControlFSMData<T>* _controlFSMData)
+    : FSM_State<T>(_controlFSMData, FSM_StateName::LOCOMOTION, "LOCOMOTION")
+{
+  if(_controlFSMData->_quadruped->_robotType == RobotType::MINI_CHEETAH){
+    cMPCOld = new ConvexMPCLocomotion(_controlFSMData->controlParameters->controller_dt,
+        //30 / (1000. * _controlFSMData->controlParameters->controller_dt),
+        //22 / (1000. * _controlFSMData->controlParameters->controller_dt),
+        27 / (1000. * _controlFSMData->controlParameters->controller_dt),
+        _controlFSMData->userParameters);
+
+  }else if(_controlFSMData->_quadruped->_robotType == RobotType::CHEETAH_3){
+    cMPCOld = new ConvexMPCLocomotion(_controlFSMData->controlParameters->controller_dt,
+        33 / (1000. * _controlFSMData->controlParameters->controller_dt),
+        _controlFSMData->userParameters);
+
+  }else{
+    assert(false);
+  }
+
+
   this->turnOnAllSafetyChecks();
   // Turn off Foot pos command since it is set in WBC as operational task
   this->checkPDesFoot = false;
@@ -44,7 +55,8 @@ void FSM_State_Locomotion<T>::onEnter() {
 
   // Reset the transition data
   this->transitionData.zero();
-  cMPCOld.initialize();
+  cMPCOld->initialize();
+  this->_data->_gaitScheduler->gaitData._nextGait = GaitType::TROT;
   printf("[FSM LOCOMOTION] On Enter\n");
 }
 
@@ -57,7 +69,7 @@ void FSM_State_Locomotion<T>::run() {
   LocomotionControlStep();
 }
 
-extern gui_main_control_settings_t main_control_settings;
+extern rc_control_settings rc_control;
 
 /**
  * Manages which states can be transitioned into either by the user
@@ -117,7 +129,7 @@ FSM_StateName FSM_State_Locomotion<T>::checkTransition() {
   } else {
     this->nextStateName = FSM_StateName::RECOVERY_STAND;
     this->transitionDuration = 0.;
-    main_control_settings.mode = RC_mode::RECOVERY_STAND;
+    rc_control.mode = RC_mode::RECOVERY_STAND;
   }
 
 
@@ -200,7 +212,7 @@ bool FSM_State_Locomotion<T>::locomotionSafe() {
       return false;
     }
 
-    if(std::fabs(p_leg[1] > 0.3)) {
+    if(std::fabs(p_leg[1] > 0.18)) {
       printf("Unsafe locomotion: leg %d's y-position is bad (%.3f m)\n", leg, p_leg[1]);
       return false;
     }
@@ -237,41 +249,43 @@ void FSM_State_Locomotion<T>::LocomotionControlStep() {
   // Contact state logic
   // estimateContact();
 
-  cMPCOld.run<T>(*this->_data);
+  cMPCOld->run<T>(*this->_data);
+  Vec3<T> pDes_backup[4];
+  Vec3<T> vDes_backup[4];
+  Mat3<T> Kp_backup[4];
+  Mat3<T> Kd_backup[4];
 
-  //printf("after: %.3f\n", this->_data->_legController->commands[0].vDes[0]);
+  for(int leg(0); leg<4; ++leg){
+    pDes_backup[leg] = this->_data->_legController->commands[leg].pDes;
+    vDes_backup[leg] = this->_data->_legController->commands[leg].vDes;
+    Kp_backup[leg] = this->_data->_legController->commands[leg].kpCartesian;
+    Kd_backup[leg] = this->_data->_legController->commands[leg].kdCartesian;
+  }
 
   if(this->_data->userParameters->use_wbc > 0.9){
-    _wbc_data->pBody_des = cMPCOld.pBody_des;
-    _wbc_data->vBody_des = cMPCOld.vBody_des;
-    _wbc_data->aBody_des = cMPCOld.aBody_des;
+    _wbc_data->pBody_des = cMPCOld->pBody_des;
+    _wbc_data->vBody_des = cMPCOld->vBody_des;
+    _wbc_data->aBody_des = cMPCOld->aBody_des;
 
-    _wbc_data->pBody_RPY_des = cMPCOld.pBody_RPY_des;
-    _wbc_data->vBody_Ori_des = cMPCOld.vBody_Ori_des;
+    _wbc_data->pBody_RPY_des = cMPCOld->pBody_RPY_des;
+    _wbc_data->vBody_Ori_des = cMPCOld->vBody_Ori_des;
     
     for(size_t i(0); i<4; ++i){
-      _wbc_data->pFoot_des[i] = cMPCOld.pFoot_des[i];
-      _wbc_data->vFoot_des[i] = cMPCOld.vFoot_des[i];
-      _wbc_data->aFoot_des[i] = cMPCOld.aFoot_des[i];
-      _wbc_data->Fr_des[i] = cMPCOld.Fr_des[i]; 
+      _wbc_data->pFoot_des[i] = cMPCOld->pFoot_des[i];
+      _wbc_data->vFoot_des[i] = cMPCOld->vFoot_des[i];
+      _wbc_data->aFoot_des[i] = cMPCOld->aFoot_des[i];
+      _wbc_data->Fr_des[i] = cMPCOld->Fr_des[i]; 
     }
-    _wbc_data->contact_state = cMPCOld.contact_state;
-
- //printf("after2: %.3f\n", this->_data->_legController->commands[0].vDes[0]);
-    Mat3<T> kd_backup[4];
-    Vec3<T> vDes_backup[4];
-    for(int i = 0; i < 4; i++) {
-      kd_backup[i] = this->_data->_legController->commands[i].kdCartesian;
-      vDes_backup[i] = this->_data->_legController->commands[i].vDes;
-    }
+    _wbc_data->contact_state = cMPCOld->contact_state;
     _wbc_ctrl->run(_wbc_data, *this->_data);
-    for(int i = 0; i < 4; i++) {
-      this->_data->_legController->commands[i].kdCartesian = kd_backup[i];
-      this->_data->_legController->commands[i].vDes = vDes_backup[i];
-    }
-     //printf("after3: %.3f\n", this->_data->_legController->commands[0].vDes[0]);
-
   }
+  for(int leg(0); leg<4; ++leg){
+    //this->_data->_legController->commands[leg].pDes = pDes_backup[leg];
+    this->_data->_legController->commands[leg].vDes = vDes_backup[leg];
+    //this->_data->_legController->commands[leg].kpCartesian = Kp_backup[leg];
+    this->_data->_legController->commands[leg].kdCartesian = Kd_backup[leg];
+  }
+
 }
 
 /**

@@ -131,7 +131,9 @@ class StateEstimatorContainer {
   /*!
    * Set the contact phase
    */
-  void setContactPhase(Vec4<T>& phase) { *_data.contactPhase = phase; }
+  void setContactPhase(Vec4<T>& phase) { 
+    *_data.contactPhase = phase; 
+  }
 
   /*!
    * Add an estimator of the given type

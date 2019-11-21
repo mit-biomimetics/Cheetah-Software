@@ -14,10 +14,12 @@
 #include "Configuration.h"
 
 #include "HardwareBridge.h"
-#include "rt/rt_interface_lcm.h"
+//#include "rt/rt_rc_interface.h"
 #include "rt/rt_sbus.h"
 #include "rt/rt_spi.h"
 #include "rt/rt_vectornav.h"
+#include "rt/rt_ethercat.h"
+#include "Utilities/Utilities_print.h"
 
 #define USE_MICROSTRAIN
 
@@ -298,7 +300,6 @@ void MiniCheetahHardwareBridge::run() {
   _robotRunner->visualizationData = &_visualizationData;
   _robotRunner->cheetahMainVisualization = &_mainCheetahVisualization;
 
-  _robotRunner->init();
   _firstRun = false;
 
   // init control thread
@@ -391,6 +392,20 @@ void MiniCheetahHardwareBridge::initHardware() {
   _microstrainInit = _microstrainImu.tryInit(0, 921600);
 }
 
+void Cheetah3HardwareBridge::initHardware() {
+  _vectorNavData.quat << 1, 0, 0, 0;
+  printf("[Cheetah 3 Hardware] Init vectornav\n");
+  if (!init_vectornav(&_vectorNavData)) {
+    printf("Vectornav failed to initialize\n");
+    printf_color(PrintColor::Red, "****************\n"
+                                  "**  WARNING!  **\n"
+                                  "****************\n"
+                                  "  IMU DISABLED  \n"
+                                  "****************\n\n");
+    //initError("failed to initialize vectornav!\n", false);
+  }
+}
+
 /*!
  * Run Mini Cheetah SPI
  */
@@ -404,6 +419,82 @@ void MiniCheetahHardwareBridge::runSpi() {
 
   _spiLcm.publish("spi_data", data);
   _spiLcm.publish("spi_command", cmd);
+}
+
+void Cheetah3HardwareBridge::runEcat() {
+  rt_ethercat_set_command(_tiBoardCommand);
+  rt_ethercat_run();
+  rt_ethercat_get_data(_tiBoardData);
+
+  publishEcatLCM();
+}
+
+void Cheetah3HardwareBridge::publishEcatLCM() {
+  for(int leg = 0; leg < 4; leg++) {
+    ecatCmdLcm.x_des[leg] = _tiBoardCommand[leg].position_des[0];
+    ecatCmdLcm.y_des[leg] = _tiBoardCommand[leg].position_des[1];
+    ecatCmdLcm.z_des[leg] = _tiBoardCommand[leg].position_des[2];
+    ecatCmdLcm.dx_des[leg] = _tiBoardCommand[leg].velocity_des[0];
+    ecatCmdLcm.dy_des[leg] = _tiBoardCommand[leg].velocity_des[1];
+    ecatCmdLcm.dz_des[leg] = _tiBoardCommand[leg].velocity_des[2];
+    ecatCmdLcm.kpx[leg] = _tiBoardCommand[leg].kp[0];
+    ecatCmdLcm.kpy[leg] = _tiBoardCommand[leg].kp[1];
+    ecatCmdLcm.kpz[leg] = _tiBoardCommand[leg].kp[2];
+    ecatCmdLcm.kdx[leg] = _tiBoardCommand[leg].kd[0];
+    ecatCmdLcm.kdy[leg] = _tiBoardCommand[leg].kd[1];
+    ecatCmdLcm.kdz[leg] = _tiBoardCommand[leg].kd[2];
+    ecatCmdLcm.enable[leg] = _tiBoardCommand[leg].enable;
+    ecatCmdLcm.zero_joints[leg] = _tiBoardCommand[leg].zero;
+    ecatCmdLcm.fx_ff[leg] = _tiBoardCommand[leg].force_ff[0];
+    ecatCmdLcm.fy_ff[leg] = _tiBoardCommand[leg].force_ff[1];
+    ecatCmdLcm.fz_ff[leg] = _tiBoardCommand[leg].force_ff[2];
+    ecatCmdLcm.tau_abad_ff[leg] = _tiBoardCommand[leg].tau_ff[0];
+    ecatCmdLcm.tau_hip_ff[leg] = _tiBoardCommand[leg].tau_ff[1];
+    ecatCmdLcm.tau_knee_ff[leg] = _tiBoardCommand[leg].tau_ff[2];
+    ecatCmdLcm.q_des_abad[leg] = _tiBoardCommand[leg].q_des[0];
+    ecatCmdLcm.q_des_hip[leg] = _tiBoardCommand[leg].q_des[1];
+    ecatCmdLcm.q_des_knee[leg] = _tiBoardCommand[leg].q_des[2];
+    ecatCmdLcm.qd_des_abad[leg] = _tiBoardCommand[leg].qd_des[0];
+    ecatCmdLcm.qd_des_hip[leg] = _tiBoardCommand[leg].qd_des[1];
+    ecatCmdLcm.qd_des_knee[leg] = _tiBoardCommand[leg].qd_des[2];
+    ecatCmdLcm.kp_joint_abad[leg] = _tiBoardCommand[leg].kp_joint[0];
+    ecatCmdLcm.kp_joint_hip[leg] = _tiBoardCommand[leg].kp_joint[1];
+    ecatCmdLcm.kp_joint_knee[leg] = _tiBoardCommand[leg].kp_joint[2];
+    ecatCmdLcm.kd_joint_abad[leg] = _tiBoardCommand[leg].kd_joint[0];
+    ecatCmdLcm.kd_joint_hip[leg] = _tiBoardCommand[leg].kd_joint[1];
+    ecatCmdLcm.kd_joint_knee[leg] = _tiBoardCommand[leg].kd_joint[2];
+    ecatCmdLcm.max_torque[leg] = _tiBoardCommand[leg].max_torque;
+  }
+
+  for(int leg = 0; leg < 4; leg++) {
+    ecatDataLcm.x[leg] = _tiBoardData[leg].position[0];
+    ecatDataLcm.y[leg] = _tiBoardData[leg].position[1];
+    ecatDataLcm.z[leg] = _tiBoardData[leg].position[2];
+    ecatDataLcm.dx[leg] = _tiBoardData[leg].velocity[0];
+    ecatDataLcm.dy[leg] = _tiBoardData[leg].velocity[1];
+    ecatDataLcm.dz[leg] = _tiBoardData[leg].velocity[2];
+    ecatDataLcm.fx[leg] = _tiBoardData[leg].force[0];
+    ecatDataLcm.fy[leg] = _tiBoardData[leg].force[1];
+    ecatDataLcm.fz[leg] = _tiBoardData[leg].force[2];
+    ecatDataLcm.q_abad[leg] = _tiBoardData[leg].q[0];
+    ecatDataLcm.q_hip[leg] = _tiBoardData[leg].q[1];
+    ecatDataLcm.q_knee[leg] = _tiBoardData[leg].q[2];
+    ecatDataLcm.dq_abad[leg] = _tiBoardData[leg].dq[0];
+    ecatDataLcm.dq_hip[leg] = _tiBoardData[leg].dq[1];
+    ecatDataLcm.dq_knee[leg] = _tiBoardData[leg].dq[2];
+    ecatDataLcm.tau_abad[leg] = _tiBoardData[leg].tau[0];
+    ecatDataLcm.tau_hip[leg] = _tiBoardData[leg].tau[1];
+    ecatDataLcm.tau_knee[leg] = _tiBoardData[leg].tau[2];
+    ecatDataLcm.tau_des_abad[leg] = _tiBoardData[leg].tau_des[0];
+    ecatDataLcm.tau_des_hip[leg] = _tiBoardData[leg].tau_des[1];
+    ecatDataLcm.tau_des_knee[leg] = _tiBoardData[leg].tau_des[2];
+    ecatDataLcm.loop_count_ti[leg] = _tiBoardData[leg].loop_count_ti;
+    ecatDataLcm.ethercat_count_ti[leg] = _tiBoardData[leg].ethercat_count_ti;
+    ecatDataLcm.microtime_ti[leg] = _tiBoardData[leg].microtime_ti;
+  }
+
+  _ecatLCM.publish("ecat_cmd", &ecatCmdLcm);
+  _ecatLCM.publish("ecat_data", &ecatDataLcm);
 }
 
 /*!
@@ -427,13 +518,13 @@ void HardwareBridge::publishVisualizationLCM() {
   _visualizationLCM.publish("main_cheetah_visualization", &visualization_data);
 }
 
-Cheetah3HardwareBridge::Cheetah3HardwareBridge(RobotController *rc) : HardwareBridge(rc) {
+Cheetah3HardwareBridge::Cheetah3HardwareBridge(RobotController *rc) : HardwareBridge(rc),  _ecatLCM(getLcmUrl(255)) {
 
 }
 
 void Cheetah3HardwareBridge::run() {
   initCommon();
-  // initHardware(); todo
+  initHardware();
 
   printf("[Hardware Bridge] Loading parameters over LCM...\n");
   while (!_robotParams.isFullyInitialized()) {
@@ -460,6 +551,7 @@ void Cheetah3HardwareBridge::run() {
   _robotRunner->controlParameters = &_robotParams;
   _robotRunner->visualizationData = &_visualizationData;
   _robotRunner->cheetahMainVisualization = &_mainCheetahVisualization;
+  _robotRunner->vectorNavData = &_vectorNavData;
 
   _robotRunner->init();
   _firstRun = false;
@@ -468,14 +560,11 @@ void Cheetah3HardwareBridge::run() {
 
   statusTask.start();
 
-  // Ecat Task start todo
-//  PeriodicMemberFunction<Cheetah3HardwareBridge> ecatTask(
-//      &taskManager, .002, "ecat", &Cheetah3HardwareBridge::runEcat, this);
-//  ecatTask.start();
-
-  // microstrain
-//  if(_microstrainInit)
-//    _microstrainThread = std::thread(&MiniCheetahHardwareBridge::runMicrostrain, this);
+  rt_ethercat_init();
+  // Ecat Task start
+  PeriodicMemberFunction<Cheetah3HardwareBridge> ecatTask(
+      &taskManager, .001, "ecat", &Cheetah3HardwareBridge::runEcat, this);
+  ecatTask.start();
 
   // robot controller start
   _robotRunner->start();
@@ -486,19 +575,16 @@ void Cheetah3HardwareBridge::run() {
       &MiniCheetahHardwareBridge::publishVisualizationLCM, this);
   visualizationLCMTask.start();
 
-  // rc controller
-  _port = init_sbus(false);  // Not Simulation
-  PeriodicMemberFunction<HardwareBridge> sbusTask(
-      &taskManager, .005, "rc_controller", &HardwareBridge::run_sbus, this);
-  sbusTask.start();
+  // rc controller disabled for now
+//  _port = init_sbus(false);  // Not Simulation
+//  PeriodicMemberFunction<HardwareBridge> sbusTask(
+//      &taskManager, .005, "rc_controller", &HardwareBridge::run_sbus, this);
+//  sbusTask.start();
 
-  // temporary hack: microstrain logger
-//  PeriodicMemberFunction<MiniCheetahHardwareBridge> microstrainLogger(
-//      &taskManager, .001, "microstrain-logger", &MiniCheetahHardwareBridge::logMicrostrain, this);
-//  microstrainLogger.start();
 
   for (;;) {
-    usleep(1000000);
+    usleep(100000);
+    taskManager.printStatus();
     // printf("joy %f\n", _robotRunner->driverCommand->leftStickAnalog[0]);
   }
 }

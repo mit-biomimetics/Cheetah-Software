@@ -19,7 +19,6 @@ struct CMPC_Result {
   Vec4<T> contactPhase;
 };
 
-
 struct CMPC_Jump {
   static constexpr int START_SEG = 6;
   static constexpr int END_SEG = 0;
@@ -46,8 +45,6 @@ struct CMPC_Jump {
     }
     pressed = trigger;
   }
-
-
 
   bool should_jump(int seg) {
     debug(seg);
@@ -84,6 +81,8 @@ struct CMPC_Jump {
 
 class ConvexMPCLocomotion {
 public:
+  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+
   ConvexMPCLocomotion(float _dt, int _iterations_between_mpc, MIT_UserParameters* parameters);
   void initialize();
 
@@ -107,9 +106,19 @@ public:
   Vec4<float> contact_state;
 
 private:
+  void _SetupCommand(ControlFSMData<float> & data);
+
+  float _yaw_turn_rate;
+  float _yaw_des;
+
+  float _roll_des;
+  float _pitch_des;
+
+  float _x_vel_des = 0.;
+  float _y_vel_des = 0.;
+
   // High speed running
   //float _body_height = 0.34;
-  
   float _body_height = 0.29;
 
   float _body_height_running = 0.29;

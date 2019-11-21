@@ -18,7 +18,7 @@
 #include "cppTypes.h"
 
 #include "SimUtilities/GamepadCommand.h"
-#include "gui_main_control_settings_t.hpp"
+#include "robot/include/rt/rt_rc_interface.h"
 
 /**
  *
@@ -45,12 +45,12 @@ struct DesiredStateData {
  */
 template <typename T>
 class DesiredStateCommand {
- public:
+public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   // Initialize with the GamepadCommand struct
-  DesiredStateCommand(GamepadCommand* command, gui_main_control_settings_t* rc_command,
+  DesiredStateCommand(GamepadCommand* command, rc_control_settings* rc_command,
                       RobotControlParameters* _parameters,
-      StateEstimate<T>* sEstimate, float _dt) {
+                      StateEstimate<T>* sEstimate, float _dt) {
     gamepadCommand = command;
     rcCommand = rc_command;
     stateEstimate = sEstimate;
@@ -65,6 +65,8 @@ class DesiredStateCommand {
   }
 
   void convertToStateCommands();
+  void setCommandLimits(T minVelX_in, T maxVelX_in,
+                        T minVelY_in, T maxVelY_in, T minTurnRate_in, T maxTurnRate_in);
   void desiredStateTrajectory(int N, Vec10<T> dtVec);
   void printRawInfo();
   void printStateCommandInfo();
@@ -79,8 +81,8 @@ class DesiredStateCommand {
   T minVelX = -3.0;
   //T maxVelX = 5.0;
   //T minVelX = -5.0;
-  T maxVelY = 1.0;
-  T minVelY = -1.0;
+  T maxVelY = 2.0;
+  T minVelY = -2.0;
   //T maxVelY = 0.5;
   //T minVelY = -0.5;
   T maxTurnRate = 2.5;
@@ -95,12 +97,12 @@ class DesiredStateCommand {
   // Holds the instantaneous desired state and future desired state trajectory
   DesiredStateData<T> data;
 
-  const gui_main_control_settings_t* rcCommand;
+  const rc_control_settings* rcCommand;
   const GamepadCommand* gamepadCommand;
 
   bool trigger_pressed = false;
 
- private:
+private:
   StateEstimate<T>* stateEstimate;
   RobotControlParameters* parameters;
 

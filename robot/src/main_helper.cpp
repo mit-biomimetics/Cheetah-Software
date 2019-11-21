@@ -95,8 +95,8 @@ int main_helper(int argc, char** argv, RobotController* ctrl) {
       hw.run();
       printf("[Quadruped] SimDriver run() has finished!\n");
     } else if (gMasterConfig._robot == RobotType::CHEETAH_3) {
-      printf("[ERROR] can't do cheetah 3 hardware\n");
-      assert(false);
+      Cheetah3HardwareBridge hw(ctrl);
+      hw.run();
     } else {
       printf("[ERROR] unknown robot\n");
       assert(false);

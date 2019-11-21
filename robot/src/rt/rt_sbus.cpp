@@ -12,6 +12,7 @@
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
+#include <string>
 
 #ifdef linux
 #define termios asmtermios
@@ -23,7 +24,7 @@
 
 #include <termios.h>
 
-#include "rt/rt_interface_lcm.h"
+//#include "rt/rt_interface_lcm.h"
 #include "rt/rt_sbus.h"
 #include "rt/rt_serial.h"
 

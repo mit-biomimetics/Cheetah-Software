@@ -20,4 +20,7 @@ struct two_contact_stand_data_t
 	double C_times_f[20];
 	double s[12];
 	double cost_to_go;
+	double Q_lqr[12];
+	double R_lqr;
+	double R_fil;
 }

@@ -1,0 +1,19 @@
+struct rpc_inputs_t
+{
+    double current_state[12];
+    double p_foot0[12];	
+    double r_hip[12];
+    double x_desired[72];
+    double gait_enabled[4];
+    double phase_variable[4];
+    double period_time[4];
+    double time_swing[4];   
+    double mass;
+    double inertia[3];
+    double gravity[3];
+    double mu[4];
+    double z_g[4];
+    double Q[12];
+    double R[24];
+    double K_HX[30];
+}

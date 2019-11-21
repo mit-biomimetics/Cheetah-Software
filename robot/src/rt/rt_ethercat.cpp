@@ -4,23 +4,29 @@
 #include <inttypes.h> // what is this?
 #include <stdlib.h>
 #include <time.h>
+#include <mutex>
+#include <SOEM/soem/ethercat.h>
 #include "SOEM/soem/ethercat.h"
 #include "SOEM/osal/osal.h"
 #include "SOEM/osal/linux/osal_defs.h"
+#include "rt/rt_ethercat.h"
+#include "SimUtilities/ti_boardcontrol.h"
 
 
 #define EC_TIMEOUTMON 500
 
-char IOmap[4096];
-OSAL_THREAD_HANDLE thread1;
-int expectedWKC;
-boolean needlf;
-volatile int wkc;
-boolean inOP;
-uint8 currentgroup = 0;
+static char IOmap[4096];
+static OSAL_THREAD_HANDLE thread1;
+static int expectedWKC;
+static boolean needlf;
+static volatile int wkc;
+static boolean inOP;
+static uint8 currentgroup = 0;
 
+//#define ADAPTER_NAME "eno1"
+#define ADAPTER_NAME "enp2s0"
 
-void degraded_handler() {
+static void degraded_handler() {
   //shut of gpio enables
   // estop();
   printf("[EtherCAT Error] Logging error...\n");
@@ -31,7 +37,7 @@ void degraded_handler() {
   exit(0);
 }
 
-int run_ethercat(const char *ifname) {
+static int run_ethercat(const char *ifname) {
   int i, oloop, iloop, chk;
   needlf = FALSE;
   inOP = FALSE;
@@ -57,6 +63,13 @@ int run_ethercat(const char *ifname) {
       printf("[EtherCAT Init] Mapped slaves.\n");
       /* wait for all slaves to reach SAFE_OP state */
       ec_statecheck(0, EC_STATE_SAFE_OP,  EC_TIMEOUTSTATE * 4);
+
+      for(int slave_idx = 0; slave_idx < ec_slavecount; slave_idx++) {
+        printf("[SLAVE %d]\n", slave_idx);
+        printf("  IN  %d bytes, %d bits\n", ec_slave[slave_idx].Ibytes, ec_slave[slave_idx].Ibits);
+        printf("  OUT %d bytes, %d bits\n", ec_slave[slave_idx].Obytes, ec_slave[slave_idx].Obits);
+        printf("\n");
+     }
 
       oloop = ec_slave[0].Obytes;
       if ((oloop == 0) && (ec_slave[0].Obits > 0)) oloop = 1;
@@ -121,15 +134,15 @@ int run_ethercat(const char *ifname) {
   return 0;
 }
 
-int err_count = 0;
-int err_iteration_count = 0;
+static int err_count = 0;
+static int err_iteration_count = 0;
 /**@brief EtherCAT errors are measured over this period of loop iterations */
 #define K_ETHERCAT_ERR_PERIOD 100
 
 /**@brief Maximum number of etherCAT errors before a fault per period of loop iterations */
 #define K_ETHERCAT_ERR_MAX 20
 
-OSAL_THREAD_FUNC ecatcheck( void *ptr )
+static OSAL_THREAD_FUNC ecatcheck( void *ptr )
 {
   (void)ptr;
   int slave = 0;
@@ -225,7 +238,7 @@ OSAL_THREAD_FUNC ecatcheck( void *ptr )
   }
 }
 
-int init_ethercat()
+void rt_ethercat_init()
 {
 
   printf("[EtherCAT] Initializing EtherCAT\n");
@@ -238,7 +251,7 @@ int init_ethercat()
   for(i = 1; i < 100; i++)
   {
     printf("[EtherCAT] Attempting to start EtherCAT, try %d of 100.\n", i);
-    rc = run_ethercat("p5p1"); // todo?
+    rc = run_ethercat(ADAPTER_NAME); // todo?
     if(rc) break;
     osal_usleep(1000000);
   }
@@ -247,12 +260,13 @@ int init_ethercat()
   {
     printf("[EtherCAT Error] Failed to initialize EtherCAT after 100 tries. \n");
   }
-
-  return (0);
+  
 }
 
-int wkc_err_count = 0;
-int wkc_err_iteration_count = 0;
+static int wkc_err_count = 0;
+static int wkc_err_iteration_count = 0;
+
+static std::mutex command_mutex, data_mutex;
 
 //initiate etherCAT communication
 /** @brief Send and receive data over EtherCAT
@@ -260,7 +274,7 @@ int wkc_err_iteration_count = 0;
  * In Simulation, send data over LCM
  * On the robt, verify the EtherCAT connection is still healthy, send data, receive data, and check for lost packets
  */
-void slave_send_receive()
+void rt_ethercat_run()
 {
   //check connection
   if(wkc_err_iteration_count > K_ETHERCAT_ERR_PERIOD)
@@ -276,9 +290,14 @@ void slave_send_receive()
   }
 
   //send
+  command_mutex.lock();
   ec_send_processdata();
+  command_mutex.unlock();
+
   //receive
+  data_mutex.lock();
   wkc = ec_receive_processdata(EC_TIMEOUTRET);
+  data_mutex.unlock();
 
   //check for dropped packet
   if(wkc < expectedWKC)
@@ -287,4 +306,24 @@ void slave_send_receive()
     wkc_err_count++;
   }
   wkc_err_iteration_count++;
+}
+
+void rt_ethercat_get_data(TiBoardData* data) {
+  data_mutex.lock();
+  for(int slave = 0; slave < 4; slave++) {
+    TiBoardData* slave_src = (TiBoardData*)(ec_slave[slave + 1].inputs);
+    if(slave_src)
+      data[slave] = *(TiBoardData*)(ec_slave[slave + 1].inputs);
+  }
+  data_mutex.unlock();
+
+}
+void rt_ethercat_set_command(TiBoardCommand* command) {
+  command_mutex.lock();
+  for(int slave = 0; slave < 4; slave++) {
+    TiBoardCommand* slave_dest = (TiBoardCommand*)(ec_slave[slave + 1].outputs);
+    if(slave_dest)
+      *(TiBoardCommand*)(ec_slave[slave + 1].outputs) = command[slave];
+  }
+  command_mutex.unlock();
 }

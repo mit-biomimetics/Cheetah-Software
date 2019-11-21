@@ -113,10 +113,14 @@ void LegController<T>::updateData(const TiBoardData* tiBoardData) {
       datas[leg].qd(joint) = tiBoardData[leg].dq[joint];
       datas[leg].p(joint) = tiBoardData[leg].position[joint];
       datas[leg].v(joint) = tiBoardData[leg].velocity[joint];
+
+      // J and p
       computeLegJacobianAndPosition<T>(_quadruped, datas[leg].q, &datas[leg].J,
                                        nullptr, leg);
       datas[leg].tauEstimate[joint] = tiBoardData[leg].tau[joint];
     }
+    //printf("%d leg, position: %f, %f, %f\n", leg, datas[leg].p[0], datas[leg].p[1], datas[leg].p[2]);
+    //printf("%d leg, velocity: %f, %f, %f\n", leg, datas[leg].v[0], datas[leg].v[1], datas[leg].v[2]);
   }
 }
 
@@ -174,6 +178,9 @@ void LegController<T>::updateCommand(SpiCommand* spiCommand) {
   }
 }
 
+constexpr float CHEETAH_3_ZERO_OFFSET[4][3] = {{1.f, 4.f, 7.f},
+                                               {2.f, 5.f, 8.f},
+                                               {3.f, 6.f, 9.f}};
 /*!
  * Update the "leg command" for the TI Board
  */
@@ -181,8 +188,7 @@ template <typename T>
 void LegController<T>::updateCommand(TiBoardCommand* tiBoardCommand) {
   for (int leg = 0; leg < 4; leg++) {
     Vec3<T> tauFF = commands[leg].tauFeedForward.template cast<T>();
-    tauFF += commands[leg].kpJoint * (commands[leg].qDes - datas[leg].q) +
-             commands[leg].kdJoint * (commands[leg].qdDes - datas[leg].qd);
+
 
     for (int joint = 0; joint < 3; joint++) {
       tiBoardCommand[leg].kp[joint] = commands[leg].kpCartesian(joint, joint);
@@ -192,10 +198,25 @@ void LegController<T>::updateCommand(TiBoardCommand* tiBoardCommand) {
       tiBoardCommand[leg].velocity_des[joint] = commands[leg].vDes[joint];
       tiBoardCommand[leg].force_ff[joint] =
           commands[leg].forceFeedForward[joint];
+      tiBoardCommand[leg].q_des[joint] = commands[leg].qDes[joint];
+      tiBoardCommand[leg].qd_des[joint] = commands[leg].qdDes[joint];
+      tiBoardCommand[leg].kp_joint[joint] = commands[leg].kpJoint(joint, joint);
+      tiBoardCommand[leg].kd_joint[joint] = commands[leg].kdJoint(joint, joint);
+      tiBoardCommand[leg].zero_offset[joint] = CHEETAH_3_ZERO_OFFSET[leg][joint];
     }
 
+    // please only send 1 or 0 here or the robot will explode.
     tiBoardCommand[leg].enable = _legsEnabled ? 1 : 0;
     tiBoardCommand[leg].max_torque = _maxTorque;
+    tiBoardCommand[leg].zero = _zeroEncoders ? 1 : 0;
+    if(_calibrateEncoders) {
+      tiBoardCommand[leg].enable = _calibrateEncoders + 1;
+    }
+
+    if(_zeroEncoders) {
+      tiBoardCommand[leg].enable = 0;
+    }
+
   }
 }
 

@@ -18,14 +18,9 @@
 #include "../FSM_States/FSM_State_Passive.h"
 #include "../FSM_States/FSM_State_StandUp.h"
 #include "../FSM_States/FSM_State_RecoveryStand.h"
-#include "../FSM_States/FSM_State_Bounding.h"
 #include "../FSM_States/FSM_State_Vision.h"
 #include "../FSM_States/FSM_State_BackFlip.h"
-#include "../FSM_States/FSM_State_TwoContactStand.h"
 #include "../FSM_States/FSM_State_FrontJump.h"
-
-//#include <lcm/lcm-cpp.hpp>
-//#include "state_estimator_lcmt.hpp"
 
 /**
  * Enumerate all of the operating modes
@@ -46,12 +41,19 @@ struct FSM_StatesList {
   FSM_State_BalanceStand<T>* balanceStand;
   FSM_State_Locomotion<T>* locomotion;
   FSM_State_RecoveryStand<T>* recoveryStand;
-  FSM_State_Bounding<T>* bounding;
   FSM_State_Vision<T>* vision;
   FSM_State_BackFlip<T>* backflip;
-  FSM_State_TwoContactStand<T>* twocontactStand;
   FSM_State_FrontJump<T>* frontJump;
 };
+
+
+/**
+ *
+ */
+template <typename T>
+struct FSM_ControllerList {
+};
+
 
 /**
  * Control FSM handles the FSM states from a higher level
@@ -104,10 +106,12 @@ class ControlFSM {
   FSM_OperatingMode operatingMode;
 
   // Choose how often to print info, every N iterations
-  int printNum = 2000;  // N*(0.001s) in simulation time
+  int printNum = 10000;  // N*(0.001s) in simulation time
 
   // Track the number of iterations since last info print
   int printIter = 0;  // make larger than printNum to not print
+
+  int iter = 0;
 
   //lcm::LCM state_estimator_lcm;
   //state_estimator_lcmt _state_estimator;

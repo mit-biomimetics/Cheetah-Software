@@ -1,4 +1,3 @@
-package cheetahlcm;
 
 struct ecat_command_t
 {
@@ -32,6 +31,20 @@ struct ecat_command_t
      float abad_zero_angle[4];
      float hip_zero_angle[4];
      float knee_zero_angle[4];
+
+     float q_des_abad[4];
+     float q_des_hip[4];
+     float q_des_knee[4];
+     float qd_des_abad[4];
+     float qd_des_hip[4];
+     float qd_des_knee[4];
+     float kp_joint_abad[4];
+     float kp_joint_hip[4];
+     float kp_joint_knee[4];
+     float kd_joint_abad[4];
+     float kd_joint_hip[4];
+     float kd_joint_knee[4];
+
 
      float max_torque[4];
 }

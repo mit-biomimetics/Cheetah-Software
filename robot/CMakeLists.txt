@@ -1,7 +1,5 @@
-cmake_minimum_required(VERSION 3.5)
-project(robot)
-
 include_directories(${CMAKE_BINARY_DIR})
+include_directories(${PROJECT_SOURCE_DIR})
 include_directories("include/")
 include_directories("./")
 include_directories("../common/include/")
