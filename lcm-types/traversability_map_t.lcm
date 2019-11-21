@@ -1,0 +1,4 @@
+struct traversability_map_t
+{
+    int32_t map[100][100];
+}

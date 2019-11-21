@@ -1,0 +1,9 @@
+package interfacelcm;
+
+struct gui_controller_mpc_settings_t
+{
+      float N;
+      float K;
+      float Q[12];
+      float R[6];
+}

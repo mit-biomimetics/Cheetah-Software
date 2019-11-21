@@ -1,0 +1,13 @@
+package interfacelcm;
+
+
+struct gui_state_estimator_settings_t
+{
+	double process_noise_pimu;
+	double process_noise_vimu;
+	double process_noise_pfoot;
+
+	double sensor_noise_pimu_rel_foot;
+	double sensor_noise_vimu_rel_foot;
+	double sensor_noise_zfoot;
+}

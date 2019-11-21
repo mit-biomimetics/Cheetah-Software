@@ -1,0 +1,6 @@
+package cheetahlcm;
+
+struct loop_counter_t
+{
+      int64_t loop_count;
+}

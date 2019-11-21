@@ -1,0 +1,34 @@
+# Not a .NET project. We build it in the test script
+build: false
+
+platform:
+  - x64
+  - x86
+
+environment:
+  CMAKE_PROJECT: "Visual Studio 14 2015"
+
+init:
+# Uncomment for remote desktop debug
+# - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+# Setup Cmake project
+- cmd: >-
+    IF "%PLATFORM%"=="x64" (
+    call "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64
+    ) ELSE (
+    call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86
+    )
+
+
+# Perform tests
+test_script:
+- cd "%APPVEYOR_BUILD_FOLDER%"
+- mkdir build
+- cd build
+- cmake -G "%CMAKE_PROJECT%" -DUNITTESTS=ON ..
+- cmake --build .
+- call "%APPVEYOR_BUILD_FOLDER%\build\out\Debug\qdldl_tester.exe"
+
+# on_finish:
+#   # Uncomment for remote desktop debug
+#   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))

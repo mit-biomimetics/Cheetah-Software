@@ -1,0 +1,32 @@
+# Not a .NET project. We build it in the install script
+build: false
+
+platform:
+  - x64
+  - x86
+
+environment:
+  BINTRAY_API_KEY:
+    secure: ng7NUNQat2LczU5XjKKyDLITkZbZsJeAdPGDjuTdQDHDiaL03JJF6Usab+miNVsO
+  MINICONDA: C:\Miniconda
+  CMAKE_PROJECT: MinGW Makefiles
+  PYTHON_VERSION: 3.6
+
+
+init:
+  # Uncomment for remote desktop debug
+  # - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+  - ECHO %PYTHON_VERSION% %MINICONDA%
+
+install:
+  - "%APPVEYOR_BUILD_FOLDER%\\ci\\appveyor\\install.cmd"
+
+test_script:
+  - "%APPVEYOR_BUILD_FOLDER%\\ci\\appveyor\\script.cmd"
+
+deploy_script:
+  - "%APPVEYOR_BUILD_FOLDER%\\ci\\appveyor\\deploy.cmd"
+
+# on_finish:
+#   # Uncomment for remote desktop debug
+#   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))

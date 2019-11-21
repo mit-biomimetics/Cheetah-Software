@@ -1,0 +1,12 @@
+package cheetahlcm;
+
+struct debug_trot_info_t
+{
+	double mode;
+	double t_state;
+	double clock_time;
+	double trot_stance_time;
+	double phase;
+	double stance_times[4];
+	double mode_request;
+}

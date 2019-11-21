@@ -1,0 +1,25 @@
+package interfacelcm;
+
+struct gui_contact_detection_settings_t
+{
+    double mu_p_c[2];
+    double var_p_c[2];
+
+    double mu_p_s[2];
+    double var_p_s[2];
+
+    double mu_z_g;
+    double var_z_g;
+
+    double mu_f_c;
+    double var_f_c;
+
+    double var_g_p;
+    double var_p_z;
+    double var_f_z;
+
+    double transition_threshold;
+    double contact_threshold;
+
+    double filter_ddq;
+}

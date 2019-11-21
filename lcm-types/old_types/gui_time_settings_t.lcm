@@ -1,0 +1,12 @@
+package interfacelcm;
+
+struct gui_time_settings_t
+{
+    double   time_step_high_level_control;
+    double   time_step_low_level_control;
+    double   time_step_integration;
+    double   graphics_frames_per_second;
+
+    double   slow_motion_factor;
+    double   paused;
+}

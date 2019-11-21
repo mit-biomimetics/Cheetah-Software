@@ -1,0 +1,25 @@
+# Generated on Fri Feb  8 20:15:53 2019
+__collection-name__: robot-parameters
+
+controller_dt     : 0.001
+control_mode      : 10
+myValue           : 12
+#stand_kd_cartesian: [60,60,60]
+#stand_kp_cartesian: [2000,2000,2000]
+stand_kd_cartesian: [60,60,60]
+stand_kp_cartesian: [1000,1000,1000]
+#stand_kd_cartesian: [0,0,0]
+#stand_kp_cartesian: [0,0,0]
+testValue         : 456
+cheater_mode      : 1
+foot_height_sensor_noise      : 0
+foot_process_noise_position   : 0
+foot_sensor_noise_position    : 0
+foot_sensor_noise_velocity    : 0
+imu_process_noise_position    : 0
+imu_process_noise_velocity    : 0
+kpCOM: [50,50,50]
+kdCOM: [10,10,10]
+kpBase: [300,200,100]
+kdBase: [20,10,10]
+use_rc: 0

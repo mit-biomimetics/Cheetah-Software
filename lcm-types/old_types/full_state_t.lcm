@@ -1,0 +1,29 @@
+package simulatorlcm;
+
+struct full_state_t
+{
+	double quat[4];
+	double R[3][3];		 /* Rotation of body in world coordinates */
+	double rpy[3];		 /* Earth fixed roll, pitch, yaw */
+
+	double omegab[3];
+	double rpyd[3]  ;	 /* If pitch goes to pi/2, there is gymbal lock, and this goes bonkers */
+
+	double omegabd[3];
+
+	double p[3];
+    double vb[3];
+    double vbd[3];
+
+    double q[12];
+    double qd[12];
+    double qdd[12];
+
+    double tau[12];
+    double f_foot[4][3];
+
+    double Rvec[9];
+    double fvec[12];
+    double p_footvec[12];
+    
+}

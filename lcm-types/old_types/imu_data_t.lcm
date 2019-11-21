@@ -1,0 +1,7 @@
+package cheetahlcm;
+
+struct imu_data_t
+{
+    float   gyro[3];
+    float   accelerometer[3];
+}

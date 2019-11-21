@@ -1,0 +1,8 @@
+package cheetahlcm;
+
+struct sim_command_t
+{
+	int32_t command_number;
+    int32_t data_size;
+    double  data[data_size];
+}

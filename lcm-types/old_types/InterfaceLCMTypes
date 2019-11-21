@@ -1,0 +1,84 @@
+package: interfacelcm;
+
+type: gui_control_settings_t
+channel: INTERFACE_gui_control_settings
+params:
+{
+    int64_t  timestamp;
+    int64_t  enabled;
+    int64_t  fixed_base;
+    double   joint_p;
+    double   joint_d;
+    double   mode_num;
+    string   mode;
+}
+
+type: gui_control_settings_t
+channel: INTERFACE_gui_environment_settings
+params:
+{
+    int64_t  timestamp;
+    double   ground_k;
+    double   ground_d;
+    double   mu;
+}
+
+type: gui_mode_settings_t
+channel: INTERFACE_gui_mode_setting
+params:
+{
+    int64_t  timestamp;
+    double   mode;
+    double   gui_state;
+}
+
+type: gui_time_settings_t
+channel: INTERFACE_gui_time_settings
+params:
+{
+    int64_t  timestamp;
+    double   time_final;
+    double   time_step;
+    double   real_time_factor;
+}
+
+type: gui_controller_swing_leg_settings_t
+channel: INTERFACE_gui_controller_swing_leg_settings
+params:
+{
+    float timestamp;
+    float kpSwingLeg;
+    float kdSwingLeg;
+    float xDesSwing;
+    float yDesSwing;
+    float zDesSwing;
+    float legUnloadState;
+    float normalForceRampTime;
+    float swingTime;
+}
+
+type: gui_controller_qp_settings_t
+channel: INTERFACE_gui_controller_qp_settings
+params:
+{
+    float timestamp;
+    float KpC;
+    float DrC;
+    float KpB;
+    float DrB;
+    float KpRoll;
+    float DrRoll;
+}
+
+type: gui_controller_mpc_settings_t
+channel: INTERFACE_gui_controller_mpc_settings
+params:
+{
+    float timestamp;
+    float N;
+    float K;
+    float Q[12];
+    float R[6];
+}
+
+

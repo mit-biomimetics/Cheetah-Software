@@ -1,0 +1,23 @@
+struct two_contact_stand_data_t
+{
+	double exit_flag;	
+	double nWSR;
+	double cpu_time_microseconds;
+	double f_opt[12];
+	double f_ref[4];
+	double f_control[12];
+	double f_unc[12];
+	double minForces[4];
+	double maxForces[4];
+	double contact_state[4];
+	double stance_legs;
+	double p_des[3];
+	double p_act[3];
+	double rpy[3];
+	double rpy_act[3];
+	double lbA[20];
+	double ubA[20];
+	double C_times_f[20];
+	double s[12];
+	double cost_to_go;
+}

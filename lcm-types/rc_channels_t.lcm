@@ -1,0 +1,19 @@
+struct rc_channels_t
+{
+	double ch_1;
+	double ch_2;
+	double ch_3;
+	double ch_4;
+	double ch_5;
+	double ch_6;
+	double ch_7;
+	double ch_8;
+	double ch_9;
+	double ch_10;
+	double ch_11;
+	double ch_12;
+	double ch_13;
+	double ch_14;
+	double ch_15;
+	double ch_16;
+}

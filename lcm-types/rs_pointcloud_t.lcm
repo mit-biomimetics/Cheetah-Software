@@ -1,0 +1,4 @@
+struct rs_pointcloud_t
+{
+  double pointlist[5001][3];
+}

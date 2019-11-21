@@ -1,0 +1,33 @@
+
+For QP control, you'll likely want to listen to the following:
+
+	
+	1. For changing mu value:
+
+	    type: gui_control_settings_t
+	    channel: INTERFACE_gui_environment_settings
+
+
+
+	2. For changing swing leg control parameters:
+
+  	    type: gui_controller_swing_leg_settings_t
+	    channel: INTERFACE_gui_controller_swing_leg_settings
+
+	
+
+	3. For changing QP control variables and gains:
+	
+	    type: gui_controller_qp_settings_t
+	    channel: INTERFACE_gui_controller_qp_settings
+
+
+
+	4. For other random control variables and mode switching (still not implemented fully):
+
+	    type: gui_control_settings_t
+	    channel: INTERFACE_gui_control_settings
+
+
+
+You can find what each parameter means in 'InterfaceLCMTypes' file.

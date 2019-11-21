@@ -1,0 +1,5 @@
+struct velocity_visual_t
+{
+  double vel_cmd[3];
+  double base_position[3];
+}

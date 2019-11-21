@@ -1,0 +1,55 @@
+# Generated on Mon Aug  5 18:20:08 2019
+__collection-name__: user-parameters
+
+Kd_joint          : [1.0, 0.3, 0.3]
+Kp_joint          : [3, 3, 3]
+
+#Kp_body           : [100, 100, 100]
+#Kd_body           : [10, 10, 10]
+
+#Kp_foot           : [500, 500, 500]
+#Kd_foot           : [20, 20, 20]
+
+#Kp_ori            : [100, 100, 100]
+#Kd_ori            : [10, 10, 10]
+
+
+#Kd_joint          : [1.5, 1.5, 1.5]
+#Kp_joint          : [15, 15, 15]
+
+Kp_body           : [100, 100, 100]
+Kd_body           : [10, 10, 10]
+
+Kp_foot           : [100, 100, 100]
+Kd_foot           : [10, 10, 10]
+
+#Kp_foot           : [200, 200, 200]
+#Kd_foot           : [20, 20, 20]
+
+Kp_ori            : [100, 100, 100]
+Kd_ori            : [10, 10, 10]
+
+cmpc_gait         : 9
+cmpc_x_drag       : 3
+cmpc_use_sparse   : 0
+cmpc_bonus_swing  : 0
+jcqp_alpha        : 1.5
+jcqp_max_iter     : 10000
+jcqp_rho          : 1e-07
+jcqp_sigma        : 1e-08
+jcqp_terminate    : 0.1
+use_jcqp          : 0
+use_wbc           : 1
+
+
+Q_pos             : [20, 20, 10000]
+Q_vel             : [0, 0, 0]
+Q_ori             : [800, 800, 300]
+Q_ang             : [0, 0, 0]
+
+R_control         : 2.0
+R_prev            : 3.5
+
+two_leg_threshold : 0.1
+two_leg_ramp      : 1.5
+stance_legs       : 4

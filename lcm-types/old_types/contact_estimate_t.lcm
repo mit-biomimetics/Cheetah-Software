@@ -1,0 +1,10 @@
+package cheetahlcm;
+
+struct contact_estimate_t
+{
+	double taud_filt[18];
+	double f_foot[12];
+	double contact_state[4];
+	double contact_probability[4];
+	double transition_state[4];
+}

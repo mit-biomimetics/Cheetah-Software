@@ -1,0 +1,12 @@
+add_subdirectory(Goldfarb_Optimizer)
+add_subdirectory(ParamHandler)
+add_subdirectory(inih)
+add_subdirectory(osqp)
+add_subdirectory(JCQP)
+add_subdirectory(qpOASES)
+add_subdirectory(lord_imu)
+add_subdirectory(SOEM)
+
+if(CMAKE_SYSTEM_NAME MATCHES Linux)
+add_subdirectory(vectornav)
+endif()

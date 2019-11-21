@@ -1,0 +1,6 @@
+package interfacelcm;
+
+struct gui_interesting_t
+{
+    double counter;
+}

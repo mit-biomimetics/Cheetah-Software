@@ -1,0 +1,4 @@
+struct localization_lcmt {
+  float xyz[3];
+  float rpy[3];
+}

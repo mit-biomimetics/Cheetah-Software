@@ -1,0 +1,36 @@
+language: C
+
+matrix:
+  include:
+    - os: linux
+    - os: osx
+      # Specify version to avoid bug (https://github.com/travis-ci/travis-ci/issues/6522)
+      osx_image: xcode9.3
+sudo: required
+env:
+  global:
+    - DEPS_DIR="${HOME}/deps"
+    # Bintray API key
+    - secure: "RgZWa1zTkbXzbF+TW89CDa0OD+hjVrZCSnsG9X3OQRyMRcR8yp61SudC0sopJyAhrXA++6zRENI/T1rTmTr1WYcitF22x3fzVvPL+IQEUCxXPV6GOb3cBB/f3rxkpxeBYXO+tgsH1ad+A9T2oihO0/94fKVpZ5uN5mjJbP4yatF+DyEk5+IlHkp0yrgNxyLYEo7QCaDQJhffBJCa4R3C2sb2oL5S3JV6C1svWeSRVey5lrkNwk+rL1Af0kIEfWCXYBq5dchDLFGgfJlzFTw3i/UmKSqtdkq/Eq3vKpvvqMCHcm9ibcWeJX1iNSXVmblycLitI/K1LjONWvrAioHsv9qRaf+YXtLtyb1WXLmaPdi0P138TIDMHLslFYBq1Sf+1WZJ5U3KItzNXjFw/c2yUIDXMePrXNbHodYwND+3QS+yAoIHXT0buxUjjEbD6g54YfqjsTX8w510l+dy7WZQUM6GJn7byiEDfEEu9RbhLuDRHMG8h2viya9aLgIEAMq92/XbS6v01aX24dPmrlSZEocqwrp8yJxGU4tYk+gj4rnWXYF7XfaOVvINc5RRwejZ1mIkMg1fCEqaBmKQiOwDuypoG0L9kDaX85fGwo7/LIdApsJWZvXewlW8ZQERSqFwXDJpQXjS8iHcCzJUR+WUWkrVMYzzr74Fr+XeKmQeQC4="
+    - PYTHON_VERSION="3.6"
+    # OSQP_DOCS_DEPLOY_EMAIL
+    - secure: "EOnlXwP6GSEq4gm9lxTG6QHH4PUA2r2KOZULbdFXbn11Nr0z/ubjjzOGwGLCQdJcvz40G4Ks9Lty8RZqFvrIXXfMgli1jPR9N9jTPANog9abB+GOzjYn5IqBJMN4ZaR8DDpzHB4n9QE2w5I1ihTLIEnZ0Jxm9ckxYBlx9ndeRPEE0qqePkM1oP+GiT+WIidv9r9z3p6kKG+x4BF6d2SgzNGVL8v7yyPtVDGyUvLu/CGvY6pDgUqp0KImpOgjtrKTtFtYergBHTBPoLpxRLjw0RZRlaPquiitvwm4QxdYDmlyDahnoST330m0vvca2oCA76E3AlobUK8MDGxB+CiUfTM3e51mKCq3UO4o7g6BKT5ZF+0YpCFyfvvJZg6TupdfWdtlNG15rcgVgzOKAPrlaEe0qtCOUduPTHECCkOO/yUyEOU8+LEEvnESNdrJhfnPtkWBRJ607TjfKS6tLFcHjHobPtG4yB0ZBoOSWVjngIkJc/1vQNfrDXuBhWcF861GPnStv44ziNLl8+KL+9ekjPitVubInsxGNDtz0qVtMGigTK8xGxE0EjoUroIXc/DSfuFcPj4t7j56C7xFjxRz+nREGhq158XOiq0qLUtEdBPSvh9yxdn35n1L3D1kGM4oSHWhAslV55GZqorJfI/HBWelVhsVM+6HAoezQ9aJaQ4="
+    # OSQP_DOCS_DEPLOY_GH_TOKEN
+    - secure: "F+9E43Mw6DpmS//G48Rwh1BOr1fpwYN1RtxLA01E+VM3H3h6a0jgv0iXaTA1nAI7Ept7+RXCwH8TG6MFmGj+ygAB/6C8qUWXPhZugqi/ekXzEvQlA/kU1YjDKm1Uh57ZKrm7lLMt6X8RSuy4VWRa0ZyZ6yc7X+wFwRwz+u9kneQu0/U1BWY26FG0CWK639r8yD5nX2d33E723kCVT1o9R/hK5t01ow61/AE1AIevvjTYhaw8mGbDw0sWKVcPng4+2y8Nlh+E1lE5QQRgUntO4LYJfuMMuJlcHLwxAacJ8DQBpbop4WWxCkuccvaVBgeUNXNFIgq88lwAFYTiEC1LCoFxzEZuIbmfGJNTYZrjvIsxZaoavRVVDcdRVU+4sC/Nr3GHVh/WF+XsOzFN9ij+fvOd5SaEAN0KU6Wlw3lrvTjHnvDFFz5WVkeZMn+47flGl6aoPLfSi7IoNqch2iuAUr0qJ8CRC79/Avhbij9bPLEkEdMKnAcoJYL4V89xGKS67LJb3m8iS0FaCTYB7Fy4T0Gg6cxeLJbaJukj6kUUpJOuZSOFwf9QCA+u5SyYzcanPgPZsHOlZ9xB+6snDdZ+2G3VGsNnrTZoeqRSDelt4aKpI0JkYe0MFkm95AYxzf/utjWYz07QeewmPi7c15PpFr8XmRoGYtpIxVRV12y2Dqs="
+
+install: bash ci/travis/install.sh
+script:
+ - bash ci/travis/script.sh
+
+deploy:
+  # Deploy on tags
+  - provider: script
+    script: "bash $TRAVIS_BUILD_DIR/ci/travis/deploy.sh"
+    on:
+      tags: true
+    skip_cleanup: true
+  # Deploy docs
+  - provider: script
+    script: "bash $TRAVIS_BUILD_DIR/ci/travis/docs.sh"
+    on:
+      branch: master

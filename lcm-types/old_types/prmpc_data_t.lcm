@@ -1,0 +1,11 @@
+package controllerlcm;
+
+struct prmpc_data_t
+{
+    double cpu_opt_time_microseconds;
+    double dt_pred[8];
+    double t_sent;
+    double x_opt[8][12];
+    double u_opt[8][24];
+    double p_opt[3][4];   
+}

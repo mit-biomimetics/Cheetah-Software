@@ -1,0 +1,11 @@
+package interfacelcm;
+
+struct gui_controller_prmpc_settings_t
+{
+      double N_rpc;
+      double K_rpc;
+      double K_ref_rpc[10];
+      double Q_rpc[12];
+      double R_rpc[6];
+      double variable_rpc[6];
+}

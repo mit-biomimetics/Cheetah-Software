@@ -1,0 +1,29 @@
+package cheetahlcm;
+
+struct ecat_data_t
+{
+      float x[4];
+      float y[4];
+      float z[4];
+      float dx[4];
+      float dy[4];
+      float dz[4];
+      float fx[4];
+      float fy[4];
+      float fz[4];
+      float q_abad[4];
+      float q_hip[4];
+      float q_knee[4];
+      float dq_abad[4];
+      float dq_hip[4];
+      float dq_knee[4];
+      float tau_abad[4];
+      float tau_hip[4];
+      float tau_knee[4];
+      float tau_des_abad[4];
+      float tau_des_hip[4];
+      float tau_des_knee[4];
+      int16_t loop_count_ti[4];
+      int16_t ethercat_count_ti[4];
+      int16_t microtime_ti[4];
+}

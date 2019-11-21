@@ -1,0 +1,9 @@
+struct state_estimator_lcmt {
+    float p[3];
+    float vWorld[3];
+    float vBody[3];
+    float rpy[3];
+    float omegaBody[3];
+    float omegaWorld[3];
+    float quat[4];
+}

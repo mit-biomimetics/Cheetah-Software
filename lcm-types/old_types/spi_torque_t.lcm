@@ -1,0 +1,8 @@
+package cheetahlcm;
+
+struct spi_torque_t
+{
+    float tau_abad[4];
+    float tau_hip[4];
+    float tau_knee[4];
+}

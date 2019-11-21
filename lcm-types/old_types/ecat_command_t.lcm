@@ -1,0 +1,37 @@
+package cheetahlcm;
+
+struct ecat_command_t
+{
+     float  x_des[4];
+     float  y_des[4];
+     float  z_des[4];
+     
+     float  dx_des[4];
+     float  dy_des[4];
+     float  dz_des[4];
+     
+     float  kpx[4];
+     float  kpy[4];
+     float  kpz[4];
+     
+     float  kdx[4];
+     float  kdy[4];
+     float  kdz[4];
+
+     int32_t enable[4];
+     int32_t zero_joints[4];
+
+     float fx_ff[4];
+     float fy_ff[4];
+     float fz_ff[4];
+
+     float tau_abad_ff[4]; 
+     float tau_hip_ff[4];
+     float tau_knee_ff[4];
+
+     float abad_zero_angle[4];
+     float hip_zero_angle[4];
+     float knee_zero_angle[4];
+
+     float max_torque[4];
+}

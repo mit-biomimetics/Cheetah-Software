@@ -1,0 +1,19 @@
+package cheetahlcm;
+
+struct state_estimate_t
+{
+	double quat[4];
+	double rpy[3] ;		 /* Earth fixed roll, pitch, yaw */
+
+	double p0[3];
+    double v0[3];
+    double pfoot[12];
+
+    double stds[18];
+
+    double gyro[3];
+    double accelerometer[3];
+    
+    double raw_gyro[3];
+    double contact_state[4];
+}

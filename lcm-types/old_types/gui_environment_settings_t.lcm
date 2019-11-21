@@ -1,0 +1,10 @@
+package interfacelcm;
+
+struct gui_environment_settings_t
+{
+    double   ground_k;
+    double   ground_d;
+    double   mu;
+
+    double gravity[3];
+}

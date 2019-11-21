@@ -1,0 +1,7 @@
+package interfacelcm;
+
+struct gui_mode_settings_t
+{
+    double   mode;
+    double   gui_state;
+}

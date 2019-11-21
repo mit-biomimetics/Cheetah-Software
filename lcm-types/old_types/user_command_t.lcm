@@ -1,0 +1,8 @@
+package interfacelcm;
+
+struct user_command_t
+{
+      float   control_value[50];
+      int16_t zero_joint_command[4];
+      int16_t enable_command;
+}

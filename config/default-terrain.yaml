@@ -1,0 +1,82 @@
+ground-plane:
+    type: "infinite-plane"
+    mu: 0.5
+    restitution: 0.0
+    #height: -0.5
+    height: 0.0
+    graphicsSize: [20,20] # how large the plane appears
+    checkers: [40,40]     # how many checkers are on the plane
+
+#mesh-1:
+    type: "mesh"
+    mu: 0.7
+    restitution: 0
+    transparent: 1
+    #grid: 0.005
+    grid: 0.01
+    #left_corner_loc: [-6.3, -4.7, 0.07]
+    left_corner_loc: [-0.0, -2.2, -0.501]
+    #left_corner_loc: [-0.02, -2.2, -0.498]
+    heightmap_file: true
+    #heightmap_file: false 
+    #heightmap_file_name: "heightmap_demo.txt"
+    #heightmap_file_name: "heightmap.txt"
+    #heightmap_file_name: "../optimization/optimization_data/2019-02-20-13_09_26/HeightMap.txt"
+    #heightmap_file_name: "../optimization/optimization_data/2019-02-20-11_11_36/HeightMap.txt"
+    #heightmap_file_name: "../optimization/optimization_data/2019-03-03-00_00_00/HeightMap.txt"
+    #heightmap_file_name: "../optimization/optimization_data/2019-03-04-00_00_00/heightmap2_fixed.txt"
+    #heightmap_file_name: "../optimization/optimization_data/2019-03-05-00_00_01/manual_heightmap.txt"
+    #heightmap_file_name: "../optimization/optimization_data/2019-03-05-00_00_02/manual_heightmap.txt"
+    #heightmap_file_name: "../optimization/optimization_data/2019-03-05-00_00_03/heightmap.txt"
+    heightmap_file_name: "../algorithms/optimization/saved_optimization_data/2019-03-05-00_00_03_2/HeightMap.txt"
+
+#box-1:
+    type: "box"
+    mu: 0.7
+    restitution: 0
+    depth: 2.0
+    width: 1.5
+    height: .3
+    position:  [1.5, 0, 0.23]
+    orientation: [0,.0,0]  # roll pitch yaw
+    transparent: 1
+
+#box-2:
+    #type: "box"
+    #mu: 0.7
+    #restitution: 0
+    #depth: 0.45
+    #width: 0.6
+    #height: .1
+    #position:  [1.175, 0, -0.48]
+    #orientation: [0,.0,0]  # roll pitch yaw
+    #transparent: 1
+
+    
+#stairs-1:
+    type: "stairs"
+    steps: 5
+    rise: 0.1 #0.1778 # 7 inches
+    run: 0.17 #0.2794 # 11 inches
+    width: 1.2
+    mu: .7
+    restitution: 0
+    #position: [0.5, 0, -0.52]
+    position: [0.5, 0, 0.0]
+    orientation: [0, 0, 0]
+    transparent: 0
+
+#stairs-2:
+    #type: "stairs"
+    #steps: 8
+    #rise: 0.1778 # 7 inches
+    #run: 0.2794 # 11 inches
+    #width: 1.2
+    #mu: .7
+    #restitution: 0
+    #position: [1,-2,-0.5]
+    #orientation: [.2, -.4, 1.5]
+    #transparent: 0
+
+
+
