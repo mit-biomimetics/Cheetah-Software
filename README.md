@@ -1,4 +1,5 @@
-## Cheetah-Software
+# Cheetah-Software
+![Mini_on_stairs](https://user-images.githubusercontent.com/69251304/119980322-b4b7d400-bfee-11eb-9942-0f10758e8b6b.png)
 This repository contains the Robot and Simulation software project.  For a getting started guide, see the documentation folder.
 
 The common folder contains the common library with dynamics and utilities
@@ -6,6 +7,16 @@ The resources folder will contain data files, like CAD of the robot used for the
 The robot folder will contain the robot program
 The sim folder will contain the simulation program. It is the only program which depends on QT.
 The third-party will contain *small* third party libraries that we have modified. This should just be libsoem for Cheetah 3, which Pat modified at one point.
+
+## Load Map
+Although real time height map is also available in this project, I use a saved stairs height map as the example. If you are interested in real time mapping and locomotion, you can develop your own cheetah on this project.
+
+To load height map and traversability score map, you need to use a ROS repository named [camera_heightmap](https://github.com/AWang-Cabin/camera_heightmap.git)
+```
+cd catkin_ws
+catkin_make
+roslaunch camera_heightmap hsload.launch
+```
 
 ## Build
 To build all code:

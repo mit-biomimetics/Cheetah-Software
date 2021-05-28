@@ -42,8 +42,8 @@ void FSM_State_BalanceStand<T>::onEnter() {
 
   // Always set the gait to be standing in this state
   this->_data->_gaitScheduler->gaitData._nextGait = GaitType::STAND;
-  
-  _ini_body_pos = (this->_data->_stateEstimator->getResult()).position;
+  // rpy is defined in world frame, but robot need rpy in body frame here
+  _ini_body_pos = (this->_data->_stateEstimator->getResult()).rBody * (this->_data->_stateEstimator->getResult()).position;
 
   if(_ini_body_pos[2] < 0.2) {
     _ini_body_pos[2] = 0.3;
