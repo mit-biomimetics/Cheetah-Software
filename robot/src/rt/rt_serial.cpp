@@ -21,7 +21,11 @@
 #include <termios.h>
 #include <math.h>
 #include <pthread.h>
-#include <stropts.h>
+// Manually declare ioctl to avoid header conflicts
+extern "C" {
+  int ioctl(int fd, unsigned long request, ...);
+}
+// #include <stropts.h>
 #include <endian.h>
 #include <stdint.h>
 

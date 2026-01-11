@@ -12,6 +12,8 @@
 #include "Math/FirstOrderIIRFilter.h"
 #include "obj_loader.h"
 
+#define GL_GLEXT_PROTOTYPES
+#include <GL/gl.h>
 #include <QMatrix4x4>
 #include <QOpenGLContext>
 #include <QOpenGLFunctions>

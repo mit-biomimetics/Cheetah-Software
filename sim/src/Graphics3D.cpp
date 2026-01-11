@@ -62,21 +62,24 @@ void main() {
 )";
 
 static constexpr char fragmentShaderSource[] = R"(
-varying lowp vec4 col;
-varying vec3 pos_world;
-varying vec3 normal;
-void main() {
-  vec3 light_pos = vec3(0,0,4);
-  float light_dist = length(light_pos - pos_world);
-  vec3 light_color = vec3(1,1,1);
-  vec3 mat_ambient = vec3(.1,.1,.1);
-  vec3 mat_spec    = vec3(.3,.3,.3);
-  vec3 n = normalize(normal);
-  vec3 l = normalize(light_pos);
-  float angle_thing = clamp( dot(-n,l), 0., 1.);
-  gl_FragColor = col + vec4(mat_ambient*light_color*40.*angle_thing/(light_dist*light_dist),0);
-}
-)";
+  #ifdef GL_ES
+  precision mediump float;
+  #endif
+  varying lowp vec4 col;
+  varying vec3 pos_world;
+  varying vec3 normal;
+  void main() {
+    vec3 light_pos = vec3(0,0,4);
+    float light_dist = length(light_pos - pos_world);
+    vec3 light_color = vec3(1,1,1);
+    vec3 mat_ambient = vec3(.1,.1,.1);
+    vec3 mat_spec    = vec3(.3,.3,.3);
+    vec3 n = normalize(normal);
+    vec3 l = normalize(light_pos);
+    float angle_thing = clamp( dot(-n,l), 0., 1.);
+    gl_FragColor = col + vec4(mat_ambient*light_color*40.*angle_thing/(light_dist*light_dist),0);
+  }
+  )";
 
 /*!
  * Initialize a 3D visualization window
@@ -193,14 +196,18 @@ void Graphics3D::initializeGL() {
   _colorArrayProgram->addShaderFromSourceCode(QOpenGLShader::Fragment,
                                               fragmentShaderSource);
   _colorArrayProgram->link();
-
+  if (!_colorArrayProgram->isLinked()) {
+    qDebug() << "Shader link error (colorArray):" << _colorArrayProgram->log();
+  }
   _solidColorProgram = new QOpenGLShaderProgram(this);
   _solidColorProgram->addShaderFromSourceCode(QOpenGLShader::Vertex,
                                               vertexShaderSourceSolidColor);
   _solidColorProgram->addShaderFromSourceCode(QOpenGLShader::Fragment,
                                               fragmentShaderSource);
   _solidColorProgram->link();
-
+  if (!_solidColorProgram->isLinked()) {
+    qDebug() << "Shader link error (solidColor):" << _solidColorProgram->log();
+  }
   // setup attributes/uniforms (inputs to shaders)
   _posAttrColorArray = (GLuint)_colorArrayProgram->attributeLocation("posAttr");
   _colAttrColorArray = (GLuint)_colorArrayProgram->attributeLocation("colAttr");

@@ -9,7 +9,10 @@
 #include "Timer.h"
 #include "amd.h"
 #include <iostream>
+
+#ifdef JCQP_USE_AVX2
 #include <immintrin.h>
+#endif
 
 
 template<typename T>
